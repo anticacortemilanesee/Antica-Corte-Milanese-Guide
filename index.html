@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Guide - Antica Corte Milanese</title>
+  <style>
+    :root {
+      --primary: #2C3539;
+      --bg: #F9F9FB;
+      --card-bg: #FFFFFF;
+      --text: #333333;
+      --accent: #1B4D3E;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      padding: 20px 10px;
+      border-bottom: 2px solid var(--primary);
+      margin-bottom: 25px;
+    }
+    .header h1 {
+      font-family: Georgia, serif;
+      color: var(--primary);
+      margin: 0 0 5px 0;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+    .header p {
+      margin: 0;
+      font-size: 14px;
+      color: #666;
+    }
+    .category {
+      margin-bottom: 25px;
+    }
+    .category-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      color: var(--primary);
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .place-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .place-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .place-desc {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      flex: 1;
+      text-align: center;
+      padding: 8px 12px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    .btn-gmaps {
+      background-color: #4285F4;
+      color: white;
+    }
+    .btn-apple {
+      background-color: #000000;
+      color: white;
+    }
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+      margin-top: 40px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>ANTICA CORTE MILANESE</h1>
+    <p>Guida Locale / Local Guide</p>
+  </div>
+
+  <!-- RISTORANTI -->
+  <div class="category">
+    <div class="category-title">🍽️ Ristoranti & Pizzerie / Dining</div>
+    
+    <div class="place-card">
+      <div class="place-title">Ristorante / Pizzeria Consigliata</div>
+      <div class="place-desc">Cucina tipica lombarda e ottima pizza a pochi minuti a piedi.</div>
+      <div class="btn-group">
+        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Milanese+Ristorante" target="_blank">Google Maps</a>
+        <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Milanese+Ristorante" target="_blank">Apple Maps</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAR -->
+  <div class="category">
+    <div class="category-title">☕ Bar & Colazione / Cafés</div>
+    
+    <div class="place-card">
+      <div class="place-title">Bar Colazione</div>
+      <div class="place-desc">Caffè espresso, brioche fresche e aperitivi.</div>
+      <div class="btn-group">
+        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Milanese+Bar" target="_blank">Google Maps</a>
+        <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Milanese+Bar" target="_blank">Apple Maps</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPERMERCATI -->
+  <div class="category">
+    <div class="category-title">🛒 Supermercati / Market</div>
+    
+    <div class="place-card">
+      <div class="place-title">Supermercato Vicino</div>
+      <div class="place-desc">Per la spesa quotidiana, prodotti freschi e alimentari.</div>
+      <div class="btn-group">
+        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Milanese+Supermercato" target="_blank">Google Maps</a>
+        <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Milanese+Supermercato" target="_blank">Apple Maps</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRASPORTI -->
+  <div class="category">
+    <div class="category-title">🚆 Trasporti / Transit</div>
+    
+    <div class="place-card">
+      <div class="place-title">Stazione FS Novate Milanese</div>
+      <div class="place-desc">Treni S1 / S3 per Milano Cadorna, Garibaldi e Passante.</div>
+      <div class="btn-group">
+        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Stazione+Novate+Milanese" target="_blank">Google Maps</a>
+        <a class="btn btn-apple" href="https://maps.apple.com/?q=Stazione+Novate+Milanese" target="_blank">Apple Maps</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Antica Corte Milanese — Have a nice stay!
+  </div>
+
+</body>
+</html>
