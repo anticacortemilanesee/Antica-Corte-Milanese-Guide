@@ -49,28 +49,50 @@
       letter-spacing: 1px;
     }
 
-    /* Griglia 2x2 */
+    /* Layout Griglia 2x2 */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
+      align-items: start;
     }
 
     .category-card {
       background: var(--card-bg);
       border-radius: 12px;
-      padding: 14px 10px;
-      box-shadow: 0 2px 8px rgba(44, 53, 57, 0.06);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(44, 53, 57, 0.08);
       border: 1px solid #E5E7EB;
       border-top: 4px solid var(--primary);
+      overflow: hidden;
     }
 
-    .category-header {
+    /* Stile della Tendina (Accordion) */
+    details {
+      width: 100%;
+    }
+
+    summary {
+      padding: 12px 8px;
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--primary);
       text-align: center;
-      margin-bottom: 8px;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary:hover {
+      background-color: #F1F3F5;
     }
 
     .category-icon {
@@ -79,33 +101,59 @@
       margin-bottom: 4px;
     }
 
-    .category-title {
-      font-size: 13px;
-      font-weight: bold;
-      color: var(--primary);
-      line-height: 1.2;
+    .arrow-icon {
+      font-size: 10px;
+      color: #888;
+      margin-top: 4px;
+      transition: transform 0.2s;
     }
 
-    .category-desc {
-      font-size: 11px;
-      color: #555;
-      text-align: center;
-      margin-bottom: 12px;
+    details[open] .arrow-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Contenuto aperto */
+    .places-list {
+      padding: 10px;
+      border-top: 1px solid #E5E7EB;
+      background-color: #FAFAFA;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .place-item {
+      border-bottom: 1px solid #EAEAEA;
+      padding-bottom: 8px;
+    }
+
+    .place-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .place-name {
+      font-size: 12px;
+      font-weight: bold;
+      color: #2C3539;
+      margin-bottom: 6px;
+      text-align: left;
     }
 
     .btn-group {
       display: flex;
-      flex-direction: column;
       gap: 6px;
     }
 
     .btn {
-      display: block;
+      flex: 1;
       text-align: center;
-      padding: 8px 4px;
-      border-radius: 6px;
+      padding: 6px 2px;
+      border-radius: 4px;
       text-decoration: none;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: bold;
     }
 
@@ -136,59 +184,151 @@
     <p>Local Guide / Guida Locale</p>
   </div>
 
-  <!-- GRIGLIA 2x2 -->
+  <!-- GRIGLIA 2x2 CON TENDINE -->
   <div class="grid-container">
 
     <!-- 1. RISTORANTI -->
     <div class="category-card">
-      <div class="category-header">
-        <span class="category-icon">🍽️</span>
-        <div class="category-title">Ristoranti / Dining</div>
-      </div>
-      <div class="category-desc">Cucina tipica e pizzerie.</div>
-      <div class="btn-group">
-        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Ristoranti+Novate+Milanese" target="_blank">Google Maps</a>
-        <a class="btn btn-apple" href="https://maps.apple.com/?q=Ristoranti+Novate+Milanese" target="_blank">Apple Maps</a>
-      </div>
+      <details>
+        <summary>
+          <span class="category-icon">🍽️</span>
+          <div>Ristoranti / Dining</div>
+          <span class="arrow-icon">▼ Apri lista / Open</span>
+        </summary>
+        <div class="places-list">
+          
+          <div class="place-item">
+            <div class="place-name">Il Giardino di Lotus</div>
+            <div class="btn-group">
+              <a class="btn btn-gmaps" href="https://maps.google.com/?q=Il+Giardino+di+Lotus+Novate+Milanese" target="_blank">Google Maps</a>
+              <a class="btn btn-apple" href="https://maps.apple.com/?q=Il+Giardino+di+Lotus+Novate+Milanese" target="_blank">Apple Maps</a>
+            </div>
+          </div>
+
+          <div class="place-item">
+            <div class="place-name">Pizzeria L'Incontro</div>
+            <div class="btn-group">
+              <a class="btn btn-gmaps" href="https://maps.google.com/?q=Pizzeria+L'Incontro+Novate+Milanese" target="_blank">Google Maps</a>
+              <a class="btn btn-apple" href="https://maps.apple.com/?q=Pizzeria+L'Incontro+Novate+Milanese" target="_blank">Apple Maps</a>
+            </div>
+          </div>
+
+          <div class="place-item">
+            <div class="place-name">Ristorante Pizzeria La Perla</div>
+            <div class="btn-group">
+              <a class="btn btn-gmaps" href="https://maps.google.com/?q=Ristorante+Pizzeria+La+Perla+Novate+Milanese" target="_blank">Google Maps</a>
+              <a class="btn btn-apple" href="https://maps.apple.com/?q=Ristorante+Pizzeria+La+Perla+Novate+Milanese" target="_blank">Apple Maps</a>
+            </div>
+          </div>
+
+        </div>
+      </details>
     </div>
 
     <!-- 2. BAR -->
     <div class="category-card">
-      <div class="category-header">
-        <span class="category-icon">☕</span>
-        <div class="category-title">Bar / Cafés</div>
-      </div>
-      <div class="category-desc">Colazioni, caffè e aperitivi.</div>
-      <div class="btn-group">
-        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Bar+Novate+Milanese" target="_blank">Google Maps</a>
-        <a class="btn btn-apple" href="https://maps.apple.com/?q=Bar+Novate+Milanese" target="_blank">Apple Maps</a>
-      </div>
+      <details>
+        <summary>
+          <span class="category-icon">☕</span>
+          <div>Bar / Cafés</div>
+          <span class="arrow-icon">▼ Apri lista / Open</span>
+        </summary>
+        <div class="places-list">
+          
+          <div class="place-item">
+            <div class="place-name">Caffè della Corte</div>
+            <div class="btn-group">
+              <a class="btn btn-gmaps" href="https://maps.google.com/?q=Caffe+della+Corte+Novate+Milanese" target="_blank">Google Maps</a>
+              <a class="btn btn-apple" href="https://maps.apple.com/?q=Caffe+della+Corte+Novate+Milanese" target="_blank">Apple Maps</a>
+            </div>
+          </div>
+
+          <div class="place-item">
+            <div class="place-name">Bar Centrale Novate</div>
+            <div class="btn-group">
+              <a class="btn btn-gmaps" href="https://maps.google.com/?q=Bar+Centrale+Novate+Milanese" target="_blank">Google Maps</a>
+              <a class="btn btn-apple" href="https://maps.apple.com/?q=Bar+Centrale+Novate+Milanese" target="_blank">Apple Maps</a>
+            </div>
+          </div>
+
+        </div>
+      </details>
     </div>
 
     <!-- 3. SUPERMERCATI -->
     <div class="category-card">
-      <div class="category-header">
-        <span class="category-icon">🛒</span>
-        <div class="category-title">Supermercati / Market</div>
-      </div>
-      <div class="category-desc">Spesa e beni di necessità.</div>
-      <div class="btn-group">
-        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Supermercato+Novate+Milanese" target="_blank">Google Maps</a>
-        <a class="btn btn-apple" href="https://maps.apple.com/?q=Supermercato+Novate+Milanese" target="_blank">Apple Maps</a>
-      </div>
+      <details>
+        <summary>
+          <span class="category-icon">🛒</span>
+          <div>Supermercati / Market</div>
+          <span class="arrow-icon">▼ Apri lista / Open</span>
+        </summary>
+        <div class="places-list">
+          
+          <div class="place-item">
+            <div class="place-name">Carrefour Express</div>
+            <div class="btn-group">
+              <a class="btn btn-gmaps" href="https://maps.google.com/?q=Carrefour+Express+Novate+Milanese" target="_blank">Google Maps</a>
+              <a class="btn btn-apple" href="https://maps.apple.com/?q=Carrefour+Express+Novate+Milanese" target="_blank">Apple Maps</a>
+            </div>
+          </div>
+
+          <div class="place-item">
+            <div class="place-name">Esselunga Novate</div>
+            <div class="btn-group">
+              <a class="btn btn-gmaps" href="https://maps.google.com/?q=Esselunga+Novate+Milanese" target="_blank">Google Maps</a>
+              <a class="btn btn-apple" href="https://maps.apple.com/?q=Esselunga+Novate+Milanese" target="_blank">Apple Maps</a>
+            </div>
+          </div>
+
+          <div class="place-item">
+            <div class="place-name">Conad City</div>
+            <div class="btn-group">
+              <a class="btn btn-gmaps" href="https://maps.google.com/?q=Conad+City+Novate+Milanese" target="_blank">Google Maps</a>
+              <a class="btn btn-apple" href="https://maps.apple.com/?q=Conad+City+Novate+Milanese" target="_blank">Apple Maps</a>
+            </div>
+          </div>
+
+        </div>
+      </details>
     </div>
 
     <!-- 4. STAZIONE & METRO -->
     <div class="category-card">
-      <div class="category-header">
-        <span class="category-icon">🚆</span>
-        <div class="category-title">Stazione & Metro</div>
-      </div>
-      <div class="category-desc">Treni FS / Passante S1-S3.</div>
-      <div class="btn-group">
-        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Stazione+Novate+Milanese" target="_blank">Google Maps</a>
-        <a class="btn btn-apple" href="https://maps.apple.com/?q=Stazione+Novate+Milanese" target="_blank">Apple Maps</a>
-      </div>
+      <details>
+        <summary>
+          <span class="category-icon">🚆</span>
+          <div>Stazione & Transit</div>
+          <span class="arrow-icon">▼ Apri lista / Open</span>
+        </summary>
+        <div class="places-list">
+          
+          <div class="place-item">
+            <div class="place-name">Stazione FS Novate Milanese</div>
+            <div class="btn-group">
+              <a class="btn btn-gmaps" href="https://maps.google.com/?q=Stazione+FS+Novate+Milanese" target="_blank">Google Maps</a>
+              <a class="btn btn-apple" href="https://maps.apple.com/?q=Stazione+FS+Novate+Milanese" target="_blank">Apple Maps</a>
+            </div>
+          </div>
+
+          <div class="place-item">
+            <div class="place-name">Comasina M3 (Metro)</div>
+            <div class="btn-group">
+              <a class="btn btn-gmaps" href="https://maps.google.com/?q=Comasina+M3+Metro" target="_blank">Google Maps</a>
+              <a class="btn btn-apple" href="https://maps.apple.com/?q=Comasina+M3+Metro" target="_blank">Apple Maps</a>
+            </div>
+          </div>
+
+          <div class="place-item">
+            <div class="place-name">Fermata Bus 89</div>
+            <div class="btn-group">
+              <a class="btn btn-gmaps" href="https://maps.google.com/?q=Bus+89+Novate+Milanese" target="_blank">Google Maps</a>
+              <a class="btn btn-apple" href="https://maps.apple.com/?q=Bus+89+Novate+Milanese" target="_blank">Apple Maps</a>
+            </div>
+          </div>
+
+        </div>
+      </details>
     </div>
 
   </div>
