@@ -7,95 +7,125 @@
   <style>
     :root {
       --primary: #2C3539;
-      --bg: #F9F9FB;
+      --bg: #F8F9FA;
       --card-bg: #FFFFFF;
-      --text: #333333;
-      --accent: #1B4D3E;
+      --text: #2C3539;
+      --accent-gmaps: #4285F4;
+      --accent-apple: #000000;
     }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
       color: var(--text);
       margin: 0;
-      padding: 20px;
+      padding: 16px;
     }
+
     .header {
       text-align: center;
-      padding: 20px 10px;
+      padding: 15px 10px;
       border-bottom: 2px solid var(--primary);
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
+
     .header h1 {
       font-family: Georgia, serif;
       color: var(--primary);
-      margin: 0 0 5px 0;
-      font-size: 24px;
+      margin: 0 0 4px 0;
+      font-size: 20px;
       letter-spacing: 1px;
     }
+
     .header p {
       margin: 0;
-      font-size: 14px;
+      font-size: 11px;
       color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
-    .category {
-      margin-bottom: 25px;
+
+    /* Griglia 2x2 */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
     }
-    .category-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 18px;
-      color: var(--primary);
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
-    }
-    .place-card {
+
+    .category-card {
       background: var(--card-bg);
       border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 14px 10px;
+      box-shadow: 0 2px 8px rgba(44, 53, 57, 0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid #E5E7EB;
+      border-top: 4px solid var(--primary);
     }
-    .place-title {
-      font-weight: bold;
-      font-size: 16px;
+
+    .category-header {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .category-icon {
+      font-size: 26px;
+      display: block;
       margin-bottom: 4px;
     }
-    .place-desc {
+
+    .category-title {
       font-size: 13px;
-      color: #666;
+      font-weight: bold;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+
+    .category-desc {
+      font-size: 11px;
+      color: #555;
+      text-align: center;
       margin-bottom: 12px;
     }
+
     .btn-group {
       display: flex;
-      gap: 10px;
+      flex-direction: column;
+      gap: 6px;
     }
+
     .btn {
-      flex: 1;
+      display: block;
       text-align: center;
-      padding: 8px 12px;
+      padding: 8px 4px;
       border-radius: 6px;
       text-decoration: none;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: bold;
-      transition: background 0.2s;
     }
+
     .btn-gmaps {
-      background-color: #4285F4;
+      background-color: var(--accent-gmaps);
       color: white;
     }
+
     .btn-apple {
-      background-color: #000000;
+      background-color: var(--accent-apple);
       color: white;
     }
+
     .footer {
       text-align: center;
-      font-size: 12px;
-      color: #888;
-      margin-top: 40px;
-      padding-top: 15px;
-      border-top: 1px solid #eee;
+      font-size: 11px;
+      color: #777;
+      margin-top: 25px;
+      padding-top: 12px;
+      border-top: 1px solid #E5E7EB;
     }
   </style>
 </head>
@@ -103,63 +133,64 @@
 
   <div class="header">
     <h1>ANTICA CORTE MILANESE</h1>
-    <p>Guida Locale / Local Guide</p>
+    <p>Local Guide / Guida Locale</p>
   </div>
 
-  <!-- RISTORANTI -->
-  <div class="category">
-    <div class="category-title">🍽️ Ristoranti & Pizzerie / Dining</div>
-    
-    <div class="place-card">
-      <div class="place-title">Ristorante / Pizzeria Consigliata</div>
-      <div class="place-desc">Cucina tipica lombarda e ottima pizza a pochi minuti a piedi.</div>
+  <!-- GRIGLIA 2x2 -->
+  <div class="grid-container">
+
+    <!-- 1. RISTORANTI -->
+    <div class="category-card">
+      <div class="category-header">
+        <span class="category-icon">🍽️</span>
+        <div class="category-title">Ristoranti / Dining</div>
+      </div>
+      <div class="category-desc">Cucina tipica e pizzerie.</div>
       <div class="btn-group">
-        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Milanese+Ristorante" target="_blank">Google Maps</a>
-        <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Milanese+Ristorante" target="_blank">Apple Maps</a>
+        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Ristoranti+Novate+Milanese" target="_blank">Google Maps</a>
+        <a class="btn btn-apple" href="https://maps.apple.com/?q=Ristoranti+Novate+Milanese" target="_blank">Apple Maps</a>
       </div>
     </div>
-  </div>
 
-  <!-- BAR -->
-  <div class="category">
-    <div class="category-title">☕ Bar & Colazione / Cafés</div>
-    
-    <div class="place-card">
-      <div class="place-title">Bar Colazione</div>
-      <div class="place-desc">Caffè espresso, brioche fresche e aperitivi.</div>
+    <!-- 2. BAR -->
+    <div class="category-card">
+      <div class="category-header">
+        <span class="category-icon">☕</span>
+        <div class="category-title">Bar / Cafés</div>
+      </div>
+      <div class="category-desc">Colazioni, caffè e aperitivi.</div>
       <div class="btn-group">
-        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Milanese+Bar" target="_blank">Google Maps</a>
-        <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Milanese+Bar" target="_blank">Apple Maps</a>
+        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Bar+Novate+Milanese" target="_blank">Google Maps</a>
+        <a class="btn btn-apple" href="https://maps.apple.com/?q=Bar+Novate+Milanese" target="_blank">Apple Maps</a>
       </div>
     </div>
-  </div>
 
-  <!-- SUPERMERCATI -->
-  <div class="category">
-    <div class="category-title">🛒 Supermercati / Market</div>
-    
-    <div class="place-card">
-      <div class="place-title">Supermercato Vicino</div>
-      <div class="place-desc">Per la spesa quotidiana, prodotti freschi e alimentari.</div>
+    <!-- 3. SUPERMERCATI -->
+    <div class="category-card">
+      <div class="category-header">
+        <span class="category-icon">🛒</span>
+        <div class="category-title">Supermercati / Market</div>
+      </div>
+      <div class="category-desc">Spesa e beni di necessità.</div>
       <div class="btn-group">
-        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Milanese+Supermercato" target="_blank">Google Maps</a>
-        <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Milanese+Supermercato" target="_blank">Apple Maps</a>
+        <a class="btn btn-gmaps" href="https://maps.google.com/?q=Supermercato+Novate+Milanese" target="_blank">Google Maps</a>
+        <a class="btn btn-apple" href="https://maps.apple.com/?q=Supermercato+Novate+Milanese" target="_blank">Apple Maps</a>
       </div>
     </div>
-  </div>
 
-  <!-- TRASPORTI -->
-  <div class="category">
-    <div class="category-title">🚆 Trasporti / Transit</div>
-    
-    <div class="place-card">
-      <div class="place-title">Stazione FS Novate Milanese</div>
-      <div class="place-desc">Treni S1 / S3 per Milano Cadorna, Garibaldi e Passante.</div>
+    <!-- 4. STAZIONE & METRO -->
+    <div class="category-card">
+      <div class="category-header">
+        <span class="category-icon">🚆</span>
+        <div class="category-title">Stazione & Metro</div>
+      </div>
+      <div class="category-desc">Treni FS / Passante S1-S3.</div>
       <div class="btn-group">
         <a class="btn btn-gmaps" href="https://maps.google.com/?q=Stazione+Novate+Milanese" target="_blank">Google Maps</a>
         <a class="btn btn-apple" href="https://maps.apple.com/?q=Stazione+Novate+Milanese" target="_blank">Apple Maps</a>
       </div>
     </div>
+
   </div>
 
   <div class="footer">
