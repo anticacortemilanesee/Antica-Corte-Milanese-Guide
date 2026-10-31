@@ -8,7 +8,7 @@
     :root {
       --primary: #2C3539;
       --bg: #FaF0E6;
-      --surface: rgba(249, 250, 251, 0.92); /* Schede leggermente traslucide */
+      --surface: rgba(259, 250, 251, 0.92);
       --border: #E5E7EB;
       --text-main: #1F2937;
       --text-muted: #6B7280;
@@ -34,7 +34,7 @@
       min-height: 100vh;
     }
 
-    /* Sfondo Stilizzato Trasparente */
+    /* SFONDO TRASPARENTE A TUTTO SCHERMO */
     body::before {
       content: "";
       position: fixed;
@@ -42,12 +42,12 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      /* Sostituisci 'sfondo-corte.jpg' con il nome o link della tua immagine */
-      background-image: url('sfondo-corte.jpg'); 
+      /* Assicurati che l'immagine su GitHub si chiami esattamente sfondo.jpg */
+      background-image: url('sfondo.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      opacity: 0.15; /* Regola la trasparenza (0.1 = leggero, 0.3 = più forte) */
+      opacity: 0.18; /* Trasparenza dello sfondo */
       z-index: -1;
       pointer-events: none;
     }
@@ -138,16 +138,10 @@
       flex-direction: column;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      animation: fadeIn 0.25s ease-out;
     }
 
     .fullscreen-modal.active {
-      display: flex;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      display: flex !important;
     }
 
     .modal-header {
@@ -188,7 +182,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(44, 53, 57, 0.2);
     }
 
     .modal-content {
@@ -252,7 +245,6 @@
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
 
     .btn-gmaps { background-color: var(--gmaps); color: #FFFFFF; }
@@ -317,7 +309,82 @@
     Antica Corte Milanese — Have a nice stay!
   </div>
 
-  <!-- MODAL TRASPORTI (Con la fermata Bus 89 aggiornata) -->
+  <!-- RISTORANTI -->
+  <div id="modal-ristoranti" class="fullscreen-modal">
+    <div class="modal-header">
+      <div class="modal-header-title">
+        <span style="font-size:24px;">🍽️</span>
+        <h2>Ristoranti & Pizzerie</h2>
+      </div>
+      <button class="btn-close" onclick="closeModal('modal-ristoranti')">✕</button>
+    </div>
+    <div class="modal-content">
+      <div class="place-card-full">
+        <div class="place-header">
+          <span class="place-name">Novate Kebap House</span>
+          <span class="place-badge">4 min a piedi</span>
+        </div>
+        <div class="place-desc">€ • Kebab e panini veloci da asporto.</div>
+        <div class="btn-group">
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank">📍 Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+        </div>
+      </div>
+      <div class="back-bottom-btn" onclick="closeModal('modal-ristoranti')">← Torna alle Categorie</div>
+    </div>
+  </div>
+
+  <!-- BAR -->
+  <div id="modal-bar" class="fullscreen-modal">
+    <div class="modal-header">
+      <div class="modal-header-title">
+        <span style="font-size:24px;">☕</span>
+        <h2>Bar & Caffè</h2>
+      </div>
+      <button class="btn-close" onclick="closeModal('modal-bar')">✕</button>
+    </div>
+    <div class="modal-content">
+      <div class="place-card-full">
+        <div class="place-header">
+          <span class="place-name">Mamo's cafe</span>
+          <span class="place-badge">Di fronte</span>
+        </div>
+        <div class="place-desc">Caffetteria per colazioni e pause caffè.</div>
+        <div class="btn-group">
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank">📍 Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+        </div>
+      </div>
+      <div class="back-bottom-btn" onclick="closeModal('modal-bar')">← Torna alle Categorie</div>
+    </div>
+  </div>
+
+  <!-- SUPERMERCATI -->
+  <div id="modal-supermercati" class="fullscreen-modal">
+    <div class="modal-header">
+      <div class="modal-header-title">
+        <span style="font-size:24px;">🛒</span>
+        <h2>Supermercati</h2>
+      </div>
+      <button class="btn-close" onclick="closeModal('modal-supermercati')">✕</button>
+    </div>
+    <div class="modal-content">
+      <div class="place-card-full">
+        <div class="place-header">
+          <span class="place-name">CRAI</span>
+          <span class="place-badge">1 minuto</span>
+        </div>
+        <div class="place-desc">Supermercato di quartiere.</div>
+        <div class="btn-group">
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=CRAI+Novate+Milanese" target="_blank">📍 Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=CRAI+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+        </div>
+      </div>
+      <div class="back-bottom-btn" onclick="closeModal('modal-supermercati')">← Torna alle Categorie</div>
+    </div>
+  </div>
+
+  <!-- TRASPORTI -->
   <div id="modal-trasporti" class="fullscreen-modal">
     <div class="modal-header">
       <div class="modal-header-title">
@@ -342,15 +409,21 @@
     </div>
   </div>
 
-  <!-- JavaScript -->
   <script>
     function openModal(id) {
-      document.getElementById(id).classList.add('active');
-      document.body.style.overflow = 'hidden';
+      var modal = document.getElementById(id);
+      if(modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
     }
+
     function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-      document.body.style.overflow = 'auto';
+      var modal = document.getElementById(id);
+      if(modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
     }
   </script>
 
