@@ -32,6 +32,18 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* Icone (Lucide, outline) */
+    .icon {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
     /* Header */
     .header {
       text-align: center;
@@ -87,6 +99,8 @@
     .category-icon {
       font-size: 32px;
       margin-bottom: 10px;
+      color: var(--primary);
+      display: flex;
     }
 
     .category-title {
@@ -146,6 +160,11 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      color: var(--primary);
+    }
+
+    .modal-header-title .icon {
+      font-size: 24px;
     }
 
     .modal-header-title h2 {
@@ -162,7 +181,6 @@
       width: 40px;
       height: 40px;
       font-size: 20px;
-      font-weight: bold;
       color: #FFFFFF;
       cursor: pointer;
       display: flex;
@@ -231,6 +249,10 @@
 
     .btn {
       flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
       text-align: center;
       padding: 12px 8px;
       border-radius: 10px;
@@ -240,6 +262,10 @@
       letter-spacing: 0.4px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.08);
       transition: transform 0.15s, opacity 0.2s;
+    }
+
+    .btn .icon {
+      font-size: 15px;
     }
 
     .btn:active {
@@ -261,12 +287,19 @@
       padding: 14px;
       background-color: var(--primary);
       color: #FFFFFF;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       border-radius: 12px;
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(44, 53, 57, 0.15);
+    }
+
+    .back-bottom-btn .icon {
+      font-size: 16px;
     }
 
     .footer {
@@ -282,6 +315,18 @@
 </head>
 <body>
 
+  <!-- Sprite icone Lucide (outline) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol>
+    <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></symbol>
+    <symbol id="i-train" viewBox="0 0 24 24"><path d="M8 3.1V7a4 4 0 0 0 8 0V3.1"/><path d="m9 15-1-1"/><path d="m15 15 1-1"/><path d="M9 19c-2.8 0-5-2.2-5-5v-4a8 8 0 0 1 16 0v4c0 2.8-2.2 5-5 5Z"/><path d="m8 19-2 3"/><path d="m16 19 2 3"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+  </svg>
+
   <div class="header">
     <h1>ANTICA CORTE MILANESE</h1>
     <p>Local Guide & Navigazione</p>
@@ -291,25 +336,25 @@
   <div class="grid-container">
 
     <div class="category-card" onclick="openModal('modal-ristoranti')">
-      <span class="category-icon">🍽️</span>
+      <span class="category-icon"><svg class="icon"><use href="#i-utensils"/></svg></span>
       <span class="category-title">Ristoranti</span>
       <span class="category-subtitle">Dining & Pizza</span>
     </div>
 
     <div class="category-card" onclick="openModal('modal-bar')">
-      <span class="category-icon">☕</span>
+      <span class="category-icon"><svg class="icon"><use href="#i-coffee"/></svg></span>
       <span class="category-title">Bar & Caffè</span>
       <span class="category-subtitle">Colazioni & Gelati</span>
     </div>
 
     <div class="category-card" onclick="openModal('modal-supermercati')">
-      <span class="category-icon">🛒</span>
+      <span class="category-icon"><svg class="icon"><use href="#i-cart"/></svg></span>
       <span class="category-title">Supermercati</span>
       <span class="category-subtitle">Spesa & Negozi</span>
     </div>
 
     <div class="category-card" onclick="openModal('modal-trasporti')">
-      <span class="category-icon">🚆</span>
+      <span class="category-icon"><svg class="icon"><use href="#i-train"/></svg></span>
       <span class="category-title">Trasporti</span>
       <span class="category-subtitle">Stazione & Metro</span>
     </div>
@@ -325,10 +370,10 @@
   <div id="modal-ristoranti" class="fullscreen-modal">
     <div class="modal-header">
       <div class="modal-header-title">
-        <span style="font-size:24px;">🍽️</span>
+        <svg class="icon"><use href="#i-utensils"/></svg>
         <h2>Ristoranti & Pizzerie</h2>
       </div>
-      <button class="btn-close" onclick="closeModal('modal-ristoranti')">✕</button>
+      <button class="btn-close" onclick="closeModal('modal-ristoranti')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
     <div class="modal-content">
 
@@ -339,8 +384,8 @@
         </div>
         <div class="place-desc">€ • Kebab e panini veloci da asporto.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -351,8 +396,8 @@
         </div>
         <div class="place-desc">€ • Specialità napoletane e fritti caldi.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Pizzeria+e+friggitoria+esposito+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Pizzeria+e+friggitoria+esposito+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Pizzeria+e+friggitoria+esposito+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Pizzeria+e+friggitoria+esposito+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -363,8 +408,8 @@
         </div>
         <div class="place-desc">€€ • Ristorante elegante con tagli di carne scelti.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Leone+Carne+e+Cucina+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Leone+Carne+e+Cucina+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Leone+Carne+e+Cucina+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Leone+Carne+e+Cucina+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -375,8 +420,8 @@
         </div>
         <div class="place-desc">€ • Pizza al trancio e d'asporto.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Pizzeria+dell'Oca+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Pizzeria+dell'Oca+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Pizzeria+dell'Oca+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Pizzeria+dell'Oca+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -387,8 +432,8 @@
         </div>
         <div class="place-desc">€€ • Piatti tipici e ambiente accogliente.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Locanda+Conte+Ghiotto+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Locanda+Conte+Ghiotto+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Locanda+Conte+Ghiotto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Locanda+Conte+Ghiotto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -399,8 +444,8 @@
         </div>
         <div class="place-desc">€€ • Cucina alla griglia e piatti della tradizione.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Risto-Grill+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Risto-Grill+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Risto-Grill+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Risto-Grill+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -411,12 +456,12 @@
         </div>
         <div class="place-desc">€€€ • Specialità carne alla brace e piatti sfiziosi.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=A+TUTTA+CICCIA+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=A+TUTTA+CICCIA+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=A+TUTTA+CICCIA+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=A+TUTTA+CICCIA+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
-      <div class="back-bottom-btn" onclick="closeModal('modal-ristoranti')">← Torna alle Categorie</div>
+      <div class="back-bottom-btn" onclick="closeModal('modal-ristoranti')"><svg class="icon"><use href="#i-arrow-left"/></svg>Torna alle Categorie</div>
     </div>
   </div>
 
@@ -425,10 +470,10 @@
   <div id="modal-bar" class="fullscreen-modal">
     <div class="modal-header">
       <div class="modal-header-title">
-        <span style="font-size:24px;">☕</span>
+        <svg class="icon"><use href="#i-coffee"/></svg>
         <h2>Bar, Caffè & Gelaterie</h2>
       </div>
-      <button class="btn-close" onclick="closeModal('modal-bar')">✕</button>
+      <button class="btn-close" onclick="closeModal('modal-bar')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
     <div class="modal-content">
 
@@ -439,8 +484,8 @@
         </div>
         <div class="place-desc">Caffetteria per colazioni e pause caffè proprio fuori dalla porta.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -451,8 +496,8 @@
         </div>
         <div class="place-desc">Caffetteria vicinissima, bar e drink serali.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=La+Campana+di+Vetro+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=La+Campana+di+Vetro+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=La+Campana+di+Vetro+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=La+Campana+di+Vetro+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -463,8 +508,8 @@
         </div>
         <div class="place-desc">Gelateria artigianale con gusti e prodotti naturali.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Purogelato+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Purogelato+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Purogelato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Purogelato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -475,12 +520,12 @@
         </div>
         <div class="place-desc">Bar, aperitivi e gelateria artigianale.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Sir+Oliver+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Sir+Oliver+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Sir+Oliver+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Sir+Oliver+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
-      <div class="back-bottom-btn" onclick="closeModal('modal-bar')">← Torna alle Categorie</div>
+      <div class="back-bottom-btn" onclick="closeModal('modal-bar')"><svg class="icon"><use href="#i-arrow-left"/></svg>Torna alle Categorie</div>
     </div>
   </div>
 
@@ -489,10 +534,10 @@
   <div id="modal-supermercati" class="fullscreen-modal">
     <div class="modal-header">
       <div class="modal-header-title">
-        <span style="font-size:24px;">🛒</span>
+        <svg class="icon"><use href="#i-cart"/></svg>
         <h2>Supermercati & Spesa</h2>
       </div>
-      <button class="btn-close" onclick="closeModal('modal-supermercati')">✕</button>
+      <button class="btn-close" onclick="closeModal('modal-supermercati')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
     <div class="modal-content">
 
@@ -503,8 +548,8 @@
         </div>
         <div class="place-desc">Supermercato di quartiere ideale per la spesa rapida.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=CRAI+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=CRAI+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=CRAI+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=CRAI+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -515,8 +560,8 @@
         </div>
         <div class="place-desc">Discount alimentare con ottima selezione di prodotti convenienti.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=iN's+Mercato+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=iN's+Mercato+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=iN's+Mercato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=iN's+Mercato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -527,12 +572,12 @@
         </div>
         <div class="place-desc">Superstore grande per una spesa completa.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Famila+Superstore+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Famila+Superstore+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Famila+Superstore+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Famila+Superstore+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
-      <div class="back-bottom-btn" onclick="closeModal('modal-supermercati')">← Torna alle Categorie</div>
+      <div class="back-bottom-btn" onclick="closeModal('modal-supermercati')"><svg class="icon"><use href="#i-arrow-left"/></svg>Torna alle Categorie</div>
     </div>
   </div>
 
@@ -541,10 +586,10 @@
   <div id="modal-trasporti" class="fullscreen-modal">
     <div class="modal-header">
       <div class="modal-header-title">
-        <span style="font-size:24px;">🚆</span>
+        <svg class="icon"><use href="#i-train"/></svg>
         <h2>Trasporti & Mobilità</h2>
       </div>
-      <button class="btn-close" onclick="closeModal('modal-trasporti')">✕</button>
+      <button class="btn-close" onclick="closeModal('modal-trasporti')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
     <div class="modal-content">
 
@@ -555,8 +600,8 @@
         </div>
         <div class="place-desc">Via Vitt. Veneto (Novate Fn), 20026 Novate Milanese MI</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Via+Vittorio+Veneto+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Via+Vittorio+Veneto+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Via+Vittorio+Veneto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Via+Vittorio+Veneto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -567,8 +612,8 @@
         </div>
         <div class="place-desc">Treni FS Passante (S1 / S3) diretti nel centro di Milano.</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Stazione+di+Novate+Milanese" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Stazione+di+Novate+Milanese" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Stazione+di+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Stazione+di+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
@@ -579,12 +624,12 @@
         </div>
         <div class="place-desc">Capolinea Metropolitana Linea Gialla M3 (Duomo / Stazione Centrale).</div>
         <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Metro+Comasina+M3" target="_blank">📍 Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Metro+Comasina+M3" target="_blank">🗺️ Apple Maps</a>
+          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Metro+Comasina+M3" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=Metro+Comasina+M3" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
-      <div class="back-bottom-btn" onclick="closeModal('modal-trasporti')">← Torna alle Categorie</div>
+      <div class="back-bottom-btn" onclick="closeModal('modal-trasporti')"><svg class="icon"><use href="#i-arrow-left"/></svg>Torna alle Categorie</div>
     </div>
   </div>
 
