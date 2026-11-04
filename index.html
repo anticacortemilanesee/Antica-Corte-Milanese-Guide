@@ -30,6 +30,25 @@
       max-width: 600px;
       margin: 0 auto;
       -webkit-font-smoothing: antialiased;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* SFONDO TRASPARENTE A TUTTO SCHERMO */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('sfondo.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.18;
+      z-index: -1;
+      pointer-events: none;
     }
 
     /* Icone (Lucide, outline) */
@@ -88,6 +107,7 @@
       transition: all 0.25s ease;
       box-shadow: 0 1px 3px rgba(0,0,0,0.02);
       user-select: none;
+      backdrop-filter: blur(4px);
     }
 
     .category-card:hover {
@@ -428,7 +448,8 @@
     </div>
     <div class="modal-content">
 
-      <div class="place-card-full" data-open-from="11:30" data-open-to="23:00">
+      <!-- Novate Kebap House: Tutti i giorni 11:00 - 02:00 -->
+      <div class="place-card-full" data-schedule='{"1":[[1100,2600]],"2":[[1100,2600]],"3":[[1100,2600]],"4":[[1100,2600]],"5":[[1100,2600]],"6":[[1100,2600]],"0":[[1100,2600]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">Novate Kebap House</span>
@@ -443,7 +464,8 @@
         </div>
       </div>
 
-      <div class="place-card-full" data-open-from="12:00" data-open-to="23:30">
+      <!-- Pizzeria e friggitoria esposito: Chiuso Lunedì. Mar-Dom 11:30-15:00 e 18:30-23:30 -->
+      <div class="place-card-full" data-schedule='{"1":[],"2":[[1130,1500],[1830,2330]],"3":[[1130,1500],[1830,2330]],"4":[[1130,1500],[1830,2330]],"5":[[1130,1500],[1830,2330]],"6":[[1130,1500],[1830,2330]],"0":[[1130,1500],[1830,2330]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">Pizzeria e friggitoria esposito...</span>
@@ -458,7 +480,8 @@
         </div>
       </div>
 
-      <div class="place-card-full" data-open-from="19:00" data-open-to="23:30">
+      <!-- Leone Carne e Cucina: Mar-Sab 12:00-15:00 e 19:30-23:30, Dom 12:00-15:00, Lun chiuso -->
+      <div class="place-card-full" data-schedule='{"1":[],"2":[[1200,1500],[1930,2330]],"3":[[1200,1500],[1930,2330]],"4":[[1200,1500],[1930,2330]],"5":[[1200,1500],[1930,2330]],"6":[[1200,1500],[1930,2330]],"0":[[1200,1500]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">Leone Carne e Cucina</span>
@@ -473,7 +496,8 @@
         </div>
       </div>
 
-      <div class="place-card-full" data-open-from="18:00" data-open-to="22:30">
+      <!-- Pizzeria dell'Oca: Mar-Dom 18:00-22:30 (Lun chiuso) -->
+      <div class="place-card-full" data-schedule='{"1":[],"2":[[1800,2230]],"3":[[1800,2230]],"4":[[1800,2230]],"5":[[1800,2230]],"6":[[1800,2230]],"0":[[1800,2230]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">Pizzeria dell'Oca</span>
@@ -488,7 +512,8 @@
         </div>
       </div>
 
-      <div class="place-card-full" data-open-from="12:00" data-open-to="23:00">
+      <!-- Locanda Conte Ghiotto: Mar-Sab 12:00-14:30 e 19:15-23:00, Dom 12:00-14:45 e 19:15-23:00, Lun chiuso -->
+      <div class="place-card-full" data-schedule='{"1":[],"2":[[1200,1430],[1915,2300]],"3":[[1200,1430],[1915,2300]],"4":[[1200,1430],[1915,2300]],"5":[[1200,1430],[1915,2300]],"6":[[1200,1430],[1915,2300]],"0":[[1200,1445],[1915,2300]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">Locanda Conte Ghiotto</span>
@@ -503,7 +528,8 @@
         </div>
       </div>
 
-      <div class="place-card-full" data-open-from="12:00" data-open-to="23:00">
+      <!-- Risto-Grill: Mar-Dom 12:00-15:00 e 19:00-23:30 (Lun chiuso) -->
+      <div class="place-card-full" data-schedule='{"1":[],"2":[[1200,1500],[1900,2330]],"3":[[1200,1500],[1900,2330]],"4":[[1200,1500],[1900,2330]],"5":[[1200,1500],[1900,2330]],"6":[[1200,1500],[1900,2330]],"0":[[1200,1500],[1900,2330]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">Risto-Grill</span>
@@ -518,7 +544,8 @@
         </div>
       </div>
 
-      <div class="place-card-full" data-open-from="19:00" data-open-to="23:30">
+      <!-- A TUTTA CICCIA: Mar-Sab 19:00-23:30, Dom 12:00-15:00 e 19:00-23:30, Lun chiuso -->
+      <div class="place-card-full" data-schedule='{"1":[],"2":[[1900,2330]],"3":[[1900,2330]],"4":[[1900,2330]],"5":[[1900,2330]],"6":[[1900,2330]],"0":[[1200,1500],[1900,2330]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">A TUTTA CICCIA</span>
@@ -549,7 +576,8 @@
     </div>
     <div class="modal-content">
 
-      <div class="place-card-full" data-open-from="06:00" data-open-to="20:00">
+      <!-- Mamo's cafe: Lun-Sab 06:00-20:00, Dom chiuso -->
+      <div class="place-card-full" data-schedule='{"1":[[600,2000]],"2":[[600,2000]],"3":[[600,2000]],"4":[[600,2000]],"5":[[600,2000]],"6":[[600,2000]],"0":[]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">Mamo's cafe</span>
@@ -564,7 +592,8 @@
         </div>
       </div>
 
-      <div class="place-card-full" data-open-from="06:30" data-open-to="21:00">
+      <!-- La Campana di Vetro: Lun-Sab 06:30-20:00, Dom 07:00-13:00 -->
+      <div class="place-card-full" data-schedule='{"1":[[630,2000]],"2":[[630,2000]],"3":[[630,2000]],"4":[[630,2000]],"5":[[630,2000]],"6":[[630,2000]],"0":[[700,1300]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">La Campana di Vetro</span>
@@ -579,7 +608,8 @@
         </div>
       </div>
 
-      <div class="place-card-full" data-open-from="12:00" data-open-to="22:00">
+      <!-- Purogelato: Lun-Dom 12:00-21:30 -->
+      <div class="place-card-full" data-schedule='{"1":[[1200,2130]],"2":[[1200,2130]],"3":[[1200,2130]],"4":[[1200,2130]],"5":[[1200,2130]],"6":[[1200,2130]],"0":[[1200,2130]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">Purogelato</span>
@@ -594,7 +624,8 @@
         </div>
       </div>
 
-      <div class="place-card-full" data-open-from="06:30" data-open-to="20:30">
+      <!-- Sir Oliver: Mar-Dom 07:00-20:00 (Lun chiuso) -->
+      <div class="place-card-full" data-schedule='{"1":[],"2":[[700,2000]],"3":[[700,2000]],"4":[[700,2000]],"5":[[700,2000]],"6":[[700,2000]],"0":[[700,2000]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">Sir Oliver</span>
@@ -625,7 +656,8 @@
     </div>
     <div class="modal-content">
 
-      <div class="place-card-full" data-open-from="08:00" data-open-to="20:00">
+      <!-- CRAI: Lun-Sab 08:00-20:00, Dom 08:30-13:00 -->
+      <div class="place-card-full" data-schedule='{"1":[[800,2000]],"2":[[800,2000]],"3":[[800,2000]],"4":[[800,2000]],"5":[[800,2000]],"6":[[800,2000]],"0":[[830,1300]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">CRAI</span>
@@ -640,7 +672,8 @@
         </div>
       </div>
 
-      <div class="place-card-full" data-open-from="08:30" data-open-to="19:30">
+      <!-- iN's Mercato: Lun-Sab 08:30-19:30, Dom 08:30-13:00 -->
+      <div class="place-card-full" data-schedule='{"1":[[830,1930]],"2":[[830,1930]],"3":[[830,1930]],"4":[[830,1930]],"5":[[830,1930]],"6":[[830,1930]],"0":[[830,1300]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">iN's Mercato</span>
@@ -655,7 +688,8 @@
         </div>
       </div>
 
-      <div class="place-card-full" data-open-from="08:00" data-open-to="20:00">
+      <!-- Famila Superstore: Lun-Sab 08:00-20:00, Dom 08:30-19:30 -->
+      <div class="place-card-full" data-schedule='{"1":[[800,2000]],"2":[[800,2000]],"3":[[800,2000]],"4":[[800,2000]],"5":[[800,2000]],"6":[[800,2000]],"0":[[830,1930]]}'>
         <div class="place-header">
           <div class="place-name-wrapper">
             <span class="place-name">Famila Superstore Novate M...</span>
@@ -783,7 +817,7 @@
   </div>
 
 
-  <!-- JavaScript Gestione Modal & Stato Apertura -->
+  <!-- JavaScript Gestione Modal & Stato Apertura Dinamico -->
   <script>
     function openModal(id) {
       document.getElementById(id).classList.add('active');
@@ -795,44 +829,44 @@
       document.body.style.overflow = 'auto';
     }
 
-    // Calcolo automatico Aperto/Chiuso basato sull'orario locale
+    // Controllo automatico basato sul giorno della settimana e sull'orario esatto
     document.addEventListener("DOMContentLoaded", function() {
       const now = new Date();
+      const currentDay = now.getDay(); // 0 = Domenica, 1 = Lunedì, ..., 6 = Sabato
       const currentHours = now.getHours();
       const currentMinutes = now.getMinutes();
       const currentTimeVal = currentHours * 60 + currentMinutes;
 
-      document.querySelectorAll('.place-card-full[data-open-from]').forEach(card => {
-        const fromStr = card.getAttribute('data-open-from');
-        const toStr = card.getAttribute('data-open-to');
-        
-        const [fromH, fromM] = fromStr.split(':').map(Number);
-        const [toH, toM] = toStr.split(':').map(Number);
-        
-        const fromVal = fromH * 60 + fromM;
-        const toVal = toH * 60 + toM;
-
-        const badge = card.querySelector('.status-badge');
-        const textSpan = card.querySelector('.status-text');
-
-        if (badge && textSpan) {
+      document.querySelectorAll('.place-card-full[data-schedule]').forEach(card => {
+        try {
+          const schedule = JSON.parse(card.getAttribute('data-schedule'));
+          const todayIntervals = schedule[currentDay] || [];
+          
           let isOpen = false;
-          if (toVal > fromVal) {
-            isOpen = (currentTimeVal >= fromVal && currentTimeVal <= toVal);
-          } else {
-            // Orario che scavalca la mezzanotte
-            isOpen = (currentTimeVal >= fromVal || currentTimeVal <= toVal);
+          for (let interval of todayIntervals) {
+            const [fromVal, toVal] = interval;
+            if (currentTimeVal >= fromVal && currentTimeVal <= toVal) {
+              isOpen = true;
+              break;
+            }
           }
 
-          if (isOpen) {
-            badge.classList.add('open');
-            badge.classList.remove('closed');
-            textSpan.textContent = "Aperto";
-          } else {
-            badge.classList.add('closed');
-            badge.classList.remove('open');
-            textSpan.textContent = "Chiuso";
+          const badge = card.querySelector('.status-badge');
+          const textSpan = card.querySelector('.status-text');
+
+          if (badge && textSpan) {
+            if (isOpen) {
+              badge.classList.add('open');
+              badge.classList.remove('closed');
+              textSpan.textContent = "Aperto";
+            } else {
+              badge.classList.add('closed');
+              badge.classList.remove('open');
+              textSpan.textContent = "Chiuso";
+            }
           }
+        } catch (e) {
+          console.error("Errore lettura orari", e);
         }
       });
     });
