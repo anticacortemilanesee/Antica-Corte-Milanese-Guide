@@ -218,10 +218,55 @@
       margin-bottom: 4px;
     }
 
+    .place-name-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
     .place-name {
       font-size: 14px;
       font-weight: 700;
       color: var(--primary);
+    }
+
+    /* Riquadro Stato Apertura */
+    .status-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      letter-spacing: 0.3px;
+    }
+
+    .status-badge.open {
+      background-color: #DEF7EC;
+      color: #03543F;
+      border: 1px solid #85E0A3;
+    }
+
+    .status-badge.closed {
+      background-color: #FDE8E8;
+      color: #9B1C1C;
+      border: 1px solid #F8B4B4;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .status-badge.open .status-dot {
+      background-color: #0E9F6E;
+    }
+
+    .status-badge.closed .status-dot {
+      background-color: #E02424;
     }
 
     .place-badge {
@@ -383,9 +428,12 @@
     </div>
     <div class="modal-content">
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="11:30" data-open-to="23:00">
         <div class="place-header">
-          <span class="place-name">Novate Kebap House</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Novate Kebap House</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">4 min a piedi</span>
         </div>
         <div class="place-desc">€ • Kebab e panini veloci da asporto.</div>
@@ -395,9 +443,12 @@
         </div>
       </div>
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="12:00" data-open-to="23:30">
         <div class="place-header">
-          <span class="place-name">Pizzeria e friggitoria esposito...</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Pizzeria e friggitoria esposito...</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">5 min a piedi</span>
         </div>
         <div class="place-desc">€ • Specialità napoletane e fritti caldi.</div>
@@ -407,9 +458,12 @@
         </div>
       </div>
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="19:00" data-open-to="23:30">
         <div class="place-header">
-          <span class="place-name">Leone Carne e Cucina</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Leone Carne e Cucina</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">7 min a piedi</span>
         </div>
         <div class="place-desc">€€ • Ristorante elegante con tagli di carne scelti.</div>
@@ -419,9 +473,12 @@
         </div>
       </div>
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="18:00" data-open-to="22:30">
         <div class="place-header">
-          <span class="place-name">Pizzeria dell'Oca</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Pizzeria dell'Oca</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">8 min a piedi</span>
         </div>
         <div class="place-desc">€€ • Pizza al trancio e d'asporto.</div>
@@ -431,9 +488,12 @@
         </div>
       </div>
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="12:00" data-open-to="23:00">
         <div class="place-header">
-          <span class="place-name">Locanda Conte Ghiotto</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Locanda Conte Ghiotto</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">10 min a piedi</span>
         </div>
         <div class="place-desc">€€ • Piatti tipici e ambiente accogliente.</div>
@@ -443,9 +503,12 @@
         </div>
       </div>
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="12:00" data-open-to="23:00">
         <div class="place-header">
-          <span class="place-name">Risto-Grill</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Risto-Grill</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">5 min in macchina</span>
         </div>
         <div class="place-desc">€€ • Cucina alla griglia e piatti della tradizione.</div>
@@ -455,9 +518,12 @@
         </div>
       </div>
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="19:00" data-open-to="23:30">
         <div class="place-header">
-          <span class="place-name">A TUTTA CICCIA</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">A TUTTA CICCIA</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">18 min a piedi / 5 min auto</span>
         </div>
         <div class="place-desc">€€€ • Specialità carne alla brace e piatti sfiziosi.</div>
@@ -483,9 +549,12 @@
     </div>
     <div class="modal-content">
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="06:00" data-open-to="20:00">
         <div class="place-header">
-          <span class="place-name">Mamo's cafe</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Mamo's cafe</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">Di fronte all'edificio</span>
         </div>
         <div class="place-desc">Caffetteria per colazioni e pause caffè proprio fuori dalla porta.</div>
@@ -495,9 +564,12 @@
         </div>
       </div>
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="06:30" data-open-to="21:00">
         <div class="place-header">
-          <span class="place-name">La Campana di Vetro</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">La Campana di Vetro</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">1 minuto</span>
         </div>
         <div class="place-desc">Caffetteria vicinissima, bar e drink serali.</div>
@@ -507,9 +579,12 @@
         </div>
       </div>
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="12:00" data-open-to="22:00">
         <div class="place-header">
-          <span class="place-name">Purogelato</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Purogelato</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">3 minuti</span>
         </div>
         <div class="place-desc">Bar, aperitivi e gelateria artigianale.</div>
@@ -519,9 +594,12 @@
         </div>
       </div>
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="06:30" data-open-to="20:30">
         <div class="place-header">
-          <span class="place-name">Sir Oliver</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Sir Oliver</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">4 minuti</span>
         </div>
         <div class="place-desc">Gelateria artigianale con gusti e prodotti naturali.</div>
@@ -547,9 +625,12 @@
     </div>
     <div class="modal-content">
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="08:00" data-open-to="20:00">
         <div class="place-header">
-          <span class="place-name">CRAI</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">CRAI</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">1 minuto</span>
         </div>
         <div class="place-desc">Piccolo supermercato di quartiere ideale per la spesa rapida.</div>
@@ -559,21 +640,27 @@
         </div>
       </div>
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="08:30" data-open-to="19:30">
         <div class="place-header">
-          <span class="place-name">iN's Mercato</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">iN's Mercato</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">15 min a piedi / 4 min in macchina</span>
         </div>
         <div class="place-desc">Discount alimentare con ottima selezione di prodotti convenienti.</div>
         <div class="btn-group">
           <a class="btn btn-gmaps" href="https://maps.google.com/?q=iN's+Mercato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=iN's+Mercato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          <a class="btn btn-apple" href="https://maps.apple.com/?q=iN's+Mercato+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
         </div>
       </div>
 
-      <div class="place-card-full">
+      <div class="place-card-full" data-open-from="08:00" data-open-to="20:00">
         <div class="place-header">
-          <span class="place-name">Famila Superstore Novate M...</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Famila Superstore Novate M...</span>
+            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          </div>
           <span class="place-badge">10 min a piedi / 5 min in macchina</span>
         </div>
         <div class="place-desc">Superstore grande per una spesa completa.</div>
@@ -696,7 +783,7 @@
   </div>
 
 
-  <!-- JavaScript Gestione Modal -->
+  <!-- JavaScript Gestione Modal & Stato Apertura -->
   <script>
     function openModal(id) {
       document.getElementById(id).classList.add('active');
@@ -707,6 +794,48 @@
       document.getElementById(id).classList.remove('active');
       document.body.style.overflow = 'auto';
     }
+
+    // Calcolo automatico Aperto/Chiuso basato sull'orario locale
+    document.addEventListener("DOMContentLoaded", function() {
+      const now = new Date();
+      const currentHours = now.getHours();
+      const currentMinutes = now.getMinutes();
+      const currentTimeVal = currentHours * 60 + currentMinutes;
+
+      document.querySelectorAll('.place-card-full[data-open-from]').forEach(card => {
+        const fromStr = card.getAttribute('data-open-from');
+        const toStr = card.getAttribute('data-open-to');
+        
+        const [fromH, fromM] = fromStr.split(':').map(Number);
+        const [toH, toM] = toStr.split(':').map(Number);
+        
+        const fromVal = fromH * 60 + fromM;
+        const toVal = toH * 60 + toM;
+
+        const badge = card.querySelector('.status-badge');
+        const textSpan = card.querySelector('.status-text');
+
+        if (badge && textSpan) {
+          let isOpen = false;
+          if (toVal > fromVal) {
+            isOpen = (currentTimeVal >= fromVal && currentTimeVal <= toVal);
+          } else {
+            // Orario che scavalca la mezzanotte
+            isOpen = (currentTimeVal >= fromVal || currentTimeVal <= toVal);
+          }
+
+          if (isOpen) {
+            badge.classList.add('open');
+            badge.classList.remove('closed');
+            textSpan.textContent = "Aperto";
+          } else {
+            badge.classList.add('closed');
+            badge.classList.remove('open');
+            textSpan.textContent = "Chiuso";
+          }
+        }
+      });
+    });
   </script>
 
 </body>
