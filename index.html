@@ -231,7 +231,7 @@
       padding: 18px 16px;
     }
 
-    /* Stile differentziato per la card della Mappa Trasporti */
+    /* Stile differenziato per la card della Mappa Trasporti */
     .map-card-special {
       background: linear-gradient(135deg, #2C3539 0%, #3E4A50 100%);
       border: 1px solid #4E5D65;
@@ -360,6 +360,7 @@
       letter-spacing: 0.4px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.08);
       transition: transform 0.15s, opacity 0.2s;
+      cursor: pointer;
     }
 
     .btn .icon {
@@ -403,6 +404,63 @@
 
     .back-bottom-btn .icon {
       font-size: 16px;
+    }
+
+    /* MODALE LIGHTBOX PER IMMAGINE IN SOVRIMPRESSIONE */
+    .image-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.88);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .image-modal-overlay.active {
+      display: flex;
+    }
+
+    .image-modal-container {
+      position: relative;
+      max-width: 100%;
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-modal-container img {
+      max-width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    .btn-close-image {
+      position: absolute;
+      top: -50px;
+      right: 0;
+      background: #FFFFFF;
+      color: var(--primary);
+      border: none;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     .footer {
@@ -760,7 +818,7 @@
         </div>
         <div class="place-desc">Schema con linee e collegamenti di treni e metropolitana.</div>
         <div class="btn-group" style="margin-top: 12px;">
-          <a class="btn btn-map" href="mappa-trasporti.jpg" target="_blank" rel="noopener"><svg class="icon"><use href="#i-image"/></svg>Apri la mappa</a>
+          <button class="btn btn-map" onclick="openImageModal('mappa-trasporti.jpg')"><svg class="icon"><use href="#i-image"/></svg>Apri la mappa</button>
         </div>
       </div>
 
@@ -819,7 +877,7 @@
         </div>
         <div class="place-desc">• Treno S1/S3 fino a Repubblica,
 • poi Metro M3 una fermata fino a Centrale FS (oppure 10 minuti a piedi).
-In alternativa: bus 89 fino a Comasina e M3 diretta.</div>
+In alternativa: bus 89 fino a Comasina e M3 directa.</div>
       </div>
 
       <div class="place-card-full">
@@ -926,7 +984,16 @@ Biglietto dedicato, da acquistare prima di salire.</div>
   </div>
 
 
-  <!-- JavaScript Gestione Modal & Stato Apertura Dinamico -->
+  <!-- MODALE LIGHTBOX PER LA FOTO IN SOVRIMPRESSIONE -->
+  <div id="image-modal" class="image-modal-overlay" onclick="closeImageModal()">
+    <div class="image-modal-container" onclick="event.stopPropagation()">
+      <button class="btn-close-image" onclick="closeImageModal()" aria-label="Chiudi Immagine"><svg class="icon"><use href="#i-x"/></svg></button>
+      <img id="image-modal-img" src="" alt="Mappa Trasporti">
+    </div>
+  </div>
+
+
+  <!-- JavaScript Gestione Modal & Lightbox Immagini -->
   <script>
     function openModal(id) {
       document.getElementById(id).classList.add('active');
@@ -936,6 +1003,16 @@ Biglietto dedicato, da acquistare prima di salire.</div>
     function closeModal(id) {
       document.getElementById(id).classList.remove('active');
       document.body.style.overflow = 'auto';
+    }
+
+    function openImageModal(imageSrc) {
+      const imgElem = document.getElementById('image-modal-img');
+      imgElem.src = imageSrc;
+      document.getElementById('image-modal').classList.add('active');
+    }
+
+    function closeImageModal() {
+      document.getElementById('image-modal').classList.remove('active');
     }
 
     document.addEventListener("DOMContentLoaded", function() {
