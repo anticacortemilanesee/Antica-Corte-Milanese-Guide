@@ -231,6 +231,25 @@
       padding: 18px 16px;
     }
 
+    /* Stile differentziato per la card della Mappa Trasporti */
+    .map-card-special {
+      background: linear-gradient(135deg, #2C3539 0%, #3E4A50 100%);
+      border: 1px solid #4E5D65;
+      border-radius: 14px;
+      padding: 20px 16px;
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(44, 53, 57, 0.15);
+    }
+
+    .map-card-special .place-name {
+      color: #FFFFFF;
+      font-size: 15px;
+    }
+
+    .map-card-special .place-desc {
+      color: #D1D5DB;
+    }
+
     .place-header {
       display: flex;
       justify-content: space-between;
@@ -362,8 +381,8 @@
     }
 
     .btn-map {
-      background-color: var(--primary);
-      color: #FFFFFF;
+      background-color: #FFFFFF;
+      color: var(--primary);
     }
 
     .back-bottom-btn {
@@ -734,20 +753,25 @@
     </div>
     <div class="modal-content">
 
-      <!-- Mobilità Locale / Collegamenti -->
-      <div class="place-card-full">
+      <!-- Mappa dei trasporti differenziata -->
+      <div class="map-card-special">
         <div class="place-header">
           <span class="place-name">Mappa dei trasporti</span>
         </div>
         <div class="place-desc">Schema con linee e collegamenti di treni e metropolitana.</div>
-        <div class="btn-group">
+        <div class="btn-group" style="margin-top: 12px;">
           <a class="btn btn-map" href="mappa-trasporti.jpg" target="_blank" rel="noopener"><svg class="icon"><use href="#i-image"/></svg>Apri la mappa</a>
         </div>
       </div>
 
+      <!-- Categoria Fermate e Stazioni -->
+      <div class="transport-section-title">Fermate e Stazioni</div>
+
       <div class="place-card-full">
         <div class="place-header">
-          <span class="place-name">Fermata Bus n.89</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Fermata Bus n.89</span>
+          </div>
           <span class="place-badge">2 minuti</span>
         </div>
         <div class="place-desc">Autobus per raggiungere la linea metropolitana gialla M3</div>
@@ -759,7 +783,9 @@
 
       <div class="place-card-full">
         <div class="place-header">
-          <span class="place-name">Stazione di Novate Milanese</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Stazione di Novate Milanese</span>
+          </div>
           <span class="place-badge">6 minuti</span>
         </div>
         <div class="place-desc">Treni FN Passante (S1 / S3) diretti a Milano.</div>
@@ -771,7 +797,9 @@
 
       <div class="place-card-full">
         <div class="place-header">
-          <span class="place-name">Metro Comasina M3</span>
+          <div class="place-name-wrapper">
+            <span class="place-name">Metro Comasina M3</span>
+          </div>
           <span class="place-badge">8 min in auto / 15 min in bus</span>
         </div>
         <div class="place-desc">Capolinea Metropolitana Linea Gialla M3 (Duomo / Stazione Centrale).</div>
