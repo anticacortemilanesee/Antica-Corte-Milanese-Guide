@@ -488,67 +488,94 @@
     .section-divider {
       border: none;
       border-top: 1px solid var(--border);
-      margin: 24px 0 0 0;
+      margin: 20px 0 0 0;
     }
 
-    /* BANNER TAXI COMPATTO (SOPRA LINEA DIVISORIA) */
+    /* BANNER TAXI DISTINTO & COMPATTO */
     .taxi-cta-section {
-      text-align: center;
-      padding: 16px 14px;
-      margin-top: 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 11px 14px;
+      margin-top: 14px;
+      background: linear-gradient(90deg, #FEF9C3 0%, #FEF08A 100%);
+      border: 1.5px dashed #CA8A04;
+      border-left: 5px solid #EAB308;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(202, 138, 4, 0.12);
+    }
+
+    .taxi-cta-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
     }
 
     .taxi-cta-icon {
-      font-size: 24px;
-      color: var(--primary);
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background-color: #111827;
+      color: #FACC15;
+      font-size: 15px;
       display: inline-flex;
-      margin-bottom: 4px;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .taxi-cta-text {
+      text-align: left;
+      min-width: 0;
     }
 
     .taxi-cta-title {
-      margin: 0 0 4px 0;
-      font-size: 15px;
-      color: var(--primary);
-      font-weight: 700;
-      letter-spacing: -0.01em;
+      margin: 0;
+      font-size: 13px;
+      color: #111827;
+      font-weight: 800;
+      line-height: 1.2;
     }
 
     .taxi-cta-subtitle {
-      margin: 0 0 12px 0;
-      font-size: 11px;
-      color: var(--text-muted);
+      margin: 2px 0 0 0;
+      font-size: 10px;
+      color: #713F12;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .taxi-call-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: 50px;
+      gap: 6px;
+      padding: 8px 13px;
+      border-radius: 999px;
       text-decoration: none;
       font-weight: 800;
-      font-size: 12px;
+      font-size: 11px;
       background-color: #FACC15;
       color: #111827;
-      border: 1px solid #EAB308;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 6px rgba(234, 179, 8, 0.25);
+      border: 1.5px solid #111827;
+      transition: all 0.18s ease;
+      box-shadow: 0 2px 0 #111827;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .taxi-call-btn:hover {
       background-color: #EAB308;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(234, 179, 8, 0.35);
     }
 
     .taxi-call-btn:active {
-      transform: scale(0.97);
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 #111827;
     }
 
     /* SEZIONE RECENSIONI (IN FINE PAGINA) */
@@ -651,12 +678,19 @@
       letter-spacing: 0.5px;
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 420px) {
+      .taxi-cta-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .taxi-call-btn {
+        width: 100%;
+      }
       .review-cta-buttons {
         flex-direction: column;
       }
-      .review-btn,
-      .taxi-call-btn {
+      .review-btn {
         width: 100%;
       }
     }
@@ -826,7 +860,7 @@
           </div>
           <span class="place-badge">5 min in macchina</span>
         </div>
-        <div class="place-desc">€ • Cucina alla griglia e piatti della tradizione.</div>
+        <div class="place-desc">€€ • Cucina alla griglia e piatti della tradizione.</div>
         <div class="btn-group">
           <a class="btn btn-gmaps" href="https://maps.google.com/?q=Risto-Grill+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
           <a class="btn btn-apple" href="https://maps.apple.com/?q=Risto-Grill+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
@@ -1340,14 +1374,18 @@ Oppure:
   </div>
 
 
-  <!-- BANNER TAXI COMPATTO SOPRA LA LINEA DIVISORIA -->
+  <!-- BANNER TAXI DISTINTO & COMPATTO SOPRA LA LINEA DIVISORIA -->
   <section class="taxi-cta-section">
-    <span class="taxi-cta-icon"><svg class="icon"><use href="#i-taxi"/></svg></span>
-    <h2 class="taxi-cta-title">Ti serve un taxi?</h2>
-    <p class="taxi-cta-subtitle">Chiamata diretta per il servizio taxi a Milano</p>
+    <div class="taxi-cta-info">
+      <span class="taxi-cta-icon"><svg class="icon"><use href="#i-taxi"/></svg></span>
+      <div class="taxi-cta-text">
+        <h2 class="taxi-cta-title">Ti serve un taxi?</h2>
+        <p class="taxi-cta-subtitle">Chiamata diretta Milano</p>
+      </div>
+    </div>
     <a href="tel:+39026969" class="taxi-call-btn">
       <svg class="icon"><use href="#i-phone"/></svg>
-      TAXI | MILANO +39 02 6969
+      02 6969
     </a>
   </section>
 
