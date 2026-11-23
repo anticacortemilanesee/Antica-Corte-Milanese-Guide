@@ -163,6 +163,10 @@
       z-index: 1100;
     }
 
+    .sub-modal-level-2 {
+      z-index: 1200;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -989,6 +993,37 @@
         </div>
       </div>
 
+      <!-- 4 Categorie Destinazioni -->
+      <div class="transport-section-title">Come Raggiungere</div>
+
+      <div class="grid-container">
+
+        <div class="category-card" onclick="openSubModal('modal-dest-stazioni')">
+          <span class="category-icon"><svg class="icon"><use href="#i-train"/></svg></span>
+          <span class="category-title">Stazioni</span>
+          <span class="category-subtitle">Centrale & Cadorna</span>
+        </div>
+
+        <div class="category-card" onclick="openSubModal('modal-dest-luoghi')">
+          <span class="category-icon"><svg class="icon"><use href="#i-landmark"/></svg></span>
+          <span class="category-title">Luoghi</span>
+          <span class="category-subtitle">Duomo, Castello & Arco</span>
+        </div>
+
+        <div class="category-card" onclick="openSubModal('modal-dest-fiere')">
+          <span class="category-icon"><svg class="icon"><use href="#i-building"/></svg></span>
+          <span class="category-title">Fiere</span>
+          <span class="category-subtitle">Rho & MiCo</span>
+        </div>
+
+        <div class="category-card" onclick="openSubModal('modal-dest-aeroporti')">
+          <span class="category-icon"><svg class="icon"><use href="#i-plane"/></svg></span>
+          <span class="category-title">Aeroporti</span>
+          <span class="category-subtitle">Linate, Malpensa & BGY</span>
+        </div>
+
+      </div>
+
       <!-- Categoria Punti di Partenza Locali -->
       <div class="transport-section-title">Punti di Partenza Locali</div>
 
@@ -1034,43 +1069,6 @@
         </div>
       </div>
 
-      <!-- Destinazioni divise in categorie 2x2 come nella schermata principale -->
-      <div class="transport-section-title">Come Raggiungere</div>
-
-      <div class="grid-container">
-
-        <div class="category-card" onclick="openSubModal('modal-dest-stazioni')">
-          <span class="category-icon"><svg class="icon"><use href="#i-train"/></svg></span>
-          <span class="category-title">Stazioni</span>
-          <span class="category-subtitle">Centrale & Cadorna</span>
-        </div>
-
-        <div class="category-card" onclick="openSubModal('modal-dest-luoghi')">
-          <span class="category-icon"><svg class="icon"><use href="#i-landmark"/></svg></span>
-          <span class="category-title">Luoghi</span>
-          <span class="category-subtitle">Duomo, Sempione & Arco</span>
-        </div>
-
-        <div class="category-card" onclick="openSubModal('modal-dest-fiere')">
-          <span class="category-icon"><svg class="icon"><use href="#i-building"/></svg></span>
-          <span class="category-title">Fiere</span>
-          <span class="category-subtitle">Rho & MiCo</span>
-        </div>
-
-        <div class="category-card" onclick="openSubModal('modal-dest-aeroporti')">
-          <span class="category-icon"><svg class="icon"><use href="#i-plane"/></svg></span>
-          <span class="category-title">Aeroporti</span>
-          <span class="category-subtitle">Linate, Malpensa & BGY</span>
-        </div>
-
-        <div class="category-card" onclick="openSubModal('modal-dest-gite')">
-          <span class="category-icon"><svg class="icon"><use href="#i-compass"/></svg></span>
-          <span class="category-title">Gite fuori Milano</span>
-          <span class="category-subtitle">Como, Monza & Arese</span>
-        </div>
-
-      </div>
-
       <div class="back-bottom-btn" onclick="closeModal('modal-trasporti')"><svg class="icon"><use href="#i-arrow-left"/></svg>Torna alle Categorie</div>
     </div>
   </div>
@@ -1100,7 +1098,7 @@ In alternativa: bus 89 fino a Comasina e M3 diretta.</div>
       <div class="place-card-full">
         <div class="place-header">
           <span class="place-name">Milano Cadorna</span>
-          <span class="place-badge">~20-25 min - €2,20</span>
+          <span class="place-badge">~20 min - €2,20</span>
         </div>
         <div class="place-desc">• A piedi da Via Repubblica 86 a Novate FS (~6 min), poi treno S3 diretto fino a Milano Cadorna (~15 min).</div>
       </div>
@@ -1108,7 +1106,7 @@ In alternativa: bus 89 fino a Comasina e M3 diretta.</div>
       <div class="place-card-full">
         <div class="place-header">
           <span class="place-name">Fiera Milano (Rho)</span>
-          <span class="place-badge">~40-45 min - €2,20</span>
+          <span class="place-badge">~45 min - €2,20</span>
         </div>
         <div class="place-desc">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1 fino a Lancetti,
 • cambio con S5/S6 direzione Rho fino a Rho Fiera.</div>
@@ -1135,32 +1133,30 @@ In alternativa: bus 89 fino a Comasina e M3 diretta.</div>
           <span class="place-name">Duomo / Centro Milano</span>
           <span class="place-badge">~35 min - €2,20</span>
         </div>
-        <div class="place-desc">• A piedi da Via Repubblica 86 a Novate FS (~6 min), poi treno S3 fino a Milano Cadorna,
+        <div class="place-desc">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Cadorna,
 • poi Metro M1 (rossa) direzione Sesto 1° Maggio fino a Duomo.
 Oppure:
 • Treno S1 fino a Repubblica, poi Metro M3 (gialla) direzione San Donato.
 Oppure:
-• Bus 89 fino a Comasina e Metro M3 (gialla) diretta.</div>
+• Bus 89 fino a Comasina, poi Metro M3 (gialla) diretta.</div>
       </div>
 
       <div class="place-card-full">
         <div class="place-header">
-          <span class="place-name">Parco Sempione</span>
-          <span class="place-badge">~25-30 min - €2,20</span>
+          <span class="place-name">Castello Sforzesco</span>
+          <span class="place-badge">~25 min - €2,20</span>
         </div>
-        <div class="place-desc">• A piedi da Via Repubblica 86 fino alla Stazione di Novate Milanese (~6 min),
-• treno S3 (o S1) fino a Milano Cadorna (~15 min),
-• poi ~5-6 minuti a piedi fino all'ingresso del parco.</div>
+        <div class="place-desc">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
+• poi 5 minuti a piedi fino al Castello.</div>
       </div>
 
       <div class="place-card-full">
         <div class="place-header">
           <span class="place-name">Arco della Pace</span>
-          <span class="place-badge">~30-35 min - €2,20</span>
+          <span class="place-badge">~30 min - €2,20</span>
         </div>
-        <div class="place-desc">• A piedi da Via Repubblica 86 fino alla Stazione di Novate Milanese (~6 min),
-• treno S3 fino a Milano Cadorna (~15 min),
-• poi ~10-12 minuti a piedi attraverso Parco Sempione (o tram) fino all'Arco della Pace.</div>
+        <div class="place-desc">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
+• poi ~10 minuti a piedi attraverso Parco Sempione.</div>
       </div>
 
       <div class="place-card-full">
@@ -1172,7 +1168,59 @@ Oppure:
 • poi Metro M5 (lilla) direzione San Siro Stadio fino al capolinea.</div>
       </div>
 
+      <div class="transport-section-title">Escursioni</div>
+
+      <div class="grid-container">
+        <div class="category-card" onclick="openSubModal('modal-dest-gite')">
+          <span class="category-icon"><svg class="icon"><use href="#i-compass"/></svg></span>
+          <span class="category-title">Gite fuori Milano</span>
+          <span class="category-subtitle">Como, Monza & Arese</span>
+        </div>
+      </div>
+
       <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-luoghi')"><svg class="icon"><use href="#i-arrow-left"/></svg>Torna ai Trasporti</div>
+    </div>
+  </div>
+
+
+  <!-- SUB-MODAL GITE FUORI MILANO (DENTRO LUOGHI) -->
+  <div id="modal-dest-gite" class="fullscreen-modal sub-modal-level-2">
+    <div class="modal-header">
+      <div class="modal-header-title">
+        <svg class="icon"><use href="#i-compass"/></svg>
+        <h2>Gite fuori Milano</h2>
+      </div>
+      <button class="btn-close" onclick="closeSubModal('modal-dest-gite')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-content">
+
+      <div class="place-card-full">
+        <div class="place-header">
+          <span class="place-name">Lago di Como</span>
+          <span class="place-badge">~1h 05m - €5,00</span>
+        </div>
+        <div class="place-desc">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno con coincidenza fino a Como Nord Lago.</div>
+      </div>
+
+      <div class="place-card-full">
+        <div class="place-header">
+          <span class="place-name">Autodromo di Monza</span>
+          <span class="place-badge">~50 min - ~€4,00</span>
+        </div>
+        <div class="place-desc">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno via Milano Porta Garibaldi per Monza,
+• poi bus locale o navetta per il Parco/Autodromo.</div>
+      </div>
+
+      <div class="place-card-full">
+        <div class="place-header">
+          <span class="place-name">Il Centro (Arese)</span>
+          <span class="place-badge">~30 min - ~€2,50</span>
+        </div>
+        <div class="place-desc">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno fino a Bollate Centro (~2 min),
+• poi bus Z121 fino ad Arese.</div>
+      </div>
+
+      <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-gite')"><svg class="icon"><use href="#i-arrow-left"/></svg>Torna ai Luoghi</div>
     </div>
   </div>
 
@@ -1191,7 +1239,7 @@ Oppure:
       <div class="place-card-full">
         <div class="place-header">
           <span class="place-name">Fiera Milano (Rho)</span>
-          <span class="place-badge">~40-45 min - €2,20</span>
+          <span class="place-badge">~45 min - €2,20</span>
         </div>
         <div class="place-desc">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1 fino a Lancetti,
 • cambio con S5/S6 direzione Rho fino a Rho Fiera.</div>
@@ -1200,7 +1248,7 @@ Oppure:
       <div class="place-card-full">
         <div class="place-header">
           <span class="place-name">Fiera Milano City (MiCo)</span>
-          <span class="place-badge">~25-30 min - €2,20</span>
+          <span class="place-badge">~25 min - €2,20</span>
         </div>
         <div class="place-desc">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,
 • poi 5 minuti a piedi, oppure una fermata di metro.
@@ -1252,51 +1300,6 @@ Oppure:
       </div>
 
       <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-aeroporti')"><svg class="icon"><use href="#i-arrow-left"/></svg>Torna ai Trasporti</div>
-    </div>
-  </div>
-
-
-  <!-- SUB-MODAL GITE FUORI MILANO -->
-  <div id="modal-dest-gite" class="fullscreen-modal sub-modal">
-    <div class="modal-header">
-      <div class="modal-header-title">
-        <svg class="icon"><use href="#i-compass"/></svg>
-        <h2>Gite fuori Milano</h2>
-      </div>
-      <button class="btn-close" onclick="closeSubModal('modal-dest-gite')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
-    </div>
-    <div class="modal-content">
-
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Lago di Como</span>
-          <span class="place-badge">~1h 05m - 1h 20m · ~€5,00-€7,00</span>
-        </div>
-        <div class="place-desc">• Partenza da Via Repubblica 86 a piedi fino alla Stazione di Novate Milanese (~6 min),
-• treno verso Saronno o snodo milanese (Bovisa/Garibaldi/Centrale) con coincidenza per Como (Como Nord Lago / Como San Giovanni).
-• Verifica sempre orari, stazione di arrivo e coincidenze sull'app Trenord prima di partire.</div>
-      </div>
-
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Autodromo Nazionale Monza</span>
-          <span class="place-badge">~50m - 1h 15m · ~€3,50-€6,00</span>
-        </div>
-        <div class="place-desc">• Partenza da Via Repubblica 86 a piedi fino alla Stazione di Novate Milanese (~6 min),
-• treno fino a Milano Porta Garibaldi (~15 min) e treno per Monza (~15 min),
-• poi bus urbano/extraurbano per l'area del Parco/Autodromo (es. verso Vedano/Biassono) oppure navetta/taxi nei giorni di evento.</div>
-      </div>
-
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Il Centro (Arese)</span>
-          <span class="place-badge">~25-45 min · ~€1,70-€3,50</span>
-        </div>
-        <div class="place-desc">• Partenza da Via Repubblica 86 verso Novate FS (~6 min a piedi), treno breve fino a Bollate Centro (~2 min) + bus Z121 verso Arese (oppure percorso con coincidenza verso Rho/Arese).
-• Verifica gli orari dei bus extraurbani e le tariffe sulle app ufficiali (cambiano tra giorni feriali e festivi).</div>
-      </div>
-
-      <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-gite')"><svg class="icon"><use href="#i-arrow-left"/></svg>Torna ai Trasporti</div>
     </div>
   </div>
 
