@@ -8,18 +8,23 @@
     :root {
       --primary: #161B1E;
       --primary-hover: #242C31;
-      --accent: #B45309;
+      --ink-dark: #111417;
+      --ink-light: #FFFFFF;
       --bg: #FAF5EE;
-      --surface: rgba(255, 255, 255, 0.88);
+      --surface: rgba(255, 255, 255, 0.90);
+      --surface-dark: #161B1E;
+      --surface-dark-alt: #1E262B;
       --surface-solid: #FFFFFF;
-      --border: rgba(22, 27, 30, 0.09);
-      --border-strong: rgba(22, 27, 30, 0.18);
+      --border: rgba(22, 27, 30, 0.10);
+      --border-strong: rgba(22, 27, 30, 0.20);
+      --border-light: rgba(255, 255, 255, 0.14);
       --text-main: #161B1E;
       --text-muted: #525D66;
+      --text-on-dark-muted: #CBD5E1;
       --gmaps: #1A73E8;
       --apple: #111315;
-      --shadow-sm: 0 2px 10px rgba(22, 27, 30, 0.04);
-      --shadow-md: 0 12px 28px rgba(22, 27, 30, 0.09);
+      --shadow-sm: 0 2px 10px rgba(22, 27, 30, 0.05);
+      --shadow-md: 0 12px 28px rgba(22, 27, 30, 0.10);
     }
 
     * {
@@ -81,7 +86,7 @@
       gap: 4px;
       margin-bottom: 18px;
       padding: 4px;
-      background: rgba(255, 255, 255, 0.78);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 999px;
       width: fit-content;
@@ -107,13 +112,13 @@
 
     .lang-btn:hover {
       color: var(--primary);
-      background: rgba(22, 27, 30, 0.05);
+      background: rgba(22, 27, 30, 0.06);
     }
 
     .lang-btn.active {
       background: var(--primary);
       color: #FFFFFF;
-      box-shadow: 0 2px 8px rgba(22, 27, 30, 0.2);
+      box-shadow: 0 2px 8px rgba(22, 27, 30, 0.22);
     }
 
     /* Header sobrio, senza effetto banner/pulsante */
@@ -151,7 +156,7 @@
       letter-spacing: 0.3px;
     }
 
-    /* Griglia 2x2 */
+    /* Griglia 2x2 con alternanza moderna nero / bianco */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -168,7 +173,7 @@
       align-items: center;
       text-align: center;
       cursor: pointer;
-      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease, color 0.22s ease;
       box-shadow: var(--shadow-sm);
       user-select: none;
       backdrop-filter: blur(12px);
@@ -186,25 +191,42 @@
       transform: translateY(-1px) scale(0.99);
     }
 
+    /* Icone scure moderne con contrasto bianco, alternando al passaggio */
     .category-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 15px;
-      background: rgba(22, 27, 30, 0.05);
-      border: 1px solid rgba(22, 27, 30, 0.08);
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: var(--surface-dark);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       font-size: 22px;
       margin-bottom: 12px;
-      color: var(--primary);
+      color: #FFFFFF;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 6px 14px rgba(22, 27, 30, 0.16);
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    /* Alternanza su card pari: riquadro icona bianco con bordo nero */
+    .grid-container > .category-card:nth-child(even) .category-icon {
+      background: #FFFFFF;
+      color: var(--primary);
+      border-color: var(--border-strong);
+      box-shadow: 0 4px 12px rgba(22, 27, 30, 0.08);
     }
 
     .category-card:hover .category-icon {
-      background: var(--primary);
-      color: #FFFFFF;
+      background: #FFFFFF;
+      color: var(--primary);
+      border-color: var(--primary);
       transform: scale(1.05);
+    }
+
+    .grid-container > .category-card:nth-child(even):hover .category-icon {
+      background: var(--surface-dark);
+      color: #FFFFFF;
+      border-color: var(--surface-dark);
     }
 
     .category-title {
@@ -259,56 +281,56 @@
     .modal-header {
       position: sticky;
       top: 0;
-      background: rgba(250, 245, 238, 0.94);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-strong);
+      background: var(--surface-dark);
+      color: #FFFFFF;
+      border-bottom: 1px solid var(--border-light);
       padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 10;
       flex-shrink: 0;
-      box-shadow: 0 4px 16px rgba(22, 27, 30, 0.05);
+      box-shadow: 0 6px 20px rgba(22, 27, 30, 0.18);
     }
 
     .modal-header-title {
       display: flex;
       align-items: center;
       gap: 10px;
-      color: var(--primary);
+      color: #FFFFFF;
     }
 
     .modal-header-title .icon {
-      font-size: 20px;
+      font-size: 19px;
+      color: #FFFFFF;
     }
 
     .modal-header-title h2 {
       font-size: 17px;
-      color: var(--primary);
+      color: #FFFFFF;
       font-weight: 700;
       letter-spacing: -0.01em;
     }
 
     .btn-close {
-      background: var(--primary);
-      border: none;
+      background: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
       border-radius: 50%;
       width: 38px;
       height: 38px;
       font-size: 18px;
-      color: #FFFFFF;
+      color: var(--primary);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 3px 10px rgba(22, 27, 30, 0.2);
-      transition: transform 0.18s ease, background 0.18s ease;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
     }
 
     .btn-close:hover {
-      background: var(--primary-hover);
+      background: #F3F4F6;
       transform: scale(1.04);
     }
 
@@ -341,13 +363,14 @@
       box-shadow: 0 6px 18px rgba(22, 27, 30, 0.06);
     }
 
+    /* Blocco Mappa scuro moderno */
     .map-card-special {
-      background: linear-gradient(135deg, #161B1E 0%, #2C383F 100%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(135deg, #14181B 0%, #242E35 100%);
+      border: 1px solid var(--border-light);
       border-radius: 20px;
       padding: 18px 16px;
       color: #FFFFFF;
-      box-shadow: 0 8px 24px rgba(22, 27, 30, 0.16);
+      box-shadow: 0 10px 24px rgba(22, 27, 30, 0.18);
     }
 
     .map-card-special .place-name {
@@ -356,7 +379,77 @@
     }
 
     .map-card-special .place-desc {
-      color: #D1D5DB;
+      color: var(--text-on-dark-muted);
+    }
+
+    /* Banner alternativo bianco moderno sotto la mappa */
+    .contrast-light-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #FFFFFF;
+      color: var(--primary);
+      border: 1px solid var(--border-strong);
+      border-radius: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .contrast-light-banner-left {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .contrast-light-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--surface-dark);
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .contrast-light-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1.25;
+    }
+
+    .contrast-light-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .btn-dark-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 11px;
+      background: var(--surface-dark);
+      color: #FFFFFF;
+      border: 1px solid var(--surface-dark);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: transform 0.16s ease, background 0.18s ease;
+    }
+
+    .btn-dark-pill:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
     }
 
     .place-header {
@@ -432,7 +525,7 @@
       font-size: 11px;
       font-weight: 700;
       background-color: #F3F4F6;
-      border: 1px solid rgba(22, 27, 30, 0.08);
+      border: 1px solid rgba(22, 27, 30, 0.10);
       color: var(--primary);
       padding: 4px 10px;
       border-radius: 999px;
@@ -615,12 +708,12 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 12px 15px;
+      padding: 13px 16px;
       margin-top: 16px;
-      background: rgba(24, 29, 32, 0.95);
-      border: 1px solid rgba(250, 204, 21, 0.32);
-      border-radius: 16px;
-      box-shadow: 0 8px 22px rgba(22, 27, 30, 0.16);
+      background: linear-gradient(135deg, #14181B 0%, #242E35 100%);
+      border: 1px solid rgba(250, 204, 21, 0.34);
+      border-radius: 18px;
+      box-shadow: 0 8px 22px rgba(22, 27, 30, 0.18);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
@@ -633,13 +726,13 @@
     }
 
     .taxi-cta-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 11px;
-      background: rgba(250, 204, 21, 0.15);
-      border: 1px solid rgba(250, 204, 21, 0.38);
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: rgba(250, 204, 21, 0.16);
+      border: 1px solid rgba(250, 204, 21, 0.42);
       color: #FACC15;
-      font-size: 16px;
+      font-size: 17px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -663,7 +756,7 @@
     .taxi-cta-subtitle {
       margin: 2px 0 0 0;
       font-size: 11px;
-      color: #9CA3AF;
+      color: #D1D5DB;
       font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
@@ -699,17 +792,15 @@
       transform: scale(0.97);
     }
 
-    /* SEZIONE RECENSIONI */
+    /* SEZIONE RECENSIONI FINE PAGINA (alternanza bianca moderna) */
     .review-cta-section {
       text-align: center;
       padding: 24px 18px;
       margin-top: 22px;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: #FFFFFF;
+      border: 1px solid var(--border-strong);
       border-radius: 22px;
       box-shadow: var(--shadow-sm);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
     }
 
     .review-cta-title {
@@ -756,14 +847,14 @@
     }
 
     .btn-review-google {
-      background-color: #FFFFFF;
-      color: #1F2937;
-      border: 1px solid #D1D5DB;
+      background-color: var(--surface-dark);
+      color: #FFFFFF;
+      border: 1px solid var(--surface-dark);
     }
 
     .btn-review-google:hover {
-      border-color: #9CA3AF;
-      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.09);
+      background-color: var(--primary-hover);
+      box-shadow: 0 5px 14px rgba(22, 27, 30, 0.16);
       transform: translateY(-1px);
     }
 
@@ -805,6 +896,13 @@
         gap: 10px;
       }
       .taxi-call-btn {
+        width: 100%;
+      }
+      .contrast-light-banner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn-dark-pill {
         width: 100%;
       }
       .review-cta-buttons {
@@ -1166,6 +1264,21 @@
         <div class="btn-group" style="margin-top: 12px;">
           <button class="btn btn-map" onclick="openImageModal('mappa-trasporti.jpg')"><svg class="icon"><use href="#i-image"/></svg><span data-i18n="open_map">Apri la mappa</span></button>
         </div>
+      </div>
+
+      <!-- Blocco bianco alternato a contrasto -->
+      <div class="contrast-light-banner">
+        <div class="contrast-light-banner-left">
+          <span class="contrast-light-icon"><svg class="icon"><use href="#i-taxi"/></svg></span>
+          <div>
+            <div class="contrast-light-title" data-i18n="taxi_title">Ti serve un taxi?</div>
+            <div class="contrast-light-sub" data-i18n="taxi_sub">Chiamata diretta Milano</div>
+          </div>
+        </div>
+        <a href="tel:+39026969" class="btn-dark-pill" style="text-decoration:none;">
+          <svg class="icon"><use href="#i-phone"/></svg>
+          02 6969
+        </a>
       </div>
 
       <div class="transport-section-title" data-i18n="how_to_reach">Come Raggiungere</div>
