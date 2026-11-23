@@ -9,20 +9,20 @@
       --primary: #161B1E;
       --primary-hover: #242C31;
       --bg: #FAF5EE;
-      --surface: rgba(255, 255, 255, 0.92);
+      --surface: rgba(255, 253, 250, 0.94);
       --surface-dark: #161B1E;
       --surface-dark-grad: linear-gradient(135deg, #14181B 0%, #242E35 100%);
-      --surface-solid: #FFFFFF;
-      --border: rgba(22, 27, 30, 0.12);
-      --border-strong: rgba(22, 27, 30, 0.22);
+      --surface-solid: #FFFDF9;
+      --border: rgba(22, 27, 30, 0.10);
+      --border-strong: rgba(22, 27, 30, 0.18);
       --border-light: rgba(255, 255, 255, 0.15);
       --text-main: #161B1E;
       --text-muted: #525D66;
       --text-on-dark-muted: #CBD5E1;
       --gmaps: #1A73E8;
       --apple: #111315;
-      --shadow-sm: 0 2px 10px rgba(22, 27, 30, 0.06);
-      --shadow-md: 0 12px 28px rgba(22, 27, 30, 0.22);
+      --shadow-sm: 0 2px 10px rgba(22, 27, 30, 0.05);
+      --shadow-md: 0 12px 28px rgba(22, 27, 30, 0.10);
     }
 
     * {
@@ -119,7 +119,7 @@
     }
 
     .lang-btn.active {
-      background: var(--surface-dark-grad);
+      background: var(--primary);
       color: #FFFFFF;
       box-shadow: 0 2px 8px rgba(22, 27, 30, 0.22);
     }
@@ -159,7 +159,7 @@
       letter-spacing: 0.3px;
     }
 
-    /* Griglia 2x2: tutte le card/banner con riempimento nero moderno */
+    /* Griglia 2x2: stile chiaro elegante */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -167,24 +167,27 @@
     }
 
     .category-card {
-      background: var(--surface-dark-grad);
-      border: 1px solid var(--border-light);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 20px;
       padding: 22px 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      color: #FFFFFF;
+      color: var(--primary);
       cursor: pointer;
-      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, border-color 0.22s ease;
-      box-shadow: 0 8px 20px rgba(22, 27, 30, 0.16);
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+      box-shadow: var(--shadow-sm);
       user-select: none;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .category-card:hover {
+      background: var(--surface-solid);
       box-shadow: var(--shadow-md);
-      border-color: rgba(255, 255, 255, 0.30);
+      border-color: var(--border-strong);
       transform: translateY(-3px);
     }
 
@@ -196,33 +199,34 @@
       width: 52px;
       height: 52px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.10);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(22, 27, 30, 0.05);
+      border: 1px solid rgba(22, 27, 30, 0.10);
       font-size: 22px;
       margin-bottom: 12px;
-      color: #FFFFFF;
+      color: var(--primary);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.2s ease, background 0.2s ease;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
     }
 
     .category-card:hover .category-icon {
-      background: rgba(255, 255, 255, 0.16);
+      background: var(--primary);
+      color: #FFFFFF;
       transform: scale(1.05);
     }
 
     .category-title {
       font-size: 15px;
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--primary);
       margin-bottom: 3px;
       letter-spacing: -0.01em;
     }
 
     .category-subtitle {
       font-size: 11px;
-      color: var(--text-on-dark-muted);
+      color: var(--text-muted);
       font-weight: 500;
       letter-spacing: 0.2px;
     }
@@ -254,56 +258,57 @@
 
     .modal-header {
       position: relative;
-      background: var(--surface-dark-grad);
-      color: #FFFFFF;
-      border-bottom: 1px solid var(--border-light);
+      background: rgba(250, 245, 238, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-strong);
       padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 10;
       flex-shrink: 0;
-      box-shadow: 0 6px 20px rgba(22, 27, 30, 0.18);
+      box-shadow: 0 4px 16px rgba(22, 27, 30, 0.05);
     }
 
     .modal-header-title {
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #FFFFFF;
+      color: var(--primary);
     }
 
     .modal-header-title .icon {
       font-size: 19px;
-      color: #FFFFFF;
+      color: var(--primary);
     }
 
     .modal-header-title h2 {
       font-size: 17px;
-      color: #FFFFFF;
+      color: var(--primary);
       font-weight: 700;
       letter-spacing: -0.01em;
     }
 
     .btn-close {
-      background: #FFFFFF;
+      background: var(--primary);
       border: none;
       border-radius: 50%;
       width: 38px;
       height: 38px;
       font-size: 18px;
-      color: var(--primary);
+      color: #FFFFFF;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 3px 10px rgba(22, 27, 30, 0.18);
       transition: transform 0.18s ease, background 0.18s ease;
     }
 
     .btn-close:hover {
-      background: #F3F4F6;
+      background: var(--primary-hover);
       transform: scale(1.04);
     }
 
@@ -330,34 +335,19 @@
       gap: 14px;
     }
 
-    /* Tutte le card/banner con riempimento nero moderno */
+    /* Card chiare eleganti */
     .place-card-full {
-      background: var(--surface-dark-grad);
-      border: 1px solid var(--border-light);
+      background: var(--surface-solid);
+      border: 1px solid var(--border);
       border-radius: 18px;
       padding: 16px;
-      color: #FFFFFF;
-      box-shadow: 0 8px 20px rgba(22, 27, 30, 0.16);
+      box-shadow: var(--shadow-sm);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .place-card-full:hover {
-      border-color: rgba(255, 255, 255, 0.28);
-      box-shadow: var(--shadow-md);
-    }
-
-    .place-card-full .place-name {
-      color: #FFFFFF;
-    }
-
-    .place-card-full .place-desc {
-      color: var(--text-on-dark-muted);
-    }
-
-    .place-card-full .place-badge {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.18);
-      color: #FFFFFF;
+      border-color: var(--border-strong);
+      box-shadow: 0 6px 18px rgba(22, 27, 30, 0.06);
     }
 
     /* Banner nero Mappa */
@@ -367,7 +357,7 @@
       border-radius: 20px;
       padding: 18px 16px;
       color: #FFFFFF;
-      box-shadow: 0 10px 24px rgba(22, 27, 30, 0.20);
+      box-shadow: 0 10px 24px rgba(22, 27, 30, 0.18);
     }
 
     .map-card-special .place-name {
@@ -397,7 +387,7 @@
     .place-name {
       font-size: 15px;
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--primary);
       letter-spacing: -0.01em;
     }
 
@@ -451,9 +441,9 @@
     .place-badge {
       font-size: 11px;
       font-weight: 700;
-      background-color: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #FFFFFF;
+      background-color: #F5F1EB;
+      border: 1px solid rgba(22, 27, 30, 0.10);
+      color: var(--primary);
       padding: 4px 10px;
       border-radius: 999px;
       white-space: nowrap;
@@ -461,7 +451,7 @@
 
     .place-desc {
       font-size: 13px;
-      color: var(--text-on-dark-muted);
+      color: var(--text-muted);
       margin-bottom: 14px;
       line-height: 1.55;
       white-space: pre-line;
@@ -502,7 +492,7 @@
       font-size: 12.5px;
       font-weight: 700;
       letter-spacing: 0.2px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       transition: transform 0.16s ease, box-shadow 0.2s ease, opacity 0.2s ease;
       cursor: pointer;
     }
@@ -513,7 +503,7 @@
 
     .btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     }
 
     .btn:active {
@@ -526,8 +516,8 @@
     }
 
     .btn-apple {
-      background-color: #FFFFFF;
-      color: var(--apple);
+      background-color: var(--apple);
+      color: #FFFFFF;
     }
 
     .btn-map {
@@ -538,9 +528,8 @@
     .back-bottom-btn {
       margin-top: 10px;
       padding: 14px 16px;
-      background: var(--surface-dark-grad);
+      background-color: var(--primary);
       color: #FFFFFF;
-      border: 1px solid var(--border-light);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -549,12 +538,12 @@
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 6px 16px rgba(22, 27, 30, 0.18);
+      box-shadow: 0 6px 16px rgba(22, 27, 30, 0.14);
       transition: transform 0.16s ease, background 0.2s ease;
     }
 
     .back-bottom-btn:hover {
-      border-color: rgba(255, 255, 255, 0.28);
+      background-color: var(--primary-hover);
       transform: translateY(-1px);
     }
 
@@ -719,22 +708,23 @@
       transform: scale(0.97);
     }
 
-    /* SEZIONE RECENSIONI FINE PAGINA (riempimento nero moderno uniforme) */
+    /* SEZIONE RECENSIONI FINE PAGINA (riempimento chiaro elegante) */
     .review-cta-section {
       text-align: center;
       padding: 24px 18px;
       margin-top: 22px;
-      background: var(--surface-dark-grad);
-      border: 1px solid var(--border-light);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 22px;
-      color: #FFFFFF;
-      box-shadow: 0 10px 24px rgba(22, 27, 30, 0.20);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .review-cta-title {
       margin: 0 0 5px 0;
       font-size: 18px;
-      color: #FFFFFF;
+      color: var(--primary);
       font-weight: 700;
       letter-spacing: -0.015em;
     }
@@ -742,7 +732,7 @@
     .review-cta-subtitle {
       margin: 0 0 18px 0;
       font-size: 12.5px;
-      color: var(--text-on-dark-muted);
+      color: var(--text-muted);
     }
 
     .review-cta-buttons {
@@ -765,7 +755,7 @@
       font-size: 13px;
       transition: all 0.2s ease;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       flex: 1;
       min-width: 140px;
     }
@@ -775,14 +765,14 @@
     }
 
     .btn-review-google {
-      background-color: #FFFFFF;
-      color: var(--primary);
-      border: 1px solid rgba(255, 255, 255, 0.22);
+      background-color: var(--primary);
+      color: #FFFFFF;
+      border: 1px solid var(--primary);
     }
 
     .btn-review-google:hover {
-      background-color: #F3F4F6;
-      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.24);
+      background-color: var(--primary-hover);
+      box-shadow: 0 5px 14px rgba(22, 27, 30, 0.16);
       transform: translateY(-1px);
     }
 
@@ -878,7 +868,7 @@
     <p data-i18n="header_sub">Local Guide & Navigazione</p>
   </div>
 
-  <!-- GRIGLIA 2x2: tutti i banner neri -->
+  <!-- GRIGLIA 2x2: colore chiaro elegante -->
   <div class="grid-container">
 
     <div class="category-card" onclick="openModal('modal-ristoranti')">
@@ -1290,7 +1280,7 @@
             <span class="place-name">Stazione Centrale</span>
             <span class="place-badge">~30 min - €2,20</span>
           </div>
-          <div class="place-desc" data-i18n="route_centrale">• A piedi da Via Repubblica 86 a Novate FS (~6 min), poi treno S1/S3 fino a Repubblica,
+          <div class="place-desc" data-i18n="route_centrale">• A piedi da Antica Corte Milanese a Novate FS (~6 min), poi treno S1/S3 fino a Repubblica,
 • poi Metro M3 una fermata fino a Centrale FS (oppure 10 minuti a piedi).
 In alternativa: bus 89 fino a Comasina e M3 diretta.</div>
         </div>
@@ -1299,14 +1289,14 @@ In alternativa: bus 89 fino a Comasina e M3 diretta.</div>
             <span class="place-name">Milano Cadorna</span>
             <span class="place-badge">~20 min - €2,20</span>
           </div>
-          <div class="place-desc" data-i18n="route_cadorna">• A piedi da Via Repubblica 86 a Novate FS (~6 min), poi treno S3 diretto fino a Milano Cadorna (~15 min).</div>
+          <div class="place-desc" data-i18n="route_cadorna">• A piedi da Antica Corte Milanese a Novate FS (~6 min), poi treno S3 diretto fino a Milano Cadorna (~15 min).</div>
         </div>
         <div class="place-card-full">
           <div class="place-header">
             <span class="place-name">Fiera Milano (Rho)</span>
             <span class="place-badge">~45 min - €2,20</span>
           </div>
-          <div class="place-desc" data-i18n="route_rho">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1 fino a Lancetti,
+          <div class="place-desc" data-i18n="route_rho">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1 fino a Lancetti,
 • cambio con S5/S6 direzione Rho fino a Rho Fiera.</div>
         </div>
         <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-stazioni')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
@@ -1331,7 +1321,7 @@ In alternativa: bus 89 fino a Comasina e M3 diretta.</div>
             <span class="place-name" data-i18n="place_duomo">Duomo / Centro Milano</span>
             <span class="place-badge">~35 min - €2,20</span>
           </div>
-          <div class="place-desc" data-i18n="route_duomo">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Cadorna,
+          <div class="place-desc" data-i18n="route_duomo">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 fino a Cadorna,
 • poi Metro M1 (rossa) direzione Sesto 1° Maggio fino a Duomo.
 Oppure:
 • Treno S1 fino a Repubblica, poi Metro M3 (gialla) direzione San Donato.
@@ -1343,7 +1333,7 @@ Oppure:
             <span class="place-name">Castello Sforzesco</span>
             <span class="place-badge">~25 min - €2,20</span>
           </div>
-          <div class="place-desc" data-i18n="route_castello">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
+          <div class="place-desc" data-i18n="route_castello">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
 • poi 5 minuti a piedi fino al Castello.</div>
         </div>
         <div class="place-card-full">
@@ -1351,7 +1341,7 @@ Oppure:
             <span class="place-name">Arco della Pace</span>
             <span class="place-badge">~30 min - €2,20</span>
           </div>
-          <div class="place-desc" data-i18n="route_arco">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
+          <div class="place-desc" data-i18n="route_arco">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
 • poi ~10 minuti a piedi attraverso Parco Sempione.</div>
         </div>
         <div class="place-card-full">
@@ -1359,7 +1349,7 @@ Oppure:
             <span class="place-name">Stadio San Siro</span>
             <span class="place-badge">~40 min - €2,20</span>
           </div>
-          <div class="place-desc" data-i18n="route_sansiro">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Milano Garibaldi,
+          <div class="place-desc" data-i18n="route_sansiro">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Milano Garibaldi,
 • poi Metro M5 (lilla) direzione San Siro Stadio fino al capolinea.</div>
         </div>
 
@@ -1395,14 +1385,14 @@ Oppure:
             <span class="place-name" data-i18n="lake_como">Lago di Como</span>
             <span class="place-badge">~1h 05m - €5,00</span>
           </div>
-          <div class="place-desc" data-i18n="route_como">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno con coincidenza fino a Como Nord Lago.</div>
+          <div class="place-desc" data-i18n="route_como">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno con coincidenza fino a Como Nord Lago.</div>
         </div>
         <div class="place-card-full">
           <div class="place-header">
             <span class="place-name">Autodromo di Monza</span>
             <span class="place-badge">~50 min - ~€4,00</span>
           </div>
-          <div class="place-desc" data-i18n="route_monza">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno via Milano Porta Garibaldi per Monza,
+          <div class="place-desc" data-i18n="route_monza">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno via Milano Porta Garibaldi per Monza,
 • poi bus locale o navetta per il Parco/Autodromo.</div>
         </div>
         <div class="place-card-full">
@@ -1410,7 +1400,7 @@ Oppure:
             <span class="place-name">Il Centro (Arese)</span>
             <span class="place-badge">~30 min - ~€2,50</span>
           </div>
-          <div class="place-desc" data-i18n="route_arese">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno fino a Bollate Centro (~2 min),
+          <div class="place-desc" data-i18n="route_arese">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno fino a Bollate Centro (~2 min),
 • poi bus Z121 fino ad Arese.</div>
         </div>
         <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-gite')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_places">Torna ai Luoghi</span></div>
@@ -1435,7 +1425,7 @@ Oppure:
             <span class="place-name">Fiera Milano (Rho)</span>
             <span class="place-badge">~45 min - €2,20</span>
           </div>
-          <div class="place-desc" data-i18n="route_rho">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1 fino a Lancetti,
+          <div class="place-desc" data-i18n="route_rho">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1 fino a Lancetti,
 • cambio con S5/S6 direzione Rho fino a Rho Fiera.</div>
         </div>
         <div class="place-card-full">
@@ -1443,7 +1433,7 @@ Oppure:
             <span class="place-name">Fiera Milano City (MiCo)</span>
             <span class="place-badge">~25 min - €2,20</span>
           </div>
-          <div class="place-desc" data-i18n="route_mico">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,
+          <div class="place-desc" data-i18n="route_mico">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,
 • poi 5 minuti a piedi, oppure una fermata di metro.
 Oppure:
 • Treno S1 fino a Garibaldi, poi Metro M5 (lilla) direzione San Siro fino a Tre Torri/Portello.</div>
@@ -1470,7 +1460,7 @@ Oppure:
             <span class="place-name" data-i18n="airport_linate">Aeroporto Linate</span>
             <span class="place-badge">~45 min - €2,20</span>
           </div>
-          <div class="place-desc" data-i18n="route_linate">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Dateo,
+          <div class="place-desc" data-i18n="route_linate">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Dateo,
 • poi Metro M4 (blu) direzione Linate Aeroporto, capolinea.</div>
         </div>
         <div class="place-card-full">
@@ -1478,7 +1468,7 @@ Oppure:
             <span class="place-name" data-i18n="airport_bergamo">Bergamo Aeroporto (Orio al Serio)</span>
             <span class="place-badge" data-i18n="bergamo_badge">~1 ora e 20 min - ~€10,00</span>
           </div>
-          <div class="place-desc" data-i18n="route_bergamo">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Milano Centrale,
+          <div class="place-desc" data-i18n="route_bergamo">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Milano Centrale,
 • poi autobus navetta aeroportuale fino all'aeroporto di Bergamo.</div>
         </div>
         <div class="place-card-full">
@@ -1486,7 +1476,7 @@ Oppure:
             <span class="place-name" data-i18n="airport_malpensa">Aeroporto Malpensa</span>
             <span class="place-badge" data-i18n="malpensa_badge">~1 ora e 5 min - ~€13,00</span>
           </div>
-          <div class="place-desc" data-i18n="route_malpensa">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Bovisa,
+          <div class="place-desc" data-i18n="route_malpensa">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Bovisa,
 • poi Malpensa Express (Terminal 1 o 2). Biglietto dedicato da acquistare prima di salire.</div>
         </div>
         <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-aeroporti')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
@@ -1524,7 +1514,7 @@ Oppure:
   <hr class="section-divider">
 
 
-  <!-- SEZIONE RECENSIONI FINE PAGINA (riempimento nero uniforme) -->
+  <!-- SEZIONE RECENSIONI FINE PAGINA (riempimento chiaro elegante) -->
   <section class="review-cta-section">
     <h2 class="review-cta-title" data-i18n="review_title">La tua opinione conta per noi</h2>
     <p class="review-cta-subtitle" data-i18n="review_sub">Lascia una recensione e condividi la tua esperienza!</p>
@@ -1633,20 +1623,20 @@ Oppure:
         airport_malpensa: "Aeroporto Malpensa",
         bergamo_badge: "~1 ora e 20 min - ~€10,00",
         malpensa_badge: "~1 ora e 5 min - ~€13,00",
-        route_centrale: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), poi treno S1/S3 fino a Repubblica,\n• poi Metro M3 una fermata fino a Centrale FS (oppure 10 minuti a piedi).\nIn alternativa: bus 89 fino a Comasina e M3 diretta.",
-        route_cadorna: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), poi treno S3 diretto fino a Milano Cadorna (~15 min).",
-        route_rho: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1 fino a Lancetti,\n• cambio con S5/S6 direzione Rho fino a Rho Fiera.",
-        route_duomo: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Cadorna,\n• poi Metro M1 (rossa) direzione Sesto 1° Maggio fino a Duomo.\nOppure:\n• Treno S1 fino a Repubblica, poi Metro M3 (gialla) direzione San Donato.\nOppure:\n• Bus 89 fino a Comasina, poi Metro M3 (gialla) diretta.",
-        route_castello: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),\n• poi 5 minuti a piedi fino al Castello.",
-        route_arco: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),\n• poi ~10 minuti a piedi attraverso Parco Sempione.",
-        route_sansiro: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Milano Garibaldi,\n• poi Metro M5 (lilla) direzione San Siro Stadio fino al capolinea.",
-        route_como: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno con coincidenza fino a Como Nord Lago.",
-        route_monza: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno via Milano Porta Garibaldi per Monza,\n• poi bus locale o navetta per il Parco/Autodromo.",
-        route_arese: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno fino a Bollate Centro (~2 min),\n• poi bus Z121 fino ad Arese.",
-        route_mico: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,\n• poi 5 minuti a piedi, oppure una fermata di metro.\nOppure:\n• Treno S1 fino a Garibaldi, poi Metro M5 (lilla) direzione San Siro fino a Tre Torri/Portello.",
-        route_linate: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Dateo,\n• poi Metro M4 (blu) direzione Linate Aeroporto, capolinea.",
-        route_bergamo: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Milano Centrale,\n• poi autobus navetta aeroportuale fino all'aeroporto di Bergamo.",
-        route_malpensa: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Bovisa,\n• poi Malpensa Express (Terminal 1 o 2). Biglietto dedicato da acquistare prima di salire.",
+        route_centrale: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), poi treno S1/S3 fino a Repubblica,\n• poi Metro M3 una fermata fino a Centrale FS (oppure 10 minuti a piedi).\nIn alternativa: bus 89 fino a Comasina e M3 diretta.",
+        route_cadorna: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), poi treno S3 diretto fino a Milano Cadorna (~15 min).",
+        route_rho: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1 fino a Lancetti,\n• cambio con S5/S6 direzione Rho fino a Rho Fiera.",
+        route_duomo: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 fino a Cadorna,\n• poi Metro M1 (rossa) direzione Sesto 1° Maggio fino a Duomo.\nOppure:\n• Treno S1 fino a Repubblica, poi Metro M3 (gialla) direzione San Donato.\nOppure:\n• Bus 89 fino a Comasina, poi Metro M3 (gialla) diretta.",
+        route_castello: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),\n• poi 5 minuti a piedi fino al Castello.",
+        route_arco: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),\n• poi ~10 minuti a piedi attraverso Parco Sempione.",
+        route_sansiro: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Milano Garibaldi,\n• poi Metro M5 (lilla) direzione San Siro Stadio fino al capolinea.",
+        route_como: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno con coincidenza fino a Como Nord Lago.",
+        route_monza: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno via Milano Porta Garibaldi per Monza,\n• poi bus locale o navetta per il Parco/Autodromo.",
+        route_arese: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno fino a Bollate Centro (~2 min),\n• poi bus Z121 fino ad Arese.",
+        route_mico: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,\n• poi 5 minuti a piedi, oppure una fermata di metro.\nOppure:\n• Treno S1 fino a Garibaldi, poi Metro M5 (lilla) direzione San Siro fino a Tre Torri/Portello.",
+        route_linate: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Dateo,\n• poi Metro M4 (blu) direzione Linate Aeroporto, capolinea.",
+        route_bergamo: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Milano Centrale,\n• poi autobus navetta aeroportuale fino all'aeroporto di Bergamo.",
+        route_malpensa: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Bovisa,\n• poi Malpensa Express (Terminal 1 o 2). Biglietto dedicato da acquistare prima di salire.",
         status_open: "Aperto",
         status_closed: "Chiuso",
         status_closing_soon: "Chiude tra poco",
@@ -1727,20 +1717,20 @@ Oppure:
         airport_malpensa: "Malpensa Airport",
         bergamo_badge: "~1h 20m - ~€10.00",
         malpensa_badge: "~1h 05m - ~€13.00",
-        route_centrale: "• Walk from Via Repubblica 86 to Novate FS (~6 min), then train S1/S3 to Repubblica,\n• then Metro M3 one stop to Centrale FS (or 10 min walk).\nAlternative: bus 89 to Comasina and direct M3.",
-        route_cadorna: "• Walk from Via Repubblica 86 to Novate FS (~6 min), then direct train S3 to Milano Cadorna (~15 min).",
-        route_rho: "• Walk from Via Repubblica 86 to Novate FS (~6 min), train S1 to Lancetti,\n• transfer to S5/S6 towards Rho to Rho Fiera.",
-        route_duomo: "• Walk from Via Repubblica 86 to Novate FS (~6 min), train S3 to Cadorna,\n• then Metro M1 (red) towards Sesto 1° Maggio to Duomo.\nOr:\n• Train S1 to Repubblica, then Metro M3 (yellow) towards San Donato.\nOr:\n• Bus 89 to Comasina, then direct Metro M3 (yellow).",
-        route_castello: "• Walk from Via Repubblica 86 to Novate FS (~6 min), direct train S3 to Milano Cadorna (~15 min),\n• then 5 min walk to the Castle.",
-        route_arco: "• Walk from Via Repubblica 86 to Novate FS (~6 min), direct train S3 to Milano Cadorna (~15 min),\n• then ~10 min walk through Parco Sempione.",
-        route_sansiro: "• Walk from Via Repubblica 86 to Novate FS (~6 min), train S1/S3 to Milano Garibaldi,\n• then Metro M5 (lilac) towards San Siro Stadio to terminus.",
-        route_como: "• Walk from Via Repubblica 86 to Novate FS (~6 min), train with connection to Como Nord Lago.",
-        route_monza: "• Walk from Via Repubblica 86 to Novate FS (~6 min), train via Milano Porta Garibaldi to Monza,\n• then local bus or shuttle to the Park/Circuit.",
-        route_arese: "• Walk from Via Repubblica 86 to Novate FS (~6 min), train to Bollate Centro (~2 min),\n• then bus Z121 to Arese.",
-        route_mico: "• Walk from Via Repubblica 86 to Novate FS (~6 min), train S3 to Domodossola Fiera,\n• then 5 min walk or one metro stop.\nOr:\n• Train S1 to Garibaldi, then Metro M5 (lilac) towards San Siro to Tre Torri/Portello.",
-        route_linate: "• Walk from Via Repubblica 86 to Novate FS (~6 min), train S1/S3 to Dateo,\n• then Metro M4 (blue) towards Linate Aeroporto, terminus.",
-        route_bergamo: "• Walk from Via Repubblica 86 to Novate FS (~6 min), train S1/S3 to Milano Centrale,\n• then airport shuttle bus to Bergamo Airport.",
-        route_malpensa: "• Walk from Via Repubblica 86 to Novate FS (~6 min), train S1/S3 to Bovisa,\n• then Malpensa Express (Terminal 1 or 2). Buy dedicated ticket before boarding.",
+        route_centrale: "• Walk from Antica Corte Milanese to Novate FS (~6 min), then train S1/S3 to Repubblica,\n• then Metro M3 one stop to Centrale FS (or 10 min walk).\nAlternative: bus 89 to Comasina and direct M3.",
+        route_cadorna: "• Walk from Antica Corte Milanese to Novate FS (~6 min), then direct train S3 to Milano Cadorna (~15 min).",
+        route_rho: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1 to Lancetti,\n• transfer to S5/S6 towards Rho to Rho Fiera.",
+        route_duomo: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S3 to Cadorna,\n• then Metro M1 (red) towards Sesto 1° Maggio to Duomo.\nOr:\n• Train S1 to Repubblica, then Metro M3 (yellow) towards San Donato.\nOr:\n• Bus 89 to Comasina, then direct Metro M3 (yellow).",
+        route_castello: "• Walk from Antica Corte Milanese to Novate FS (~6 min), direct train S3 to Milano Cadorna (~15 min),\n• then 5 min walk to the Castle.",
+        route_arco: "• Walk from Antica Corte Milanese to Novate FS (~6 min), direct train S3 to Milano Cadorna (~15 min),\n• then ~10 min walk through Parco Sempione.",
+        route_sansiro: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Milano Garibaldi,\n• then Metro M5 (lilac) towards San Siro Stadio to terminus.",
+        route_como: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train with connection to Como Nord Lago.",
+        route_monza: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train via Milano Porta Garibaldi to Monza,\n• then local bus or shuttle to the Park/Circuit.",
+        route_arese: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train to Bollate Centro (~2 min),\n• then bus Z121 to Arese.",
+        route_mico: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S3 to Domodossola Fiera,\n• then 5 min walk or one metro stop.\nOr:\n• Train S1 to Garibaldi, then Metro M5 (lilac) towards San Siro to Tre Torri/Portello.",
+        route_linate: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Dateo,\n• then Metro M4 (blue) towards Linate Aeroporto, terminus.",
+        route_bergamo: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Milano Centrale,\n• then airport shuttle bus to Bergamo Airport.",
+        route_malpensa: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Bovisa,\n• then Malpensa Express (Terminal 1 or 2). Buy dedicated ticket before boarding.",
         status_open: "Open",
         status_closed: "Closed",
         status_closing_soon: "Closing soon",
@@ -1821,20 +1811,20 @@ Oppure:
         airport_malpensa: "Aéroport de Malpensa",
         bergamo_badge: "~1h 20m - ~€10,00",
         malpensa_badge: "~1h 05m - ~€13,00",
-        route_centrale: "• À pied de Via Repubblica 86 à Novate FS (~6 min), puis train S1/S3 jusqu'à Repubblica,\n• puis Métro M3 un arrêt jusqu'à Centrale FS (ou 10 min à pied).\nAlternative : bus 89 jusqu'à Comasina et M3 directe.",
-        route_cadorna: "• À pied de Via Repubblica 86 à Novate FS (~6 min), puis train S3 direct jusqu'à Milano Cadorna (~15 min).",
-        route_rho: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train S1 jusqu'à Lancetti,\n• correspondance S5/S6 direction Rho jusqu'à Rho Fiera.",
-        route_duomo: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train S3 jusqu'à Cadorna,\n• puis Métro M1 (rouge) direction Sesto 1° Maggio jusqu'à Duomo.\nOu :\n• Train S1 jusqu'à Repubblica, puis Métro M3 (jaune) direction San Donato.\nOu :\n• Bus 89 jusqu'à Comasina, puis Métro M3 (jaune) directe.",
-        route_castello: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train S3 direct jusqu'à Milano Cadorna (~15 min),\n• puis 5 min à pied jusqu'au Château.",
-        route_arco: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train S3 direct jusqu'à Milano Cadorna (~15 min),\n• puis ~10 min à pied à travers le Parco Sempione.",
-        route_sansiro: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train S1/S3 jusqu'à Milano Garibaldi,\n• puis Métro M5 (lilas) direction San Siro Stadio jusqu'au terminus.",
-        route_como: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train avec correspondance jusqu'à Como Nord Lago.",
-        route_monza: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train via Milano Porta Garibaldi pour Monza,\n• puis bus local ou navette vers le Parc/Circuit.",
-        route_arese: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train jusqu'à Bollate Centro (~2 min),\n• puis bus Z121 jusqu'à Arese.",
-        route_mico: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train S3 jusqu'à Domodossola Fiera,\n• puis 5 min à pied ou un arrêt de métro.\nOu :\n• Train S1 jusqu'à Garibaldi, puis Métro M5 (lilas) direction San Siro jusqu'à Tre Torri/Portello.",
-        route_linate: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train S1/S3 jusqu'à Dateo,\n• puis Métro M4 (bleue) direction Linate Aeroporto, terminus.",
-        route_bergamo: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train S1/S3 jusqu'à Milano Centrale,\n• puis navette bus aéroportuaire jusqu'à l'aéroport de Bergame.",
-        route_malpensa: "• À pied de Via Repubblica 86 à Novate FS (~6 min), train S1/S3 jusqu'à Bovisa,\n• puis Malpensa Express (Terminal 1 ou 2). Billet dédié à acheter avant de monter.",
+        route_centrale: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), puis train S1/S3 jusqu'à Repubblica,\n• puis Métro M3 un arrêt jusqu'à Centrale FS (ou 10 min à pied).\nAlternative : bus 89 jusqu'à Comasina et M3 directe.",
+        route_cadorna: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), puis train S3 direct jusqu'à Milano Cadorna (~15 min).",
+        route_rho: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1 jusqu'à Lancetti,\n• correspondance S5/S6 direction Rho jusqu'à Rho Fiera.",
+        route_duomo: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 jusqu'à Cadorna,\n• puis Métro M1 (rouge) direction Sesto 1° Maggio jusqu'à Duomo.\nOu :\n• Train S1 jusqu'à Repubblica, puis Métro M3 (jaune) direction San Donato.\nOu :\n• Bus 89 jusqu'à Comasina, puis Métro M3 (jaune) directe.",
+        route_castello: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 direct jusqu'à Milano Cadorna (~15 min),\n• puis 5 min à pied jusqu'au Château.",
+        route_arco: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 direct jusqu'à Milano Cadorna (~15 min),\n• puis ~10 min à pied à travers le Parco Sempione.",
+        route_sansiro: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Milano Garibaldi,\n• puis Métro M5 (lilas) direction San Siro Stadio jusqu'au terminus.",
+        route_como: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train avec correspondance jusqu'à Como Nord Lago.",
+        route_monza: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train via Milano Porta Garibaldi pour Monza,\n• puis bus local ou navette vers le Parc/Circuit.",
+        route_arese: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train jusqu'à Bollate Centro (~2 min),\n• puis bus Z121 jusqu'à Arese.",
+        route_mico: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 jusqu'à Domodossola Fiera,\n• puis 5 min à pied ou un arrêt de métro.\nOu :\n• Train S1 jusqu'à Garibaldi, puis Métro M5 (lilas) direction San Siro jusqu'à Tre Torri/Portello.",
+        route_linate: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Dateo,\n• puis Métro M4 (bleue) direction Linate Aeroporto, terminus.",
+        route_bergamo: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Milano Centrale,\n• puis navette bus aéroportuaire jusqu'à l'aéroport de Bergame.",
+        route_malpensa: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Bovisa,\n• puis Malpensa Express (Terminal 1 ou 2). Billet dédié à acheter avant de monter.",
         status_open: "Ouvert",
         status_closed: "Fermé",
         status_closing_soon: "Ferme bientôt",
@@ -1915,20 +1905,20 @@ Oppure:
         airport_malpensa: "Aeropuerto de Malpensa",
         bergamo_badge: "~1h 20m - ~€10,00",
         malpensa_badge: "~1h 05m - ~€13,00",
-        route_centrale: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), luego tren S1/S3 hasta Repubblica,\n• luego Metro M3 una parada hasta Centrale FS (o 10 min a pie).\nAlternativa: bus 89 hasta Comasina y M3 directa.",
-        route_cadorna: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), luego tren S3 directo hasta Milano Cadorna (~15 min).",
-        route_rho: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren S1 hasta Lancetti,\n• transbordo a S5/S6 dirección Rho hasta Rho Fiera.",
-        route_duomo: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren S3 hasta Cadorna,\n• luego Metro M1 (roja) dirección Sesto 1° Maggio hasta Duomo.\nO bien:\n• Tren S1 hasta Repubblica, luego Metro M3 (amarilla) dirección San Donato.\nO bien:\n• Bus 89 hasta Comasina, luego Metro M3 (amarilla) directa.",
-        route_castello: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren S3 directo hasta Milano Cadorna (~15 min),\n• luego 5 min a pie hasta el Castillo.",
-        route_arco: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren S3 directo hasta Milano Cadorna (~15 min),\n• luego ~10 min a pie por el Parco Sempione.",
-        route_sansiro: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren S1/S3 hasta Milano Garibaldi,\n• luego Metro M5 (lila) dirección San Siro Stadio hasta el final.",
-        route_como: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren con enlace hasta Como Nord Lago.",
-        route_monza: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren vía Milano Porta Garibaldi a Monza,\n• luego bus local o lanzadera hasta el Parque/Autódromo.",
-        route_arese: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren hasta Bollate Centro (~2 min),\n• luego bus Z121 hasta Arese.",
-        route_mico: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren S3 hasta Domodossola Fiera,\n• luego 5 min a pie o una parada de metro.\nO bien:\n• Tren S1 hasta Garibaldi, luego Metro M5 (lila) dirección San Siro hasta Tre Torri/Portello.",
-        route_linate: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren S1/S3 hasta Dateo,\n• luego Metro M4 (azul) dirección Linate Aeroporto, terminal.",
-        route_bergamo: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren S1/S3 hasta Milano Centrale,\n• luego autobús lanzadera al aeropuerto de Bérgamo.",
-        route_malpensa: "• A pie desde Via Repubblica 86 hasta Novate FS (~6 min), tren S1/S3 hasta Bovisa,\n• luego Malpensa Express (Terminal 1 o 2). Comprar billete antes de subir.",
+        route_centrale: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), luego tren S1/S3 hasta Repubblica,\n• luego Metro M3 una parada hasta Centrale FS (o 10 min a pie).\nAlternativa: bus 89 hasta Comasina y M3 directa.",
+        route_cadorna: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), luego tren S3 directo hasta Milano Cadorna (~15 min).",
+        route_rho: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1 hasta Lancetti,\n• transbordo a S5/S6 dirección Rho hasta Rho Fiera.",
+        route_duomo: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 hasta Cadorna,\n• luego Metro M1 (roja) dirección Sesto 1° Maggio hasta Duomo.\nO bien:\n• Tren S1 hasta Repubblica, luego Metro M3 (amarilla) dirección San Donato.\nO bien:\n• Bus 89 hasta Comasina, luego Metro M3 (amarilla) directa.",
+        route_castello: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 directo hasta Milano Cadorna (~15 min),\n• luego 5 min a pie hasta el Castillo.",
+        route_arco: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 directo hasta Milano Cadorna (~15 min),\n• luego ~10 min a pie por el Parco Sempione.",
+        route_sansiro: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Milano Garibaldi,\n• luego Metro M5 (lila) dirección San Siro Stadio hasta el final.",
+        route_como: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren con enlace hasta Como Nord Lago.",
+        route_monza: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren vía Milano Porta Garibaldi a Monza,\n• luego bus local o lanzadera hasta el Parque/Autódromo.",
+        route_arese: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren hasta Bollate Centro (~2 min),\n• luego bus Z121 hasta Arese.",
+        route_mico: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 hasta Domodossola Fiera,\n• luego 5 min a pie o una parada de metro.\nO bien:\n• Tren S1 hasta Garibaldi, luego Metro M5 (lila) dirección San Siro hasta Tre Torri/Portello.",
+        route_linate: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Dateo,\n• luego Metro M4 (azul) dirección Linate Aeroporto, terminal.",
+        route_bergamo: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Milano Centrale,\n• luego autobús lanzadera al aeropuerto de Bérgamo.",
+        route_malpensa: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Bovisa,\n• luego Malpensa Express (Terminal 1 o 2). Comprar billete antes de subir.",
         status_open: "Abierto",
         status_closed: "Cerrado",
         status_closing_soon: "Cierra pronto",
