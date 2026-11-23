@@ -516,19 +516,19 @@
       margin: 20px 0 0 0;
     }
 
-    /* BANNER TAXI DISTINTO & COMPATTO */
+    /* BANNER TAXI MODERNO & COMPATTO */
     .taxi-cta-section {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
       padding: 11px 14px;
       margin-top: 14px;
-      background: linear-gradient(90deg, #FEF9C3 0%, #FEF08A 100%);
-      border: 1.5px dashed #CA8A04;
-      border-left: 5px solid #EAB308;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(202, 138, 4, 0.12);
+      background: rgba(24, 29, 32, 0.94);
+      border: 1px solid rgba(250, 204, 21, 0.28);
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(17, 24, 39, 0.14);
+      backdrop-filter: blur(8px);
     }
 
     .taxi-cta-info {
@@ -539,10 +539,11 @@
     }
 
     .taxi-cta-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      background-color: #111827;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(250, 204, 21, 0.14);
+      border: 1px solid rgba(250, 204, 21, 0.35);
       color: #FACC15;
       font-size: 15px;
       display: inline-flex;
@@ -559,16 +560,17 @@
     .taxi-cta-title {
       margin: 0;
       font-size: 13px;
-      color: #111827;
-      font-weight: 800;
+      color: #F9FAFB;
+      font-weight: 700;
+      letter-spacing: -0.01em;
       line-height: 1.2;
     }
 
     .taxi-cta-subtitle {
       margin: 2px 0 0 0;
       font-size: 10px;
-      color: #713F12;
-      font-weight: 600;
+      color: #9CA3AF;
+      font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -579,28 +581,28 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 8px 13px;
-      border-radius: 999px;
+      padding: 8px 14px;
+      border-radius: 10px;
       text-decoration: none;
       font-weight: 800;
       font-size: 11px;
+      letter-spacing: 0.2px;
       background-color: #FACC15;
       color: #111827;
-      border: 1.5px solid #111827;
       transition: all 0.18s ease;
-      box-shadow: 0 2px 0 #111827;
+      box-shadow: 0 2px 8px rgba(250, 204, 21, 0.28);
       white-space: nowrap;
       flex-shrink: 0;
     }
 
     .taxi-call-btn:hover {
-      background-color: #EAB308;
+      background-color: #FDE047;
       transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(250, 204, 21, 0.38);
     }
 
     .taxi-call-btn:active {
-      transform: translateY(1px);
-      box-shadow: 0 1px 0 #111827;
+      transform: scale(0.97);
     }
 
     /* SEZIONE RECENSIONI */
@@ -1369,7 +1371,7 @@ Oppure:
   </div>
 
 
-  <!-- BANNER TAXI DISTINTO & COMPATTO SOPRA LA LINEA DIVISORIA -->
+  <!-- BANNER TAXI MODERNO & COMPATTO SOPRA LA LINEA DIVISORIA -->
   <section class="taxi-cta-section">
     <div class="taxi-cta-info">
       <span class="taxi-cta-icon"><svg class="icon"><use href="#i-taxi"/></svg></span>
@@ -1508,7 +1510,7 @@ Oppure:
         route_como: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno con coincidenza fino a Como Nord Lago.",
         route_monza: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno via Milano Porta Garibaldi per Monza,\n• poi bus locale o navetta per il Parco/Autodromo.",
         route_arese: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno fino a Bollate Centro (~2 min),\n• poi bus Z121 fino ad Arese.",
-        route_mico: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,\n• poi 5 minuti a piedi, oppure una fermata di metro.\nOppure:\n• Treno S1 fino a Garibaldi, poi Metro M5 (lilla) direzione San Siro fino a Tre Torri/Portello.",
+        route_mico: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,\n• poi 5 minuti a piedi, oppure una fermata de metro.\nOppure:\n• Treno S1 fino a Garibaldi, poi Metro M5 (lilla) direction San Siro fino a Tre Torri/Portello.",
         route_linate: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Dateo,\n• poi Metro M4 (blu) direzione Linate Aeroporto, capolinea.",
         route_bergamo: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Milano Centrale,\n• poi autobus navetta aeroportuale fino all'aeroporto di Bergamo.",
         route_malpensa: "• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Bovisa,\n• poi Malpensa Express (Terminal 1 o 2). Biglietto dedicato da acquistare prima di salire.",
