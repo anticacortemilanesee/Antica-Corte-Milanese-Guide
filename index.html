@@ -8,12 +8,9 @@
     :root {
       --primary: #161B1E;
       --primary-hover: #242C31;
-      --ink-dark: #111417;
-      --ink-light: #FFFFFF;
       --bg: #FAF5EE;
       --surface: rgba(255, 255, 255, 0.90);
       --surface-dark: #161B1E;
-      --surface-dark-alt: #1E262B;
       --surface-solid: #FFFFFF;
       --border: rgba(22, 27, 30, 0.10);
       --border-strong: rgba(22, 27, 30, 0.20);
@@ -33,8 +30,7 @@
       padding: 0;
     }
 
-    html, body {
-      max-width: 100%;
+    html {
       overflow-x: hidden;
     }
 
@@ -48,7 +44,13 @@
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
       position: relative;
-      min-height: 100dvh;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+      touch-action: none;
     }
 
     /* SFONDO TRASPARENTE A TUTTO SCHERMO */
@@ -156,7 +158,7 @@
       letter-spacing: 0.3px;
     }
 
-    /* Griglia 2x2 con alternanza moderna nero / bianco */
+    /* Griglia 2x2 con icone uniformi */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -173,7 +175,7 @@
       align-items: center;
       text-align: center;
       cursor: pointer;
-      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease, color 0.22s ease;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
       box-shadow: var(--shadow-sm);
       user-select: none;
       backdrop-filter: blur(12px);
@@ -191,42 +193,25 @@
       transform: translateY(-1px) scale(0.99);
     }
 
-    /* Icone scure moderne con contrasto bianco, alternando al passaggio */
     .category-icon {
       width: 52px;
       height: 52px;
       border-radius: 16px;
-      background: var(--surface-dark);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(22, 27, 30, 0.06);
+      border: 1px solid rgba(22, 27, 30, 0.10);
       font-size: 22px;
       margin-bottom: 12px;
-      color: #FFFFFF;
+      color: var(--primary);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 6px 14px rgba(22, 27, 30, 0.16);
-      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-    }
-
-    /* Alternanza su card pari: riquadro icona bianco con bordo nero */
-    .grid-container > .category-card:nth-child(even) .category-icon {
-      background: #FFFFFF;
-      color: var(--primary);
-      border-color: var(--border-strong);
-      box-shadow: 0 4px 12px rgba(22, 27, 30, 0.08);
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
     }
 
     .category-card:hover .category-icon {
-      background: #FFFFFF;
-      color: var(--primary);
-      border-color: var(--primary);
-      transform: scale(1.05);
-    }
-
-    .grid-container > .category-card:nth-child(even):hover .category-icon {
-      background: var(--surface-dark);
+      background: var(--primary);
       color: #FFFFFF;
-      border-color: var(--surface-dark);
+      transform: scale(1.05);
     }
 
     .category-title {
@@ -244,21 +229,17 @@
       letter-spacing: 0.2px;
     }
 
-    /* Modal Fullscreen scorrevole senza blocchi */
+    /* Overlay Modale: contenitore fisso senza scroll diretto, scroll delegato a .modal-scroll-area */
     .fullscreen-modal {
       position: fixed;
       inset: 0;
       width: 100%;
-      height: 100dvh;
+      height: 100%;
       background-color: var(--bg);
       z-index: 1000;
       display: none;
       flex-direction: column;
-      overflow-y: auto;
-      overflow-x: hidden;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-      animation: fadeIn 0.2s ease-out;
+      overflow: hidden;
     }
 
     .fullscreen-modal.active {
@@ -273,64 +254,58 @@
       z-index: 1200;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .modal-header {
-      position: sticky;
-      top: 0;
-      background: var(--surface-dark);
-      color: #FFFFFF;
-      border-bottom: 1px solid var(--border-light);
+      position: relative;
+      background: rgba(250, 245, 238, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-strong);
       padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 10;
       flex-shrink: 0;
-      box-shadow: 0 6px 20px rgba(22, 27, 30, 0.18);
+      box-shadow: 0 4px 16px rgba(22, 27, 30, 0.05);
     }
 
     .modal-header-title {
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #FFFFFF;
+      color: var(--primary);
     }
 
     .modal-header-title .icon {
       font-size: 19px;
-      color: #FFFFFF;
     }
 
     .modal-header-title h2 {
       font-size: 17px;
-      color: #FFFFFF;
+      color: var(--primary);
       font-weight: 700;
       letter-spacing: -0.01em;
     }
 
     .btn-close {
-      background: #FFFFFF;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: var(--primary);
+      border: none;
       border-radius: 50%;
       width: 38px;
       height: 38px;
       font-size: 18px;
-      color: var(--primary);
+      color: #FFFFFF;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
-      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+      box-shadow: 0 3px 10px rgba(22, 27, 30, 0.2);
+      transition: transform 0.18s ease, background 0.18s ease;
     }
 
     .btn-close:hover {
-      background: #F3F4F6;
+      background: var(--primary-hover);
       transform: scale(1.04);
     }
 
@@ -338,12 +313,20 @@
       transform: scale(0.92);
     }
 
+    .modal-scroll-area {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
     .modal-content {
-      padding: 18px 16px 56px 16px;
+      padding: 18px 16px 64px 16px;
       max-width: 600px;
       margin: 0 auto;
       width: 100%;
-      flex: 1 0 auto;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -363,7 +346,7 @@
       box-shadow: 0 6px 18px rgba(22, 27, 30, 0.06);
     }
 
-    /* Blocco Mappa scuro moderno */
+    /* Banner nero Mappa */
     .map-card-special {
       background: linear-gradient(135deg, #14181B 0%, #242E35 100%);
       border: 1px solid var(--border-light);
@@ -382,8 +365,8 @@
       color: var(--text-on-dark-muted);
     }
 
-    /* Banner alternativo bianco moderno sotto la mappa */
-    .contrast-light-banner {
+    /* Banner chiaro alternato ai banner neri */
+    .banner-light-alt {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -396,40 +379,40 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .contrast-light-banner-left {
+    .banner-light-alt-info {
       display: flex;
       align-items: center;
       gap: 11px;
       min-width: 0;
     }
 
-    .contrast-light-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: var(--surface-dark);
-      color: #FFFFFF;
+    .banner-light-alt-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      background: rgba(22, 27, 30, 0.06);
+      color: var(--primary);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 17px;
+      font-size: 16px;
       flex-shrink: 0;
     }
 
-    .contrast-light-title {
+    .banner-light-alt-title {
       font-size: 13.5px;
       font-weight: 700;
       color: var(--primary);
       line-height: 1.25;
     }
 
-    .contrast-light-sub {
+    .banner-light-alt-sub {
       font-size: 11.5px;
       color: var(--text-muted);
       margin-top: 2px;
     }
 
-    .btn-dark-pill {
+    .btn-dark-action {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -438,7 +421,7 @@
       border-radius: 11px;
       background: var(--surface-dark);
       color: #FFFFFF;
-      border: 1px solid var(--surface-dark);
+      border: none;
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
@@ -447,7 +430,7 @@
       transition: transform 0.16s ease, background 0.18s ease;
     }
 
-    .btn-dark-pill:hover {
+    .btn-dark-action:hover {
       background: var(--primary-hover);
       transform: translateY(-1px);
     }
@@ -643,7 +626,7 @@
       position: fixed;
       inset: 0;
       width: 100%;
-      height: 100dvh;
+      height: 100%;
       background-color: rgba(0, 0, 0, 0.9);
       z-index: 2000;
       display: none;
@@ -652,7 +635,6 @@
       padding: 16px;
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
-      animation: fadeIn 0.2s ease-out;
     }
 
     .image-modal-overlay.active {
@@ -702,7 +684,7 @@
       margin: 20px 0 0 0;
     }
 
-    /* BANNER TAXI MODERNO & COMPATTO */
+    /* BANNER TAXI NERO MODERNO & COMPATTO */
     .taxi-cta-section {
       display: flex;
       align-items: center;
@@ -792,7 +774,7 @@
       transform: scale(0.97);
     }
 
-    /* SEZIONE RECENSIONI FINE PAGINA (alternanza bianca moderna) */
+    /* SEZIONE RECENSIONI FINE PAGINA (banner bianco moderno in alternanza al banner taxi nero) */
     .review-cta-section {
       text-align: center;
       padding: 24px 18px;
@@ -898,11 +880,11 @@
       .taxi-call-btn {
         width: 100%;
       }
-      .contrast-light-banner {
+      .banner-light-alt {
         flex-direction: column;
         align-items: stretch;
       }
-      .btn-dark-pill {
+      .btn-dark-action {
         width: 100%;
       }
       .review-cta-buttons {
@@ -994,116 +976,118 @@
         <svg class="icon"><use href="#i-utensils"/></svg>
         <h2 data-i18n="modal_restaurants_title">Ristoranti & Pizzerie</h2>
       </div>
-      <button class="btn-close" onclick="closeModal('modal-ristoranti')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
+      <button type="button" class="btn-close" onclick="closeModal('modal-ristoranti')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
-    <div class="modal-content">
+    <div class="modal-scroll-area">
+      <div class="modal-content">
 
-      <div class="place-card-full" data-schedule='{"0":[[660,1500]],"1":[[660,1500]],"2":[[660,1500]],"3":[[660,1500]],"4":[[660,1500]],"5":[[660,1500]],"6":[[660,1500]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">Novate Kebap House</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+        <div class="place-card-full" data-schedule='{"0":[[660,1500]],"1":[[660,1500]],"2":[[660,1500]],"3":[[660,1500]],"4":[[660,1500]],"5":[[660,1500]],"6":[[660,1500]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">Novate Kebap House</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="walk_4m">4 min a piedi</span>
           </div>
-          <span class="place-badge" data-i18n="walk_4m">4 min a piedi</span>
-        </div>
-        <div class="place-desc" data-i18n="desc_kebap">€ • Kebab e panini veloci da asporto.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
-
-      <div class="place-card-full" data-schedule='{"0":[[1110,1380]],"1":[],"2":[[1110,1380]],"3":[[660,870],[1110,1380]],"4":[[1110,1380]],"5":[[660,870],[1110,1380]],"6":[[1110,1380]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">Pizzeria e friggitoria esposito...</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          <div class="place-desc" data-i18n="desc_kebap">€ • Kebab e panini veloci da asporto.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
           </div>
-          <span class="place-badge" data-i18n="walk_5m">5 min a piedi</span>
         </div>
-        <div class="place-desc" data-i18n="desc_esposito">€ • Specialità napoletane e fritti caldi.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Pizzeria+e+friggitoria+esposito+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Pizzeria+e+friggitoria+esposito+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
 
-      <div class="place-card-full" data-schedule='{"0":[[720,900],[1140,1440]],"1":[[720,900],[1140,1440]],"2":[[720,900],[1140,1440]],"3":[[720,900],[1140,1440]],"4":[[720,900],[1140,1500]],"5":[[720,900],[1140,1560]],"6":[[720,900],[1140,1560]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">Leone Carne e Cucina</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+        <div class="place-card-full" data-schedule='{"0":[[1110,1380]],"1":[],"2":[[1110,1380]],"3":[[660,870],[1110,1380]],"4":[[1110,1380]],"5":[[660,870],[1110,1380]],"6":[[1110,1380]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">Pizzeria e friggitoria esposito...</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="walk_5m">5 min a piedi</span>
           </div>
-          <span class="place-badge" data-i18n="walk_7m">7 min a piedi</span>
-        </div>
-        <div class="place-desc" data-i18n="desc_leone">€€ • Ristorante elegante con tagli di carne scelti.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Leone+Carne+e+Cucina+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Leone+Carne+e+Cucina+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
-
-      <div class="place-card-full" data-schedule='{"0":[[1140,1380]],"1":[],"2":[[1140,1350]],"3":[[1140,1350]],"4":[[1140,1350]],"5":[[1140,1380]],"6":[[1140,1380]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">Pizzeria dell'Oca</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          <div class="place-desc" data-i18n="desc_esposito">€ • Specialità napoletane e fritti caldi.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Pizzeria+e+friggitoria+esposito+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Pizzeria+e+friggitoria+esposito+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
           </div>
-          <span class="place-badge" data-i18n="walk_8m">8 min a piedi</span>
         </div>
-        <div class="place-desc" data-i18n="desc_oca">€€ • Pizza al trancio e d'asporto.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Pizzeria+dell'Oca+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Pizzeria+dell'Oca+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
 
-      <div class="place-card-full" data-schedule='{"0":[[720,885],[1155,1380]],"1":[[720,870],[1155,1380]],"2":[[720,870],[1155,1380]],"3":[[720,870],[1155,1380]],"4":[[720,870],[1155,1380]],"5":[[720,870],[1155,1380]],"6":[[1155,1380]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">Locanda Conte Ghiotto</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+        <div class="place-card-full" data-schedule='{"0":[[720,900],[1140,1440]],"1":[[720,900],[1140,1440]],"2":[[720,900],[1140,1440]],"3":[[720,900],[1140,1440]],"4":[[720,900],[1140,1500]],"5":[[720,900],[1140,1560]],"6":[[720,900],[1140,1560]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">Leone Carne e Cucina</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="walk_7m">7 min a piedi</span>
           </div>
-          <span class="place-badge" data-i18n="walk_10m">10 min a piedi</span>
-        </div>
-        <div class="place-desc" data-i18n="desc_locanda">€€ • Piatti tipici e ambiente accogliente.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Locanda+Conte+Ghiotto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Locanda+Conte+Ghiotto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
-
-      <div class="place-card-full" data-schedule='{"0":[[690,900],[1110,1380]],"1":[[690,900],[1110,1380]],"2":[[690,900],[1110,1380]],"3":[[690,900],[1110,1380]],"4":[[690,900],[1110,1380]],"5":[[690,900],[1110,1380]],"6":[[690,900],[1110,1380]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">Risto-Grill</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          <div class="place-desc" data-i18n="desc_leone">€€ • Ristorante elegante con tagli di carne scelti.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Leone+Carne+e+Cucina+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Leone+Carne+e+Cucina+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
           </div>
-          <span class="place-badge" data-i18n="car_5m">5 min in macchina</span>
         </div>
-        <div class="place-desc" data-i18n="desc_grill">€€ • Cucina alla griglia e piatti della tradizione.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Risto-Grill+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Risto-Grill+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
 
-      <div class="place-card-full" data-schedule='{"0":[[720,900],[1080,1440]],"1":[],"2":[[720,870],[1080,1380]],"3":[[720,870],[1080,1380]],"4":[[720,870],[1080,1380]],"5":[[720,840],[1080,1440]],"6":[[720,900],[1080,1440]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">A TUTTA CICCIA</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+        <div class="place-card-full" data-schedule='{"0":[[1140,1380]],"1":[],"2":[[1140,1350]],"3":[[1140,1350]],"4":[[1140,1350]],"5":[[1140,1380]],"6":[[1140,1380]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">Pizzeria dell'Oca</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="walk_8m">8 min a piedi</span>
           </div>
-          <span class="place-badge" data-i18n="walk_18m_car_5m">18 min a piedi / 5 min auto</span>
+          <div class="place-desc" data-i18n="desc_oca">€€ • Pizza al trancio e d'asporto.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Pizzeria+dell'Oca+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Pizzeria+dell'Oca+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          </div>
         </div>
-        <div class="place-desc" data-i18n="desc_ciccia">€€€ • Specialità carne alla brace e piatti sfiziosi.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=A+TUTTA+CICCIA+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=A+TUTTA+CICCIA+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
 
-      <div class="back-bottom-btn" onclick="closeModal('modal-ristoranti')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
+        <div class="place-card-full" data-schedule='{"0":[[720,885],[1155,1380]],"1":[[720,870],[1155,1380]],"2":[[720,870],[1155,1380]],"3":[[720,870],[1155,1380]],"4":[[720,870],[1155,1380]],"5":[[720,870],[1155,1380]],"6":[[1155,1380]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">Locanda Conte Ghiotto</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="walk_10m">10 min a piedi</span>
+          </div>
+          <div class="place-desc" data-i18n="desc_locanda">€€ • Piatti tipici e ambiente accogliente.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Locanda+Conte+Ghiotto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Locanda+Conte+Ghiotto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          </div>
+        </div>
+
+        <div class="place-card-full" data-schedule='{"0":[[690,900],[1110,1380]],"1":[[690,900],[1110,1380]],"2":[[690,900],[1110,1380]],"3":[[690,900],[1110,1380]],"4":[[690,900],[1110,1380]],"5":[[690,900],[1110,1380]],"6":[[690,900],[1110,1380]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">Risto-Grill</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="car_5m">5 min in macchina</span>
+          </div>
+          <div class="place-desc" data-i18n="desc_grill">€€ • Cucina alla griglia e piatti della tradizione.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Risto-Grill+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Risto-Grill+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          </div>
+        </div>
+
+        <div class="place-card-full" data-schedule='{"0":[[720,900],[1080,1440]],"1":[],"2":[[720,870],[1080,1380]],"3":[[720,870],[1080,1380]],"4":[[720,870],[1080,1380]],"5":[[720,840],[1080,1440]],"6":[[720,900],[1080,1440]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">A TUTTA CICCIA</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="walk_18m_car_5m">18 min a piedi / 5 min auto</span>
+          </div>
+          <div class="place-desc" data-i18n="desc_ciccia">€€€ • Specialità carne alla brace e piatti sfiziosi.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=A+TUTTA+CICCIA+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=A+TUTTA+CICCIA+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          </div>
+        </div>
+
+        <div class="back-bottom-btn" onclick="closeModal('modal-ristoranti')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
+      </div>
     </div>
   </div>
 
@@ -1115,71 +1099,73 @@
         <svg class="icon"><use href="#i-coffee"/></svg>
         <h2 data-i18n="modal_bars_title">Bar, Caffè & Gelaterie</h2>
       </div>
-      <button class="btn-close" onclick="closeModal('modal-bar')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
+      <button type="button" class="btn-close" onclick="closeModal('modal-bar')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
-    <div class="modal-content">
+    <div class="modal-scroll-area">
+      <div class="modal-content">
 
-      <div class="place-card-full" data-schedule='{"0":[],"1":[[360,1200]],"2":[[360,1200]],"3":[[360,1200]],"4":[[360,1200]],"5":[[360,1200]],"6":[[360,1200]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">Mamo's cafe</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+        <div class="place-card-full" data-schedule='{"0":[],"1":[[360,1200]],"2":[[360,1200]],"3":[[360,1200]],"4":[[360,1200]],"5":[[360,1200]],"6":[[360,1200]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">Mamo's cafe</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="in_front">Di fronte all'edificio</span>
           </div>
-          <span class="place-badge" data-i18n="in_front">Di fronte all'edificio</span>
-        </div>
-        <div class="place-desc" data-i18n="desc_mamo">Caffetteria per colazioni e pause caffè proprio fuori dalla porta.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
-
-      <div class="place-card-full" data-schedule='{"0":[[1020,1440]],"1":[[480,1560]],"2":[[480,1560]],"3":[[480,1560]],"4":[[480,1560]],"5":[[480,1560]],"6":[[480,1560]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">La Campana di Vetro</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          <div class="place-desc" data-i18n="desc_mamo">Caffetteria per colazioni e pause caffè proprio fuori dalla porta.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
           </div>
-          <span class="place-badge" data-i18n="min_1">1 minuto</span>
         </div>
-        <div class="place-desc" data-i18n="desc_campana">Caffetteria vicinissima, bar e drink serali.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=La+Campana+di+Vetro+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=La+Campana+di+Vetro+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
 
-      <div class="place-card-full" data-schedule='{"0":[[660,1350]],"1":[[660,1350]],"2":[[660,1350]],"3":[[660,1350]],"4":[[660,1350]],"5":[[660,1380]],"6":[[660,1380]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">Purogelato</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+        <div class="place-card-full" data-schedule='{"0":[[1020,1440]],"1":[[480,1560]],"2":[[480,1560]],"3":[[480,1560]],"4":[[480,1560]],"5":[[480,1560]],"6":[[480,1560]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">La Campana di Vetro</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="min_1">1 minuto</span>
           </div>
-          <span class="place-badge" data-i18n="min_3">3 minuti</span>
-        </div>
-        <div class="place-desc" data-i18n="desc_purogelato">Bar, aperitivi e gelateria artigianale.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Purogelato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Purogelato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
-
-      <div class="place-card-full" data-schedule='{"0":[[630,750],[870,1290]],"1":[],"2":[[840,1290]],"3":[[840,1290]],"4":[[840,1290]],"5":[[840,1320]],"6":[[870,1320]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">Sir Oliver</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          <div class="place-desc" data-i18n="desc_campana">Caffetteria vicinissima, bar e drink serali.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=La+Campana+di+Vetro+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=La+Campana+di+Vetro+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
           </div>
-          <span class="place-badge" data-i18n="min_4">4 minuti</span>
         </div>
-        <div class="place-desc" data-i18n="desc_oliver">Gelateria artigianale con gusti e prodotti naturali.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Sir+Oliver+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Sir+Oliver+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
 
-      <div class="back-bottom-btn" onclick="closeModal('modal-bar')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
+        <div class="place-card-full" data-schedule='{"0":[[660,1350]],"1":[[660,1350]],"2":[[660,1350]],"3":[[660,1350]],"4":[[660,1350]],"5":[[660,1380]],"6":[[660,1380]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">Purogelato</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="min_3">3 minuti</span>
+          </div>
+          <div class="place-desc" data-i18n="desc_purogelato">Bar, aperitivi e gelateria artigianale.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Purogelato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Purogelato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          </div>
+        </div>
+
+        <div class="place-card-full" data-schedule='{"0":[[630,750],[870,1290]],"1":[],"2":[[840,1290]],"3":[[840,1290]],"4":[[840,1290]],"5":[[840,1320]],"6":[[870,1320]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">Sir Oliver</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="min_4">4 minuti</span>
+          </div>
+          <div class="place-desc" data-i18n="desc_oliver">Gelateria artigianale con gusti e prodotti naturali.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Sir+Oliver+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Sir+Oliver+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          </div>
+        </div>
+
+        <div class="back-bottom-btn" onclick="closeModal('modal-bar')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
+      </div>
     </div>
   </div>
 
@@ -1191,56 +1177,58 @@
         <svg class="icon"><use href="#i-cart"/></svg>
         <h2 data-i18n="modal_markets_title">Supermercati & Spesa</h2>
       </div>
-      <button class="btn-close" onclick="closeModal('modal-supermercati')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
+      <button type="button" class="btn-close" onclick="closeModal('modal-supermercati')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
-    <div class="modal-content">
+    <div class="modal-scroll-area">
+      <div class="modal-content">
 
-      <div class="place-card-full" data-schedule='{"0":[[540,750]],"1":[[510,750],[930,1170]],"2":[[510,750],[930,1170]],"3":[[510,750],[930,1170]],"4":[[510,750],[930,1170]],"5":[[510,750],[930,1170]],"6":[[510,750],[930,1170]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">CRAI</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+        <div class="place-card-full" data-schedule='{"0":[[540,750]],"1":[[510,750],[930,1170]],"2":[[510,750],[930,1170]],"3":[[510,750],[930,1170]],"4":[[510,750],[930,1170]],"5":[[510,750],[930,1170]],"6":[[510,750],[930,1170]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">CRAI</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="min_1">1 minuto</span>
           </div>
-          <span class="place-badge" data-i18n="min_1">1 minuto</span>
-        </div>
-        <div class="place-desc" data-i18n="desc_crai">Piccolo supermercato di quartiere ideale per la spesa rapida.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=CRAI+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=CRAI+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
-
-      <div class="place-card-full" data-schedule='{"0":[[540,780],[930,1170]],"1":[[480,1200]],"2":[[480,1200]],"3":[[480,1200]],"4":[[480,1200]],"5":[[480,1200]],"6":[[480,1200]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">iN's Mercato</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+          <div class="place-desc" data-i18n="desc_crai">Piccolo supermercato di quartiere ideale per la spesa rapida.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=CRAI+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=CRAI+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
           </div>
-          <span class="place-badge" data-i18n="walk_15m_car_4m">15 min a piedi / 4 min in macchina</span>
         </div>
-        <div class="place-desc" data-i18n="desc_ins">Discount alimentare con ottima selezione di prodotti convenienti.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=iN's+Mercato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=iN's+Mercato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
 
-      <div class="place-card-full" data-schedule='{"0":[[540,1170]],"1":[[480,1230]],"2":[[480,1230]],"3":[[480,1230]],"4":[[480,1230]],"5":[[480,1230]],"6":[[480,1230]]}'>
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">Famila Superstore Novate M...</span>
-            <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+        <div class="place-card-full" data-schedule='{"0":[[540,780],[930,1170]],"1":[[480,1200]],"2":[[480,1200]],"3":[[480,1200]],"4":[[480,1200]],"5":[[480,1200]],"6":[[480,1200]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">iN's Mercato</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="walk_15m_car_4m">15 min a piedi / 4 min in macchina</span>
           </div>
-          <span class="place-badge" data-i18n="walk_10m_car_5m">10 min a piedi / 5 min in macchina</span>
+          <div class="place-desc" data-i18n="desc_ins">Discount alimentare con ottima selezione di prodotti convenienti.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=iN's+Mercato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=iN's+Mercato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          </div>
         </div>
-        <div class="place-desc" data-i18n="desc_famila">Superstore grande per una spesa completa.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Famila+Superstore+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Famila+Superstore+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
 
-      <div class="back-bottom-btn" onclick="closeModal('modal-supermercati')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
+        <div class="place-card-full" data-schedule='{"0":[[540,1170]],"1":[[480,1230]],"2":[[480,1230]],"3":[[480,1230]],"4":[[480,1230]],"5":[[480,1230]],"6":[[480,1230]]}'>
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">Famila Superstore Novate M...</span>
+              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
+            </div>
+            <span class="place-badge" data-i18n="walk_10m_car_5m">10 min a piedi / 5 min in macchina</span>
+          </div>
+          <div class="place-desc" data-i18n="desc_famila">Superstore grande per una spesa completa.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Famila+Superstore+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Famila+Superstore+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          </div>
+        </div>
+
+        <div class="back-bottom-btn" onclick="closeModal('modal-supermercati')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
+      </div>
     </div>
   </div>
 
@@ -1252,110 +1240,113 @@
         <svg class="icon"><use href="#i-train"/></svg>
         <h2 data-i18n="modal_transport_title">Trasporti & Mobilità</h2>
       </div>
-      <button class="btn-close" onclick="closeModal('modal-trasporti')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
+      <button type="button" class="btn-close" onclick="closeModal('modal-trasporti')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
-    <div class="modal-content">
+    <div class="modal-scroll-area">
+      <div class="modal-content">
 
-      <div class="map-card-special">
-        <div class="place-header">
-          <span class="place-name" data-i18n="transport_map_title">Mappa dei trasporti</span>
-        </div>
-        <div class="place-desc" data-i18n="transport_map_desc">Schema con linee e collegamenti di treni e metropolitana.</div>
-        <div class="btn-group" style="margin-top: 12px;">
-          <button class="btn btn-map" onclick="openImageModal('mappa-trasporti.jpg')"><svg class="icon"><use href="#i-image"/></svg><span data-i18n="open_map">Apri la mappa</span></button>
-        </div>
-      </div>
-
-      <!-- Blocco bianco alternato a contrasto -->
-      <div class="contrast-light-banner">
-        <div class="contrast-light-banner-left">
-          <span class="contrast-light-icon"><svg class="icon"><use href="#i-taxi"/></svg></span>
-          <div>
-            <div class="contrast-light-title" data-i18n="taxi_title">Ti serve un taxi?</div>
-            <div class="contrast-light-sub" data-i18n="taxi_sub">Chiamata diretta Milano</div>
+        <!-- Banner nero Mappa -->
+        <div class="map-card-special">
+          <div class="place-header">
+            <span class="place-name" data-i18n="transport_map_title">Mappa dei trasporti</span>
+          </div>
+          <div class="place-desc" data-i18n="transport_map_desc">Schema con linee e collegamenti di treni e metropolitana.</div>
+          <div class="btn-group" style="margin-top: 12px;">
+            <button type="button" class="btn btn-map" onclick="openImageModal('mappa-trasporti.jpg')"><svg class="icon"><use href="#i-image"/></svg><span data-i18n="open_map">Apri la mappa</span></button>
           </div>
         </div>
-        <a href="tel:+39026969" class="btn-dark-pill" style="text-decoration:none;">
-          <svg class="icon"><use href="#i-phone"/></svg>
-          02 6969
-        </a>
-      </div>
 
-      <div class="transport-section-title" data-i18n="how_to_reach">Come Raggiungere</div>
-
-      <div class="grid-container">
-
-        <div class="category-card" onclick="openSubModal('modal-dest-stazioni')">
-          <span class="category-icon"><svg class="icon"><use href="#i-train"/></svg></span>
-          <span class="category-title" data-i18n="dest_stations">Stazioni</span>
-          <span class="category-subtitle">Centrale & Cadorna</span>
-        </div>
-
-        <div class="category-card" onclick="openSubModal('modal-dest-luoghi')">
-          <span class="category-icon"><svg class="icon"><use href="#i-landmark"/></svg></span>
-          <span class="category-title" data-i18n="dest_places">Luoghi</span>
-          <span class="category-subtitle">Duomo, Castello & Arco</span>
-        </div>
-
-        <div class="category-card" onclick="openSubModal('modal-dest-fiere')">
-          <span class="category-icon"><svg class="icon"><use href="#i-building"/></svg></span>
-          <span class="category-title" data-i18n="dest_fairs">Fiere</span>
-          <span class="category-subtitle">Rho & MiCo</span>
-        </div>
-
-        <div class="category-card" onclick="openSubModal('modal-dest-aeroporti')">
-          <span class="category-icon"><svg class="icon"><use href="#i-plane"/></svg></span>
-          <span class="category-title" data-i18n="dest_airports">Aeroporti</span>
-          <span class="category-subtitle">Linate, Malpensa & BGY</span>
-        </div>
-
-      </div>
-
-      <div class="transport-section-title" data-i18n="local_departures">Punti di Partenza Locali</div>
-
-      <div class="place-card-full">
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name" data-i18n="bus_89">Fermata Bus n.89</span>
+        <!-- Banner chiaro alternato Taxi -->
+        <div class="banner-light-alt">
+          <div class="banner-light-alt-info">
+            <span class="banner-light-alt-icon"><svg class="icon"><use href="#i-taxi"/></svg></span>
+            <div>
+              <div class="banner-light-alt-title" data-i18n="taxi_title">Ti serve un taxi?</div>
+              <div class="banner-light-alt-sub" data-i18n="taxi_sub">Chiamata diretta Milano</div>
+            </div>
           </div>
-          <span class="place-badge" data-i18n="min_2">2 minuti</span>
+          <a href="tel:+39026969" class="btn-dark-action" style="text-decoration:none;">
+            <svg class="icon"><use href="#i-phone"/></svg>
+            02 6969
+          </a>
         </div>
-        <div class="place-desc" data-i18n="bus_89_desc">Autobus per raggiungere la linea metropolitana gialla M3</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Via+Vittorio+Veneto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Via+Vittorio+Veneto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
 
-      <div class="place-card-full">
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name" data-i18n="novate_station">Stazione di Novate Milanese</span>
+        <div class="transport-section-title" data-i18n="how_to_reach">Come Raggiungere</div>
+
+        <div class="grid-container">
+
+          <div class="category-card" onclick="openSubModal('modal-dest-stazioni')">
+            <span class="category-icon"><svg class="icon"><use href="#i-train"/></svg></span>
+            <span class="category-title" data-i18n="dest_stations">Stazioni</span>
+            <span class="category-subtitle">Centrale & Cadorna</span>
           </div>
-          <span class="place-badge" data-i18n="min_6">6 minuti</span>
-        </div>
-        <div class="place-desc" data-i18n="novate_station_desc">Treni FN Passante (S1 / S3) diretti a Milano.</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Stazione+di+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Stazione+di+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
 
-      <div class="place-card-full">
-        <div class="place-header">
-          <div class="place-name-wrapper">
-            <span class="place-name">Metro Comasina M3</span>
+          <div class="category-card" onclick="openSubModal('modal-dest-luoghi')">
+            <span class="category-icon"><svg class="icon"><use href="#i-landmark"/></svg></span>
+            <span class="category-title" data-i18n="dest_places">Luoghi</span>
+            <span class="category-subtitle">Duomo, Castello & Arco</span>
           </div>
-          <span class="place-badge" data-i18n="comasina_time">8 min in auto / 15 min in bus</span>
-        </div>
-        <div class="place-desc" data-i18n="comasina_desc">Capolinea Metropolitana Linea Gialla M3 (Duomo / Stazione Centrale).</div>
-        <div class="btn-group">
-          <a class="btn btn-gmaps" href="https://maps.google.com/?q=Metro+Comasina+M3" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-          <a class="btn btn-apple" href="https://maps.apple.com/?q=Metro+Comasina+M3" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-        </div>
-      </div>
 
-      <div class="back-bottom-btn" onclick="closeModal('modal-trasporti')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
+          <div class="category-card" onclick="openSubModal('modal-dest-fiere')">
+            <span class="category-icon"><svg class="icon"><use href="#i-building"/></svg></span>
+            <span class="category-title" data-i18n="dest_fairs">Fiere</span>
+            <span class="category-subtitle">Rho & MiCo</span>
+          </div>
+
+          <div class="category-card" onclick="openSubModal('modal-dest-aeroporti')">
+            <span class="category-icon"><svg class="icon"><use href="#i-plane"/></svg></span>
+            <span class="category-title" data-i18n="dest_airports">Aeroporti</span>
+            <span class="category-subtitle">Linate, Malpensa & BGY</span>
+          </div>
+
+        </div>
+
+        <div class="transport-section-title" data-i18n="local_departures">Punti di Partenza Locali</div>
+
+        <div class="place-card-full">
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name" data-i18n="bus_89">Fermata Bus n.89</span>
+            </div>
+            <span class="place-badge" data-i18n="min_2">2 minuti</span>
+          </div>
+          <div class="place-desc" data-i18n="bus_89_desc">Autobus per raggiungere la linea metropolitana gialla M3</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Via+Vittorio+Veneto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Via+Vittorio+Veneto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          </div>
+        </div>
+
+        <div class="place-card-full">
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name" data-i18n="novate_station">Stazione di Novate Milanese</span>
+            </div>
+            <span class="place-badge" data-i18n="min_6">6 minuti</span>
+          </div>
+          <div class="place-desc" data-i18n="novate_station_desc">Treni FN Passante (S1 / S3) diretti a Milano.</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Stazione+di+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Stazione+di+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          </div>
+        </div>
+
+        <div class="place-card-full">
+          <div class="place-header">
+            <div class="place-name-wrapper">
+              <span class="place-name">Metro Comasina M3</span>
+            </div>
+            <span class="place-badge" data-i18n="comasina_time">8 min in auto / 15 min in bus</span>
+          </div>
+          <div class="place-desc" data-i18n="comasina_desc">Capolinea Metropolitana Linea Gialla M3 (Duomo / Stazione Centrale).</div>
+          <div class="btn-group">
+            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Metro+Comasina+M3" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
+            <a class="btn btn-apple" href="https://maps.apple.com/?q=Metro+Comasina+M3" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
+          </div>
+        </div>
+
+        <div class="back-bottom-btn" onclick="closeModal('modal-trasporti')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
+      </div>
     </div>
   </div>
 
@@ -1367,34 +1358,36 @@
         <svg class="icon"><use href="#i-train"/></svg>
         <h2 data-i18n="dest_stations">Stazioni</h2>
       </div>
-      <button class="btn-close" onclick="closeSubModal('modal-dest-stazioni')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
+      <button type="button" class="btn-close" onclick="closeSubModal('modal-dest-stazioni')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
-    <div class="modal-content">
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Stazione Centrale</span>
-          <span class="place-badge">~30 min - €2,20</span>
-        </div>
-        <div class="place-desc" data-i18n="route_centrale">• A piedi da Via Repubblica 86 a Novate FS (~6 min), poi treno S1/S3 fino a Repubblica,
+    <div class="modal-scroll-area">
+      <div class="modal-content">
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name">Stazione Centrale</span>
+            <span class="place-badge">~30 min - €2,20</span>
+          </div>
+          <div class="place-desc" data-i18n="route_centrale">• A piedi da Via Repubblica 86 a Novate FS (~6 min), poi treno S1/S3 fino a Repubblica,
 • poi Metro M3 una fermata fino a Centrale FS (oppure 10 minuti a piedi).
 In alternativa: bus 89 fino a Comasina e M3 diretta.</div>
-      </div>
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Milano Cadorna</span>
-          <span class="place-badge">~20 min - €2,20</span>
         </div>
-        <div class="place-desc" data-i18n="route_cadorna">• A piedi da Via Repubblica 86 a Novate FS (~6 min), poi treno S3 diretto fino a Milano Cadorna (~15 min).</div>
-      </div>
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Fiera Milano (Rho)</span>
-          <span class="place-badge">~45 min - €2,20</span>
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name">Milano Cadorna</span>
+            <span class="place-badge">~20 min - €2,20</span>
+          </div>
+          <div class="place-desc" data-i18n="route_cadorna">• A piedi da Via Repubblica 86 a Novate FS (~6 min), poi treno S3 diretto fino a Milano Cadorna (~15 min).</div>
         </div>
-        <div class="place-desc" data-i18n="route_rho">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1 fino a Lancetti,
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name">Fiera Milano (Rho)</span>
+            <span class="place-badge">~45 min - €2,20</span>
+          </div>
+          <div class="place-desc" data-i18n="route_rho">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1 fino a Lancetti,
 • cambio con S5/S6 direzione Rho fino a Rho Fiera.</div>
+        </div>
+        <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-stazioni')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
       </div>
-      <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-stazioni')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
     </div>
   </div>
 
@@ -1406,57 +1399,59 @@ In alternativa: bus 89 fino a Comasina e M3 diretta.</div>
         <svg class="icon"><use href="#i-landmark"/></svg>
         <h2 data-i18n="dest_places">Luoghi</h2>
       </div>
-      <button class="btn-close" onclick="closeSubModal('modal-dest-luoghi')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
+      <button type="button" class="btn-close" onclick="closeSubModal('modal-dest-luoghi')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
-    <div class="modal-content">
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name" data-i18n="place_duomo">Duomo / Centro Milano</span>
-          <span class="place-badge">~35 min - €2,20</span>
-        </div>
-        <div class="place-desc" data-i18n="route_duomo">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Cadorna,
+    <div class="modal-scroll-area">
+      <div class="modal-content">
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name" data-i18n="place_duomo">Duomo / Centro Milano</span>
+            <span class="place-badge">~35 min - €2,20</span>
+          </div>
+          <div class="place-desc" data-i18n="route_duomo">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Cadorna,
 • poi Metro M1 (rossa) direzione Sesto 1° Maggio fino a Duomo.
 Oppure:
 • Treno S1 fino a Repubblica, poi Metro M3 (gialla) direzione San Donato.
 Oppure:
 • Bus 89 fino a Comasina, poi Metro M3 (gialla) diretta.</div>
-      </div>
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Castello Sforzesco</span>
-          <span class="place-badge">~25 min - €2,20</span>
         </div>
-        <div class="place-desc" data-i18n="route_castello">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name">Castello Sforzesco</span>
+            <span class="place-badge">~25 min - €2,20</span>
+          </div>
+          <div class="place-desc" data-i18n="route_castello">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
 • poi 5 minuti a piedi fino al Castello.</div>
-      </div>
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Arco della Pace</span>
-          <span class="place-badge">~30 min - €2,20</span>
         </div>
-        <div class="place-desc" data-i18n="route_arco">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name">Arco della Pace</span>
+            <span class="place-badge">~30 min - €2,20</span>
+          </div>
+          <div class="place-desc" data-i18n="route_arco">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
 • poi ~10 minuti a piedi attraverso Parco Sempione.</div>
-      </div>
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Stadio San Siro</span>
-          <span class="place-badge">~40 min - €2,20</span>
         </div>
-        <div class="place-desc" data-i18n="route_sansiro">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Milano Garibaldi,
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name">Stadio San Siro</span>
+            <span class="place-badge">~40 min - €2,20</span>
+          </div>
+          <div class="place-desc" data-i18n="route_sansiro">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Milano Garibaldi,
 • poi Metro M5 (lilla) direzione San Siro Stadio fino al capolinea.</div>
-      </div>
-
-      <div class="transport-section-title" data-i18n="excursions">Escursioni</div>
-
-      <div class="grid-container">
-        <div class="category-card" onclick="openSubModal('modal-dest-gite')">
-          <span class="category-icon"><svg class="icon"><use href="#i-compass"/></svg></span>
-          <span class="category-title" data-i18n="day_trips">Gite fuori Milano</span>
-          <span class="category-subtitle">Como, Monza & Arese</span>
         </div>
-      </div>
 
-      <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-luoghi')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
+        <div class="transport-section-title" data-i18n="excursions">Escursioni</div>
+
+        <div class="grid-container">
+          <div class="category-card" onclick="openSubModal('modal-dest-gite')">
+            <span class="category-icon"><svg class="icon"><use href="#i-compass"/></svg></span>
+            <span class="category-title" data-i18n="day_trips">Gite fuori Milano</span>
+            <span class="category-subtitle">Como, Monza & Arese</span>
+          </div>
+        </div>
+
+        <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-luoghi')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
+      </div>
     </div>
   </div>
 
@@ -1468,33 +1463,35 @@ Oppure:
         <svg class="icon"><use href="#i-compass"/></svg>
         <h2 data-i18n="day_trips">Gite fuori Milano</h2>
       </div>
-      <button class="btn-close" onclick="closeSubModal('modal-dest-gite')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
+      <button type="button" class="btn-close" onclick="closeSubModal('modal-dest-gite')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
-    <div class="modal-content">
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name" data-i18n="lake_como">Lago di Como</span>
-          <span class="place-badge">~1h 05m - €5,00</span>
+    <div class="modal-scroll-area">
+      <div class="modal-content">
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name" data-i18n="lake_como">Lago di Como</span>
+            <span class="place-badge">~1h 05m - €5,00</span>
+          </div>
+          <div class="place-desc" data-i18n="route_como">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno con coincidenza fino a Como Nord Lago.</div>
         </div>
-        <div class="place-desc" data-i18n="route_como">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno con coincidenza fino a Como Nord Lago.</div>
-      </div>
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Autodromo di Monza</span>
-          <span class="place-badge">~50 min - ~€4,00</span>
-        </div>
-        <div class="place-desc" data-i18n="route_monza">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno via Milano Porta Garibaldi per Monza,
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name">Autodromo di Monza</span>
+            <span class="place-badge">~50 min - ~€4,00</span>
+          </div>
+          <div class="place-desc" data-i18n="route_monza">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno via Milano Porta Garibaldi per Monza,
 • poi bus locale o navetta per il Parco/Autodromo.</div>
-      </div>
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Il Centro (Arese)</span>
-          <span class="place-badge">~30 min - ~€2,50</span>
         </div>
-        <div class="place-desc" data-i18n="route_arese">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno fino a Bollate Centro (~2 min),
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name">Il Centro (Arese)</span>
+            <span class="place-badge">~30 min - ~€2,50</span>
+          </div>
+          <div class="place-desc" data-i18n="route_arese">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno fino a Bollate Centro (~2 min),
 • poi bus Z121 fino ad Arese.</div>
+        </div>
+        <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-gite')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_places">Torna ai Luoghi</span></div>
       </div>
-      <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-gite')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_places">Torna ai Luoghi</span></div>
     </div>
   </div>
 
@@ -1506,28 +1503,30 @@ Oppure:
         <svg class="icon"><use href="#i-building"/></svg>
         <h2 data-i18n="dest_fairs">Fiere</h2>
       </div>
-      <button class="btn-close" onclick="closeSubModal('modal-dest-fiere')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
+      <button type="button" class="btn-close" onclick="closeSubModal('modal-dest-fiere')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
-    <div class="modal-content">
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Fiera Milano (Rho)</span>
-          <span class="place-badge">~45 min - €2,20</span>
-        </div>
-        <div class="place-desc" data-i18n="route_rho">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1 fino a Lancetti,
+    <div class="modal-scroll-area">
+      <div class="modal-content">
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name">Fiera Milano (Rho)</span>
+            <span class="place-badge">~45 min - €2,20</span>
+          </div>
+          <div class="place-desc" data-i18n="route_rho">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1 fino a Lancetti,
 • cambio con S5/S6 direzione Rho fino a Rho Fiera.</div>
-      </div>
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name">Fiera Milano City (MiCo)</span>
-          <span class="place-badge">~25 min - €2,20</span>
         </div>
-        <div class="place-desc" data-i18n="route_mico">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name">Fiera Milano City (MiCo)</span>
+            <span class="place-badge">~25 min - €2,20</span>
+          </div>
+          <div class="place-desc" data-i18n="route_mico">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,
 • poi 5 minuti a piedi, oppure una fermata di metro.
 Oppure:
 • Treno S1 fino a Garibaldi, poi Metro M5 (lilla) direzione San Siro fino a Tre Torri/Portello.</div>
+        </div>
+        <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-fiere')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
       </div>
-      <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-fiere')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
     </div>
   </div>
 
@@ -1539,34 +1538,36 @@ Oppure:
         <svg class="icon"><use href="#i-plane"/></svg>
         <h2 data-i18n="dest_airports">Aeroporti</h2>
       </div>
-      <button class="btn-close" onclick="closeSubModal('modal-dest-aeroporti')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
+      <button type="button" class="btn-close" onclick="closeSubModal('modal-dest-aeroporti')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
     </div>
-    <div class="modal-content">
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name" data-i18n="airport_linate">Aeroporto Linate</span>
-          <span class="place-badge">~45 min - €2,20</span>
-        </div>
-        <div class="place-desc" data-i18n="route_linate">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Dateo,
+    <div class="modal-scroll-area">
+      <div class="modal-content">
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name" data-i18n="airport_linate">Aeroporto Linate</span>
+            <span class="place-badge">~45 min - €2,20</span>
+          </div>
+          <div class="place-desc" data-i18n="route_linate">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Dateo,
 • poi Metro M4 (blu) direzione Linate Aeroporto, capolinea.</div>
-      </div>
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name" data-i18n="airport_bergamo">Bergamo Aeroporto (Orio al Serio)</span>
-          <span class="place-badge" data-i18n="bergamo_badge">~1 ora e 20 min - ~€10,00</span>
         </div>
-        <div class="place-desc" data-i18n="route_bergamo">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Milano Centrale,
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name" data-i18n="airport_bergamo">Bergamo Aeroporto (Orio al Serio)</span>
+            <span class="place-badge" data-i18n="bergamo_badge">~1 ora e 20 min - ~€10,00</span>
+          </div>
+          <div class="place-desc" data-i18n="route_bergamo">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Milano Centrale,
 • poi autobus navetta aeroportuale fino all'aeroporto di Bergamo.</div>
-      </div>
-      <div class="place-card-full">
-        <div class="place-header">
-          <span class="place-name" data-i18n="airport_malpensa">Aeroporto Malpensa</span>
-          <span class="place-badge" data-i18n="malpensa_badge">~1 ora e 5 min - ~€13,00</span>
         </div>
-        <div class="place-desc" data-i18n="route_malpensa">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Bovisa,
+        <div class="place-card-full">
+          <div class="place-header">
+            <span class="place-name" data-i18n="airport_malpensa">Aeroporto Malpensa</span>
+            <span class="place-badge" data-i18n="malpensa_badge">~1 ora e 5 min - ~€13,00</span>
+          </div>
+          <div class="place-desc" data-i18n="route_malpensa">• A piedi da Via Repubblica 86 a Novate FS (~6 min), treno S1/S3 fino a Bovisa,
 • poi Malpensa Express (Terminal 1 o 2). Biglietto dedicato da acquistare prima di salire.</div>
+        </div>
+        <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-aeroporti')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
       </div>
-      <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-aeroporti')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
     </div>
   </div>
 
@@ -1574,13 +1575,13 @@ Oppure:
   <!-- MODALE LIGHTBOX IMMAGINE -->
   <div id="image-modal" class="image-modal-overlay" onclick="closeImageModal()">
     <div class="image-modal-container" onclick="event.stopPropagation()">
-      <button class="btn-close-image" onclick="closeImageModal()" aria-label="Chiudi Immagine"><svg class="icon"><use href="#i-x"/></svg></button>
+      <button type="button" class="btn-close-image" onclick="closeImageModal()" aria-label="Chiudi Immagine"><svg class="icon"><use href="#i-x"/></svg></button>
       <img id="image-modal-img" src="" alt="Mappa Trasporti">
     </div>
   </div>
 
 
-  <!-- BANNER TAXI MODERNO & COMPATTO SOPRA LA LINEA DIVISORIA -->
+  <!-- BANNER TAXI NERO MODERNO & COMPATTO SOPRA LA LINEA DIVISORIA -->
   <section class="taxi-cta-section">
     <div class="taxi-cta-info">
       <span class="taxi-cta-icon"><svg class="icon"><use href="#i-taxi"/></svg></span>
@@ -1600,7 +1601,7 @@ Oppure:
   <hr class="section-divider">
 
 
-  <!-- SEZIONE RECENSIONI FINE PAGINA -->
+  <!-- SEZIONE RECENSIONI FINE PAGINA (banner bianco moderno in alternanza) -->
   <section class="review-cta-section">
     <h2 class="review-cta-title" data-i18n="review_title">La tua opinione conta per noi</h2>
     <p class="review-cta-subtitle" data-i18n="review_sub">Lascia una recensione e condividi la tua esperienza!</p>
@@ -2024,7 +2025,7 @@ Oppure:
 
     function syncBodyScrollLock() {
       const anyModalOpen = document.querySelector('.fullscreen-modal.active, .image-modal-overlay.active');
-      document.body.style.overflow = anyModalOpen ? 'hidden' : '';
+      document.body.classList.toggle('modal-open', Boolean(anyModalOpen));
     }
 
     function setLanguage(lang) {
@@ -2051,7 +2052,8 @@ Oppure:
       const modal = document.getElementById(id);
       if (!modal) return;
       modal.classList.add('active');
-      modal.scrollTop = 0;
+      const scrollArea = modal.querySelector('.modal-scroll-area');
+      if (scrollArea) scrollArea.scrollTop = 0;
       syncBodyScrollLock();
     }
 
@@ -2065,7 +2067,8 @@ Oppure:
       const modal = document.getElementById(id);
       if (!modal) return;
       modal.classList.add('active');
-      modal.scrollTop = 0;
+      const scrollArea = modal.querySelector('.modal-scroll-area');
+      if (scrollArea) scrollArea.scrollTop = 0;
       syncBodyScrollLock();
     }
 
