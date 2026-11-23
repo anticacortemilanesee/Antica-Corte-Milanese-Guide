@@ -9,14 +9,13 @@
       --primary: #161B1E;
       --primary-hover: #242C31;
       --accent: #B45309;
-      --accent-soft: rgba(180, 83, 9, 0.11);
       --bg: #FAF5EE;
-      --surface: rgba(255, 255, 255, 0.90);
+      --surface: rgba(255, 255, 255, 0.88);
       --surface-solid: #FFFFFF;
       --border: rgba(22, 27, 30, 0.09);
       --border-strong: rgba(22, 27, 30, 0.18);
       --text-main: #161B1E;
-      --text-muted: #4B5563;
+      --text-muted: #525D66;
       --gmaps: #1A73E8;
       --apple: #111315;
       --shadow-sm: 0 2px 10px rgba(22, 27, 30, 0.04);
@@ -29,6 +28,11 @@
       padding: 0;
     }
 
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
@@ -39,17 +43,16 @@
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
       position: relative;
-      min-height: 100vh;
+      min-height: 100dvh;
     }
 
     /* SFONDO TRASPARENTE A TUTTO SCHERMO */
     body::before {
       content: "";
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       background-image: url('sfondo.jpg');
       background-size: cover;
       background-position: center;
@@ -85,6 +88,7 @@
       margin-left: auto;
       margin-right: auto;
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       box-shadow: var(--shadow-sm);
     }
 
@@ -112,37 +116,30 @@
       box-shadow: 0 2px 8px rgba(22, 27, 30, 0.2);
     }
 
-    /* Header d'impatto */
+    /* Header sobrio, senza effetto banner/pulsante */
     .header {
       text-align: center;
       margin-bottom: 24px;
-      padding: 22px 18px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      box-shadow: var(--shadow-sm);
-      backdrop-filter: blur(12px);
+      padding: 8px 12px 14px 12px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .header-kicker {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 800;
+    .header-location {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
       text-transform: uppercase;
-      letter-spacing: 1.8px;
-      color: var(--accent);
-      background: var(--accent-soft);
-      padding: 4px 11px;
-      border-radius: 999px;
-      margin-bottom: 10px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
     }
 
     .header h1 {
       font-family: Georgia, serif;
       color: var(--primary);
       font-size: 24px;
-      letter-spacing: 0.8px;
-      margin-bottom: 6px;
+      letter-spacing: 0.6px;
+      margin-bottom: 5px;
       font-weight: 600;
       line-height: 1.25;
     }
@@ -175,6 +172,7 @@
       box-shadow: var(--shadow-sm);
       user-select: none;
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .category-card:hover {
@@ -224,20 +222,21 @@
       letter-spacing: 0.2px;
     }
 
-    /* Modal Fullscreen */
+    /* Modal Fullscreen scorrevole senza blocchi */
     .fullscreen-modal {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      inset: 0;
+      width: 100%;
+      height: 100dvh;
       background-color: var(--bg);
       z-index: 1000;
       display: none;
       flex-direction: column;
       overflow-y: auto;
+      overflow-x: hidden;
+      overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
-      animation: fadeIn 0.22s ease-out;
+      animation: fadeIn 0.2s ease-out;
     }
 
     .fullscreen-modal.active {
@@ -253,21 +252,23 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .modal-header {
       position: sticky;
       top: 0;
-      background: rgba(250, 245, 238, 0.92);
+      background: rgba(250, 245, 238, 0.94);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-strong);
       padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 10;
+      flex-shrink: 0;
       box-shadow: 0 4px 16px rgba(22, 27, 30, 0.05);
     }
 
@@ -301,6 +302,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
       box-shadow: 0 3px 10px rgba(22, 27, 30, 0.2);
       transition: transform 0.18s ease, background 0.18s ease;
     }
@@ -315,10 +317,11 @@
     }
 
     .modal-content {
-      padding: 18px 16px 42px 16px;
+      padding: 18px 16px 56px 16px;
       max-width: 600px;
       margin: 0 auto;
       width: 100%;
+      flex: 1 0 auto;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -545,10 +548,9 @@
     /* LIGHTBOX IMMAGINE */
     .image-modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      inset: 0;
+      width: 100%;
+      height: 100dvh;
       background-color: rgba(0, 0, 0, 0.9);
       z-index: 2000;
       display: none;
@@ -556,6 +558,7 @@
       justify-content: center;
       padding: 16px;
       backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       animation: fadeIn 0.2s ease-out;
     }
 
@@ -619,6 +622,7 @@
       border-radius: 16px;
       box-shadow: 0 8px 22px rgba(22, 27, 30, 0.16);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .taxi-cta-info {
@@ -705,6 +709,7 @@
       border-radius: 22px;
       box-shadow: var(--shadow-sm);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .review-cta-title {
@@ -849,7 +854,7 @@
   </div>
 
   <div class="header">
-    <span class="header-kicker">Novate Milanese</span>
+    <span class="header-location">Novate Milanese</span>
     <h1>ANTICA CORTE MILANESE</h1>
     <p data-i18n="header_sub">Local Guide & Navigazione</p>
   </div>
@@ -1904,6 +1909,11 @@ Oppure:
 
     let currentLang = 'it';
 
+    function syncBodyScrollLock() {
+      const anyModalOpen = document.querySelector('.fullscreen-modal.active, .image-modal-overlay.active');
+      document.body.style.overflow = anyModalOpen ? 'hidden' : '';
+    }
+
     function setLanguage(lang) {
       if (!TRANSLATIONS[lang]) return;
       currentLang = lang;
@@ -1925,31 +1935,43 @@ Oppure:
     }
 
     function openModal(id) {
-      document.getElementById(id).classList.add('active');
-      document.body.style.overflow = 'hidden';
+      const modal = document.getElementById(id);
+      if (!modal) return;
+      modal.classList.add('active');
+      modal.scrollTop = 0;
+      syncBodyScrollLock();
     }
 
     function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-      document.body.style.overflow = 'auto';
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove('active');
+      syncBodyScrollLock();
     }
 
     function openSubModal(id) {
-      document.getElementById(id).classList.add('active');
+      const modal = document.getElementById(id);
+      if (!modal) return;
+      modal.classList.add('active');
+      modal.scrollTop = 0;
+      syncBodyScrollLock();
     }
 
     function closeSubModal(id) {
-      document.getElementById(id).classList.remove('active');
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove('active');
+      syncBodyScrollLock();
     }
 
     function openImageModal(imageSrc) {
       const imgElem = document.getElementById('image-modal-img');
       imgElem.src = imageSrc;
       document.getElementById('image-modal').classList.add('active');
+      syncBodyScrollLock();
     }
 
     function closeImageModal() {
       document.getElementById('image-modal').classList.remove('active');
+      syncBodyScrollLock();
     }
 
     document.addEventListener('keydown', function(event) {
@@ -1961,12 +1983,12 @@ Oppure:
       }
       const activeSub2 = document.querySelector('.sub-modal-level-2.active');
       if (activeSub2) {
-        activeSub2.classList.remove('active');
+        closeSubModal(activeSub2.id);
         return;
       }
       const activeSub1 = document.querySelector('.sub-modal.active');
       if (activeSub1) {
-        activeSub1.classList.remove('active');
+        closeSubModal(activeSub1.id);
         return;
       }
       const activeMain = document.querySelector('.fullscreen-modal.active');
