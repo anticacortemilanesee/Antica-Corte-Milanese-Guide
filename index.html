@@ -339,6 +339,14 @@
   .kv-label { font-size: 0.9rem; font-weight: 700; color: var(--muted); }
   .kv-value { font-size: 1.15rem; font-weight: 800; word-break: break-word; }
 
+  .wifi-connect-wrap { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .wifi-feedback {
+    display: none; padding: 12px 14px; border-radius: 14px;
+    background: var(--ok-bg); color: var(--ok-fg);
+    font-size: 0.95rem; font-weight: 700; line-height: 1.4;
+  }
+  .wifi-feedback.show { display: block; animation: rise 0.3s ease both; }
+
   /* ---------- Lightbox mappa ---------- */
   .lightbox { z-index: 3000; background: rgba(0, 0, 0, 0.94); align-items: center; justify-content: center; padding: 16px; gap: 14px; }
   .lb-close { position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 14px; background: #fff; color: #161B1E; }
@@ -596,6 +604,9 @@ const TRANSLATIONS = {
     emergency_desc: "Numero unico europeo: polizia, ambulanza e vigili del fuoco. Chiamata gratuita.",
     call_112: "Chiama il 112",
     wifi_title: "Wi-Fi", wifi_name: "Rete", wifi_pass: "Password",
+    wifi_connect: "Connetti al Wi-Fi",
+    wifi_ready: net => `Password copiata! Apri le impostazioni Wi-Fi del telefono, seleziona "${net}" e incolla la password.`,
+    wifi_ready_open: net => `Apri le impostazioni Wi-Fi del telefono e seleziona la rete "${net}".`,
     stay_title: "Il tuo soggiorno", checkin: "Check-in dalle", checkout: "Check-out entro le", address: "Indirizzo",
     host_title: "Contatti", call_host: "Leonardo", call_second_host: "Letizia", whatsapp: "WhatsApp",
     copy: "Copia", copied: "Copiato!", call: "Chiama",
@@ -676,6 +687,9 @@ const TRANSLATIONS = {
     emergency_desc: "European emergency number: police, ambulance and fire brigade. Free call.",
     call_112: "Call 112",
     wifi_title: "Wi-Fi", wifi_name: "Network", wifi_pass: "Password",
+    wifi_connect: "Connect to Wi-Fi",
+    wifi_ready: net => `Password copied! Open your phone's Wi-Fi settings, select "${net}" and paste the password.`,
+    wifi_ready_open: net => `Open your phone's Wi-Fi settings and select "${net}".`,
     stay_title: "Your stay", checkin: "Check-in from", checkout: "Check-out by", address: "Address",
     host_title: "Contacts", call_host: "Leonardo", call_second_host: "Letizia", whatsapp: "WhatsApp",
     copy: "Copy", copied: "Copied!", call: "Call",
@@ -756,6 +770,9 @@ const TRANSLATIONS = {
     emergency_desc: "Numéro d'urgence européen : police, ambulance et pompiers. Appel gratuit.",
     call_112: "Appeler le 112",
     wifi_title: "Wi-Fi", wifi_name: "Réseau", wifi_pass: "Mot de passe",
+    wifi_connect: "Se connecter au Wi-Fi",
+    wifi_ready: net => `Mot de passe copié ! Ouvrez les réglages Wi-Fi du téléphone, sélectionnez « ${net} » et collez le mot de passe.`,
+    wifi_ready_open: net => `Ouvrez les réglages Wi-Fi du téléphone et sélectionnez « ${net} ».`,
     stay_title: "Votre séjour", checkin: "Arrivée à partir de", checkout: "Départ avant", address: "Adresse",
     host_title: "Contacts", call_host: "Leonardo", call_second_host: "Letizia", whatsapp: "WhatsApp",
     copy: "Copier", copied: "Copié !", call: "Appeler",
@@ -836,6 +853,9 @@ const TRANSLATIONS = {
     emergency_desc: "Número europeo de emergencias: policía, ambulancia y bomberos. Llamada gratuita.",
     call_112: "Llamar al 112",
     wifi_title: "Wi-Fi", wifi_name: "Red", wifi_pass: "Contraseña",
+    wifi_connect: "Conectar al Wi-Fi",
+    wifi_ready: net => `¡Contraseña copiada! Abre los ajustes Wi-Fi del teléfono, selecciona "${net}" y pega la contraseña.`,
+    wifi_ready_open: net => `Abre los ajustes Wi-Fi del teléfono y selecciona "${net}".`,
     stay_title: "Tu estancia", checkin: "Check-in desde las", checkout: "Check-out antes de las", address: "Dirección",
     host_title: "Contactos", call_host: "Leonardo", call_second_host: "Letizia", whatsapp: "WhatsApp",
     copy: "Copiar", copied: "¡Copiado!", call: "Llamar",
@@ -910,8 +930,8 @@ const PLACES = {
       h: [[[720, 900], [1080, 1440]], [], [[720, 870], [1080, 1380]], [[720, 870], [1080, 1380]], [[720, 870], [1080, 1380]], [[720, 840], [1080, 1440]], [[720, 900], [1080, 1440]]] }
   ],
   bar: [
-    { n: "Mamo's cafe", d: "desc_mamo", w: "in_front", h: [[], B1, B1, B1, B1, B1, B1] },
-    { n: "La Campana di Vetro", d: "desc_campana", w: "min_1", h: [[[1020, 1440]], C1, C1, C1, C1, C1, C1] },
+    { n: "Mamo's cafe", tel: "+39 350 811 4679", d: "desc_mamo", w: "in_front", h: [[], B1, B1, B1, B1, B1, B1] },
+    { n: "La Campana di Vetro", tel: "+39 02 354 5451", d: "desc_campana", w: "min_1", h: [[[1020, 1440]], C1, C1, C1, C1, C1, C1] },
     { n: "Purogelato", tel: "+39 02 354 3346", d: "desc_purogelato", w: "min_3", h: [P1, P1, P1, P1, P1, P2, P2] },
     { n: "Sir Oliver", tel: "+39 02 394 93965", d: "desc_oliver", w: "min_4",
       h: [[[630, 750], [870, 1290]], [], [[840, 1290]], [[840, 1290]], [[840, 1290]], [[840, 1320]], [[870, 1320]]] }
@@ -1138,7 +1158,11 @@ function buildLayers() {
     if (CONFIG.wifiName || CONFIG.wifiPassword) {
       html += `<article class="card"><div class="card-top"><h3 class="card-title">${ic('i-wifi')}<span data-i18n="wifi_title"></span></h3></div>` +
               (CONFIG.wifiName ? kv('wifi_name', CONFIG.wifiName, true) : '') +
-              (CONFIG.wifiPassword ? kv('wifi_pass', CONFIG.wifiPassword, true) : '') + `</article>`;
+              (CONFIG.wifiPassword ? kv('wifi_pass', CONFIG.wifiPassword, true) : '') +
+              `<div class="wifi-connect-wrap">
+                 <div class="btn-row"><button type="button" class="btn btn-gmaps" onclick="connectWifi()">${ic('i-wifi')}<span data-i18n="wifi_connect"></span></button></div>
+                 <p id="wifi-feedback" class="wifi-feedback" role="status" aria-live="polite"></p>
+               </div></article>`;
     }
     if (CONFIG.checkIn || CONFIG.checkOut || CONFIG.address) {
       html += `<article class="card"><div class="card-top"><h3 class="card-title">${ic('i-clock')}<span data-i18n="stay_title"></span></h3></div>` +
@@ -1352,27 +1376,45 @@ function updateStatuses() {
   });
 }
 
-/* ---------- Copia negli appunti (Wi-Fi, indirizzo) ---------- */
+/* ---------- Copia negli appunti e connessione Wi-Fi ---------- */
+function copyText(text, onDone) {
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); if (onDone) onDone(); } catch (err) {}
+    document.body.removeChild(ta);
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => { if (onDone) onDone(); }).catch(fallback);
+  } else { fallback(); }
+}
+
+function connectWifi() {
+  const fb = document.getElementById('wifi-feedback');
+  const net = CONFIG.wifiName || 'Wi-Fi';
+  const showMsg = () => {
+    if (!fb) return;
+    fb.textContent = CONFIG.wifiPassword ? T().wifi_ready(net) : T().wifi_ready_open(net);
+    fb.classList.add('show');
+  };
+  if (CONFIG.wifiPassword) {
+    copyText(CONFIG.wifiPassword, showMsg);
+  } else {
+    showMsg();
+  }
+}
+
 document.addEventListener('click', e => {
   const btn = e.target.closest('[data-copy]');
   if (!btn) return;
   const text = btn.getAttribute('data-copy');
   const label = btn.querySelector('span');
-  const done = () => {
+  copyText(text, () => {
     if (!label) return;
     label.textContent = T().copied;
     setTimeout(() => { label.textContent = T().copy; }, 1600);
-  };
-  const fallback = () => {
-    const ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); done(); } catch (err) {}
-    document.body.removeChild(ta);
-  };
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text).then(done).catch(fallback);
-  } else { fallback(); }
+  });
 });
 
 /* ---------- Avvio ---------- */
