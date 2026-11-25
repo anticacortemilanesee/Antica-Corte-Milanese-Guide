@@ -514,8 +514,10 @@ const CONFIG = {
   checkIn: "",         // es. "15:00"
   checkOut: "",        // es. "10:30"
   address: "",         // es. "Via Esempio 1, Novate Milanese"
-  hostPhone: "",       // es. "+393331234567"
-  hostWhatsapp: false  // true = mostra anche il pulsante WhatsApp (usa hostPhone)
+  hostPhone: "+393914950402",       // Leonardo
+  secondHostName: "Letizia",
+  secondHostPhone: "+393515951121",
+  hostWhatsapp: true  // true = mostra anche il pulsante WhatsApp
 };
 
 /* =====================================================================
@@ -591,7 +593,7 @@ const TRANSLATIONS = {
     call_112: "Chiama il 112",
     wifi_title: "Wi-Fi", wifi_name: "Rete", wifi_pass: "Password",
     stay_title: "Il tuo soggiorno", checkin: "Check-in dalle", checkout: "Check-out entro le", address: "Indirizzo",
-    host_title: "Contatti", call_host: "Chiama l'host", whatsapp: "WhatsApp",
+    host_title: "Contatti", call_host: "Leonardo", call_second_host: "Letizia", whatsapp: "WhatsApp",
     copy: "Copia", copied: "Copiato!", call: "Chiama",
     close: "Chiudi", text_size: "Dimensione del testo", theme_toggle: "Cambia tema chiaro o scuro", lang_group: "Lingua",
     hours_note: "Gli orari sono indicativi e possono variare nei festivi o per ferie. Nel dubbio, chiama il locale.",
@@ -671,7 +673,7 @@ const TRANSLATIONS = {
     call_112: "Call 112",
     wifi_title: "Wi-Fi", wifi_name: "Network", wifi_pass: "Password",
     stay_title: "Your stay", checkin: "Check-in from", checkout: "Check-out by", address: "Address",
-    host_title: "Contacts", call_host: "Call the host", whatsapp: "WhatsApp",
+    host_title: "Contacts", call_host: "Leonardo", call_second_host: "Letizia", whatsapp: "WhatsApp",
     copy: "Copy", copied: "Copied!", call: "Call",
     close: "Close", text_size: "Text size", theme_toggle: "Switch light or dark theme", lang_group: "Language",
     hours_note: "Opening hours are indicative and may change on holidays. If in doubt, call the venue.",
@@ -751,7 +753,7 @@ const TRANSLATIONS = {
     call_112: "Appeler le 112",
     wifi_title: "Wi-Fi", wifi_name: "Réseau", wifi_pass: "Mot de passe",
     stay_title: "Votre séjour", checkin: "Arrivée à partir de", checkout: "Départ avant", address: "Adresse",
-    host_title: "Contacts", call_host: "Appeler l'hôte", whatsapp: "WhatsApp",
+    host_title: "Contacts", call_host: "Leonardo", call_second_host: "Letizia", whatsapp: "WhatsApp",
     copy: "Copier", copied: "Copié !", call: "Appeler",
     close: "Fermer", text_size: "Taille du texte", theme_toggle: "Changer de thème clair ou sombre", lang_group: "Langue",
     hours_note: "Les horaires sont indicatifs et peuvent varier les jours fériés. En cas de doute, appelez l'établissement.",
@@ -831,7 +833,7 @@ const TRANSLATIONS = {
     call_112: "Llamar al 112",
     wifi_title: "Wi-Fi", wifi_name: "Red", wifi_pass: "Contraseña",
     stay_title: "Tu estancia", checkin: "Check-in desde las", checkout: "Check-out antes de las", address: "Dirección",
-    host_title: "Contactos", call_host: "Llamar al anfitrión", whatsapp: "WhatsApp",
+    host_title: "Contactos", call_host: "Leonardo", call_second_host: "Letizia", whatsapp: "WhatsApp",
     copy: "Copiar", copied: "¡Copiado!", call: "Llamar",
     close: "Cerrar", text_size: "Tamaño del texto", theme_toggle: "Cambiar tema claro u oscuro", lang_group: "Idioma",
     hours_note: "Los horarios son orientativos y pueden variar en festivos. En caso de duda, llama al local.",
@@ -1140,12 +1142,20 @@ function buildLayers() {
               (CONFIG.checkOut ? kv('checkout', CONFIG.checkOut, false) : '') +
               (CONFIG.address ? kv('address', CONFIG.address, true) : '') + `</article>`;
     }
-    if (CONFIG.hostPhone) {
-      const num = CONFIG.hostPhone.replace(/\s+/g, '');
-      html += `<article class="card"><div class="card-top"><h3 class="card-title">${ic('i-phone')}<span data-i18n="host_title"></span></h3></div>
-        <div class="btn-row"><a class="btn btn-call" href="tel:${esc(num)}">${ic('i-phone')}<span data-i18n="call_host"></span></a>` +
-        (CONFIG.hostWhatsapp ? `<a class="btn btn-gmaps" href="https://wa.me/${esc(num.replace(/\D/g, ''))}" target="_blank" rel="noopener">${ic('i-message')}<span data-i18n="whatsapp"></span></a>` : '') +
-        `</div></article>`;
+    if (CONFIG.hostPhone || CONFIG.secondHostPhone) {
+      html += `<article class="card"><div class="card-top"><h3 class="card-title">${ic('i-phone')}<span data-i18n="host_title"></span></h3></div><div class="btn-row">`;
+      if (CONFIG.hostPhone) {
+        const num = CONFIG.hostPhone.replace(/\s+/g, '');
+        html += `<a class="btn btn-call" href="tel:${esc(num)}">${ic('i-phone')}<span data-i18n="call_host"></span></a>` +
+                (CONFIG.hostWhatsapp ? `<a class="btn btn-gmaps" href="https://wa.me/${esc(num.replace(/\D/g, ''))}" target="_blank" rel="noopener">${ic('i-message')}Leonardo WA</a>` : '');
+      }
+      if (CONFIG.secondHostPhone) {
+        const num2 = CONFIG.secondHostPhone.replace(/\s+/g, '');
+        const label2 = CONFIG.secondHostName ? esc(CONFIG.secondHostName) : `<span data-i18n="call_second_host"></span>`;
+        html += `<a class="btn btn-call" href="tel:${esc(num2)}">${ic('i-phone')}${label2}</a>` +
+                (CONFIG.hostWhatsapp ? `<a class="btn btn-gmaps" href="https://wa.me/${esc(num2.replace(/\D/g, ''))}" target="_blank" rel="noopener">${ic('i-message')}${esc(CONFIG.secondHostName || 'Host 2')} WA</a>` : '');
+      }
+      html += `</div></article>`;
     }
     html += `<article class="card"><div class="card-top"><h3 class="card-title" data-i18n="emergency_title"></h3><span class="chip">112</span></div>
       <p class="card-desc" data-i18n="emergency_desc"></p>
@@ -1372,7 +1382,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   buildLayers();
 
-  const hasCfg = CONFIG.wifiName || CONFIG.wifiPassword || CONFIG.checkIn || CONFIG.checkOut || CONFIG.address || CONFIG.hostPhone;
+  const hasCfg = CONFIG.wifiName || CONFIG.wifiPassword || CONFIG.checkIn || CONFIG.checkOut || CONFIG.address || CONFIG.hostPhone || CONFIG.secondHostPhone;
   document.getElementById('info-sub').setAttribute('data-i18n', hasCfg ? 'info_sub' : 'info_sub_min');
 
   applyTheme(document.documentElement.getAttribute('data-theme') === 'dark');
