@@ -308,6 +308,7 @@
   .btn-gmaps:hover { background: var(--blue-hover); }
   .btn-apple { background: var(--apple); color: #fff; border: 1px solid var(--border-strong); }
   .btn-call { background: var(--primary); color: var(--on-primary); }
+  .btn-call.btn-soft { background: var(--surface-2); color: var(--text); border: 1px solid var(--border-strong); box-shadow: none; }
   .btn-danger { background: var(--danger); color: #fff; }
   .btn-danger:hover { background: var(--danger-hover); }
   .btn-soft { background: var(--surface-2); color: var(--text); border: 1px solid var(--border-strong); box-shadow: none; }
@@ -892,30 +893,30 @@ const F1 = [[480, 1230]];
 
 const PLACES = {
   ristoranti: [
-    { n: "Novate Kebap House", d: "desc_kebap", w: "walk_4m", h: every([[660, 1500]]) },
-    { n: "Pizzeria Friggitoria Esposito", q: "Pizzeria e friggitoria esposito Novate Milanese", d: "desc_esposito", w: "walk_5m",
+    { n: "Novate Kebap House", tel: "388 387 8861", d: "desc_kebap", w: "walk_4m", h: every([[660, 1500]]) },
+    { n: "Pizzeria Friggitoria Esposito", tel: "+39 353 489 5520", q: "Pizzeria e friggitoria esposito Novate Milanese", d: "desc_esposito", w: "walk_5m",
       h: [[[1110, 1380]], [], [[1110, 1380]], [[660, 870], [1110, 1380]], [[1110, 1380]], [[660, 870], [1110, 1380]], [[1110, 1380]]] },
-    { n: "Leone Carne e Cucina", d: "desc_leone", w: "walk_7m",
+    { n: "Leone Carne e Cucina", tel: "+39 02 354 4199", d: "desc_leone", w: "walk_7m",
       h: [LN, LN, LN, LN, [[720, 900], [1140, 1500]], [[720, 900], [1140, 1560]], [[720, 900], [1140, 1560]]] },
-    { n: "Pizzeria dell'Oca", d: "desc_oca", w: "walk_8m",
+    { n: "Pizzeria dell'Oca", tel: "+39 02 354 5596", d: "desc_oca", w: "walk_8m",
       h: [[[1140, 1380]], [], [[1140, 1350]], [[1140, 1350]], [[1140, 1350]], [[1140, 1380]], [[1140, 1380]]] },
-    { n: "Locanda Conte Ghiotto", d: "desc_locanda", w: "walk_10m",
+    { n: "Locanda Conte Ghiotto", tel: "02 354 4619", d: "desc_locanda", w: "walk_10m",
       h: [[[720, 885], [1155, 1380]], CG, CG, CG, CG, CG, [[1155, 1380]]] },
-    { n: "Risto-Grill", d: "desc_grill", w: "car_5m", h: every([[690, 900], [1110, 1380]]) },
-    { n: "A TUTTA CICCIA", d: "desc_ciccia", w: "walk_18m_car_5m",
+    { n: "Risto-Grill", tel: "+39 02 354 4125", d: "desc_grill", w: "car_5m", h: every([[690, 900], [1110, 1380]]) },
+    { n: "A TUTTA CICCIA", tel: "+39 375 656 1098", d: "desc_ciccia", w: "walk_18m_car_5m",
       h: [[[720, 900], [1080, 1440]], [], [[720, 870], [1080, 1380]], [[720, 870], [1080, 1380]], [[720, 870], [1080, 1380]], [[720, 840], [1080, 1440]], [[720, 900], [1080, 1440]]] }
   ],
   bar: [
     { n: "Mamo's cafe", d: "desc_mamo", w: "in_front", h: [[], B1, B1, B1, B1, B1, B1] },
     { n: "La Campana di Vetro", d: "desc_campana", w: "min_1", h: [[[1020, 1440]], C1, C1, C1, C1, C1, C1] },
-    { n: "Purogelato", d: "desc_purogelato", w: "min_3", h: [P1, P1, P1, P1, P1, P2, P2] },
-    { n: "Sir Oliver", d: "desc_oliver", w: "min_4",
+    { n: "Purogelato", tel: "+39 02 354 3346", d: "desc_purogelato", w: "min_3", h: [P1, P1, P1, P1, P1, P2, P2] },
+    { n: "Sir Oliver", tel: "+39 02 394 93965", d: "desc_oliver", w: "min_4",
       h: [[[630, 750], [870, 1290]], [], [[840, 1290]], [[840, 1290]], [[840, 1290]], [[840, 1320]], [[870, 1320]]] }
   ],
   supermercati: [
-    { n: "CRAI", d: "desc_crai", w: "min_1", h: [[[540, 750]], K1, K1, K1, K1, K1, K1] },
+    { n: "CRAI", tel: "02 354 4900", d: "desc_crai", w: "min_1", h: [[[540, 750]], K1, K1, K1, K1, K1, K1] },
     { n: "iN's Mercato", d: "desc_ins", w: "walk_15m_car_4m", h: [[[540, 780], [930, 1170]], M1, M1, M1, M1, M1, M1] },
-    { n: "Famila Superstore Novate Milanese", d: "desc_famila", w: "walk_10m_car_5m", h: [[[540, 1170]], F1, F1, F1, F1, F1, F1] }
+    { n: "Famila Superstore Novate Milanese", tel: "+39 02 356 2648", d: "desc_famila", w: "walk_10m_car_5m", h: [[[540, 1170]], F1, F1, F1, F1, F1, F1] }
   ]
 };
 
@@ -1031,7 +1032,7 @@ function mapButtons(q) {
 
 function placeCard(p, cat) {
   const q = p.q || (p.n + ' Novate Milanese');
-  const tel = p.tel ? `<a class="btn btn-call" href="tel:${esc(p.tel.replace(/\s+/g, ''))}">${ic('i-phone')}<span data-i18n="call"></span></a>` : '';
+  const tel = p.tel ? `<a class="btn btn-call btn-soft" href="tel:${esc(p.tel.replace(/\s+/g, ''))}">${ic('i-phone')}<span data-i18n="call"></span></a>` : '';
   return `<article class="card" data-cat="${cat}" data-h="${esc(JSON.stringify(p.h))}">
     <div class="card-top"><h3 class="card-title">${esc(p.n)}</h3></div>
     <div class="meta">
