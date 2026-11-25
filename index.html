@@ -1,1641 +1,484 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Antica Corte Milanese — Digital Guide</title>
-  <style>
-    :root {
-      --primary: #161B1E;
-      --primary-hover: #242C31;
-      --bg: #FAF5EE;
-      --surface: rgba(255, 253, 250, 0.94);
-      --surface-solid: #FFFDF9;
-      --surface-subtle: #F5F1EB;
-      --surface-dark-grad: linear-gradient(135deg, #14181B 0%, #242E35 100%);
-      --border: rgba(22, 27, 30, 0.10);
-      --border-strong: rgba(22, 27, 30, 0.18);
-      --border-light: rgba(255, 255, 255, 0.15);
-      --text-main: #161B1E;
-      --text-muted: #525D66;
-      --text-on-dark-muted: #CBD5E1;
-      --gmaps: #1A73E8;
-      --apple: #111315;
-      --taxi-badge-bg: rgba(250, 204, 21, 0.22);
-      --taxi-badge-border: rgba(202, 138, 4, 0.45);
-      --taxi-badge-color: #A16207;
-      --taxi-btn-bg: #FACC15;
-      --taxi-btn-hover: #EAB308;
-      --taxi-btn-color: #111827;
-      --shadow-sm: 0 2px 10px rgba(22, 27, 30, 0.05);
-      --shadow-md: 0 12px 28px rgba(22, 27, 30, 0.10);
-    }
-
-    body.dark-theme {
-      --primary: #F8FAFC;
-      --primary-hover: #E2E8F0;
-      --bg: #0F1316;
-      --surface: rgba(24, 30, 35, 0.92);
-      --surface-solid: #171D22;
-      --surface-subtle: #202830;
-      --surface-dark-grad: linear-gradient(135deg, #192026 0%, #26313A 100%);
-      --border: rgba(248, 250, 252, 0.10);
-      --border-strong: rgba(248, 250, 252, 0.18);
-      --border-light: rgba(248, 250, 252, 0.14);
-      --text-main: #F8FAFC;
-      --text-muted: #9AA6B2;
-      --text-on-dark-muted: #CBD5E1;
-      --gmaps: #2563EB;
-      --apple: #0B0E11;
-      --taxi-badge-bg: rgba(250, 204, 21, 0.14);
-      --taxi-badge-border: rgba(250, 204, 21, 0.35);
-      --taxi-badge-color: #FACC15;
-      --taxi-btn-bg: #FACC15;
-      --taxi-btn-hover: #FDE047;
-      --taxi-btn-color: #111827;
-      --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.28);
-      --shadow-md: 0 14px 32px rgba(0, 0, 0, 0.45);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      overflow-x: hidden;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg);
-      color: var(--text-main);
-      padding: 20px 16px 34px 16px;
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-      position: relative;
-      min-height: 100vh;
-      overflow-x: hidden;
-      transition: background-color 0.25s ease, color 0.25s ease;
-    }
-
-    body.modal-open {
-      overflow: hidden;
-      touch-action: none;
-    }
-
-    /* SFONDO TRASPARENTE A TUTTO SCHERMO */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('sfondo.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0.15;
-      z-index: -1;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-
-    body.dark-theme::before {
-      opacity: 0.08;
-    }
-
-    /* Icone (Lucide, outline) */
-    .icon {
-      width: 1.15em;
-      height: 1.15em;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.85;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      flex-shrink: 0;
-    }
-
-    /* Barra superiore con selettore lingua centrato e toggle tema in alto a destra */
-    .top-bar {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 18px;
-      min-height: 38px;
-    }
-
-    /* Language Switcher: IT -> EN -> FR -> ES */
-    .lang-bar {
-      display: flex;
-      justify-content: center;
-      gap: 4px;
-      padding: 4px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      width: fit-content;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .lang-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.7px;
-      padding: 6px 13px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .lang-btn:hover {
-      color: var(--primary);
-      background: rgba(128, 128, 128, 0.08);
-    }
-
-    .lang-btn.active {
-      background: var(--primary);
-      color: var(--bg);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
-    }
-
-    /* Pulsante Sole / Luna in alto a destra */
-    .theme-toggle-btn {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--primary);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    }
-
-    .theme-toggle-btn:hover {
-      background: var(--surface-solid);
-      border-color: var(--border-strong);
-      transform: translateY(-50%) scale(1.05);
-    }
-
-    .theme-toggle-btn:active {
-      transform: translateY(-50%) scale(0.95);
-    }
-
-    .theme-toggle-btn .icon {
-      font-size: 16px;
-    }
-
-    /* Header sobrio */
-    .header {
-      text-align: center;
-      margin-bottom: 24px;
-      padding: 8px 12px 14px 12px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .header-location {
-      display: block;
-      font-size: 11.5px;
-      font-weight: 600;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .header h1 {
-      font-family: Georgia, serif;
-      color: var(--primary);
-      font-size: 24px;
-      letter-spacing: 0.6px;
-      margin-bottom: 5px;
-      font-weight: 600;
-      line-height: 1.25;
-    }
-
-    .header p {
-      font-size: 12.5px;
-      color: var(--text-muted);
-      font-weight: 500;
-      letter-spacing: 0.3px;
-    }
-
-    /* Griglia 2x2 */
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-
-    .category-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 22px 14px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      color: var(--primary);
-      cursor: pointer;
-      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
-      box-shadow: var(--shadow-sm);
-      user-select: none;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    .category-card:hover {
-      background: var(--surface-solid);
-      box-shadow: var(--shadow-md);
-      border-color: var(--border-strong);
-      transform: translateY(-3px);
-    }
-
-    .category-card:active {
-      transform: translateY(-1px) scale(0.99);
-    }
-
-    .category-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
-      background: var(--surface-subtle);
-      border: 1px solid var(--border);
-      font-size: 22px;
-      margin-bottom: 12px;
-      color: var(--primary);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
-    }
-
-    .category-card:hover .category-icon {
-      background: var(--primary);
-      color: var(--bg);
-      transform: scale(1.05);
-    }
-
-    .category-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 3px;
-      letter-spacing: -0.01em;
-    }
-
-    .category-subtitle {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 500;
-      letter-spacing: 0.2px;
-    }
-
-    /* Overlay Modale */
-    .fullscreen-modal {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background-color: var(--bg);
-      z-index: 1000;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .fullscreen-modal.active {
-      display: flex;
-    }
-
-    .sub-modal {
-      z-index: 1100;
-    }
-
-    .sub-modal-level-2 {
-      z-index: 1200;
-    }
-
-    .modal-header {
-      position: relative;
-      background: var(--surface);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-strong);
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 10;
-      flex-shrink: 0;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    }
-
-    .modal-header-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--primary);
-    }
-
-    .modal-header-title .icon {
-      font-size: 19px;
-      color: var(--primary);
-    }
-
-    .modal-header-title h2 {
-      font-size: 17px;
-      color: var(--primary);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .btn-close {
-      background: var(--primary);
-      border: none;
-      border-radius: 50%;
-      width: 38px;
-      height: 38px;
-      font-size: 18px;
-      color: var(--bg);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
-      transition: transform 0.18s ease, background 0.18s ease;
-    }
-
-    .btn-close:hover {
-      background: var(--primary-hover);
-      transform: scale(1.04);
-    }
-
-    .btn-close:active {
-      transform: scale(0.92);
-    }
-
-    .modal-scroll-area {
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-    }
-
-    .modal-content {
-      padding: 18px 16px 64px 16px;
-      max-width: 600px;
-      margin: 0 auto;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    /* Card standard */
-    .place-card-full {
-      background: var(--surface-solid);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      box-shadow: var(--shadow-sm);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .place-card-full:hover {
-      border-color: var(--border-strong);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    }
-
-    /* Banner Mappa */
-    .map-card-special {
-      background: var(--surface-dark-grad);
-      border: 1px solid var(--border-light);
-      border-radius: 20px;
-      padding: 18px 16px;
-      color: #FFFFFF;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-    }
-
-    .map-card-special .place-name {
-      color: #FFFFFF;
-      font-size: 15px;
-    }
-
-    .map-card-special .place-desc {
-      color: var(--text-on-dark-muted);
-    }
-
-    .place-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 6px;
-      gap: 10px;
-    }
-
-    .place-name-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .place-name {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--primary);
-      letter-spacing: -0.01em;
-    }
-
-    .status-badge {
-      font-size: 10.5px;
-      font-weight: 700;
-      padding: 2.5px 8px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      letter-spacing: 0.2px;
-    }
-
-    .status-badge.open {
-      background-color: #DEF7EC;
-      color: #03543F;
-      border: 1px solid #85E0A3;
-    }
-
-    .status-badge.closed {
-      background-color: #FDE8E8;
-      color: #9B1C1C;
-      border: 1px solid #F8B4B4;
-    }
-
-    .status-badge.warning {
-      background-color: #FEF08A;
-      color: #854D0E;
-      border: 1px solid #FDE047;
-    }
-
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-    }
-
-    .status-badge.open .status-dot {
-      background-color: #0E9F6E;
-    }
-
-    .status-badge.closed .status-dot {
-      background-color: #E02424;
-    }
-
-    .status-badge.warning .status-dot {
-      background-color: #EAB308;
-    }
-
-    .place-badge {
-      font-size: 11px;
-      font-weight: 700;
-      background-color: var(--surface-subtle);
-      border: 1px solid var(--border);
-      color: var(--primary);
-      padding: 4px 10px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-
-    .place-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 14px;
-      line-height: 1.55;
-      white-space: pre-line;
-    }
-
-    .place-card-full .place-desc:last-child {
-      margin-bottom: 0;
-    }
-
-    .transport-section-title {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 1.1px;
-      margin-top: 8px;
-      margin-bottom: 2px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid var(--border-strong);
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 10px;
-    }
-
-    .btn {
-      flex: 1;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      text-align: center;
-      padding: 11px 10px;
-      border-radius: 12px;
-      text-decoration: none;
-      font-size: 12.5px;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-      transition: transform 0.16s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-      cursor: pointer;
-    }
-
-    .btn .icon {
-      font-size: 15px;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    .btn-gmaps {
-      background-color: var(--gmaps);
-      color: #FFFFFF;
-    }
-
-    .btn-apple {
-      background-color: var(--apple);
-      color: #FFFFFF;
-      border: 1px solid var(--border-light);
-    }
-
-    .btn-map {
-      background-color: #FFFFFF;
-      color: #161B1E;
-    }
-
-    .back-bottom-btn {
-      margin-top: 10px;
-      padding: 14px 16px;
-      background-color: var(--primary);
-      color: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border-radius: 14px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
-      transition: transform 0.16s ease, background 0.2s ease;
-    }
-
-    .back-bottom-btn:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-
-    .back-bottom-btn:active {
-      transform: scale(0.99);
-    }
-
-    .back-bottom-btn .icon {
-      font-size: 16px;
-    }
-
-    /* LIGHTBOX IMMAGINE */
-    .image-modal-overlay {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.9);
-      z-index: 2000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-    }
-
-    .image-modal-overlay.active {
-      display: flex;
-    }
-
-    .image-modal-container {
-      position: relative;
-      max-width: 100%;
-      max-height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .image-modal-container img {
-      max-width: 100%;
-      max-height: 85vh;
-      object-fit: contain;
-      border-radius: 10px;
-      box-shadow: 0 10px 34px rgba(0, 0, 0, 0.55);
-    }
-
-    .btn-close-image {
-      position: absolute;
-      top: -48px;
-      right: 0;
-      background: #FFFFFF;
-      color: #161B1E;
-      border: none;
-      border-radius: 50%;
-      width: 38px;
-      height: 38px;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    /* LINEA DIVISORIA */
-    .section-divider {
-      border: none;
-      border-top: 1px solid var(--border-strong);
-      margin: 20px 0 0 0;
-    }
-
-    /* BANNER TAXI ALLINEATO ALLE ALTRE CARD */
-    .taxi-cta-section {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px;
-      margin-top: 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: var(--shadow-sm);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    }
-
-    .taxi-cta-section:hover {
-      background: var(--surface-solid);
-      border-color: var(--border-strong);
-      box-shadow: var(--shadow-md);
-    }
-
-    .taxi-cta-info {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      min-width: 0;
-    }
-
-    .taxi-cta-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 13px;
-      background: var(--taxi-badge-bg);
-      border: 1px solid var(--taxi-badge-border);
-      color: var(--taxi-badge-color);
-      font-size: 18px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .taxi-cta-text {
-      text-align: left;
-      min-width: 0;
-    }
-
-    .taxi-cta-title {
-      margin: 0;
-      font-size: 14px;
-      color: var(--primary);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      line-height: 1.25;
-    }
-
-    .taxi-cta-subtitle {
-      margin: 2px 0 0 0;
-      font-size: 11.5px;
-      color: var(--text-muted);
-      font-weight: 500;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .taxi-call-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 10px 16px;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 12.5px;
-      letter-spacing: 0.2px;
-      background-color: var(--taxi-btn-bg);
-      color: var(--taxi-btn-color);
-      transition: all 0.18s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .taxi-call-btn:hover {
-      background-color: var(--taxi-btn-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    }
-
-    .taxi-call-btn:active {
-      transform: scale(0.97);
-    }
-
-    /* SEZIONE RECENSIONI FINE PAGINA */
-    .review-cta-section {
-      text-align: center;
-      padding: 24px 18px;
-      margin-top: 22px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      box-shadow: var(--shadow-sm);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    .review-cta-title {
-      margin: 0 0 5px 0;
-      font-size: 18px;
-      color: var(--primary);
-      font-weight: 700;
-      letter-spacing: -0.015em;
-    }
-
-    .review-cta-subtitle {
-      margin: 0 0 18px 0;
-      font-size: 12.5px;
-      color: var(--text-muted);
-    }
-
-    .review-cta-buttons {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .review-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 12px 20px;
-      border-radius: 14px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 13px;
-      transition: all 0.2s ease;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-      flex: 1;
-      min-width: 140px;
-    }
-
-    .review-btn:active {
-      transform: scale(0.97);
-    }
-
-    /* TASTO GOOGLE REVIEW CHIARO */
-    .btn-review-google {
-      background-color: var(--surface-solid);
-      color: var(--primary);
-      border: 1px solid var(--border-strong);
-    }
-
-    .btn-review-google:hover {
-      background-color: var(--surface-subtle);
-      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.10);
-      transform: translateY(-1px);
-    }
-
-    .btn-review-tripadvisor {
-      background-color: #34E0A1;
-      color: #0B1310;
-      border: 1px solid transparent;
-    }
-
-    .btn-review-tripadvisor:hover {
-      background-color: #00AF87;
-      color: #FFFFFF;
-      transform: translateY(-1px);
-      box-shadow: 0 5px 14px rgba(0, 175, 135, 0.25);
-    }
-
-    .btn-review-tripadvisor:hover svg {
-      fill: #FFFFFF;
-    }
-
-    .btn-review-tripadvisor svg {
-      transition: fill 0.2s ease;
-    }
-
-    .footer {
-      text-align: center;
-      font-size: 11.5px;
-      color: var(--text-muted);
-      margin-top: 22px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
-      letter-spacing: 0.3px;
-    }
-
-    @media (max-width: 420px) {
-      .taxi-cta-section {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-      }
-      .taxi-call-btn {
-        width: 100%;
-      }
-      .review-cta-buttons {
-        flex-direction: column;
-      }
-      .review-btn {
-        width: 100%;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#F7F2EA">
+<title>Antica Corte Milanese — Digital Guide</title>
+
+<!-- Applica tema e dimensione testo salvati PRIMA del disegno della pagina (evita lampeggi) -->
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('acm_theme');
+    if (!t && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    var s = localStorage.getItem('acm_size');
+    if (s) document.documentElement.setAttribute('data-size', s);
+  } catch (e) {}
+})();
+</script>
+
+<style>
+  :root {
+    --bg: #F7F2EA;
+    --surface: #FFFFFF;
+    --surface-2: #F2ECE2;
+    --glass: rgba(255, 255, 255, 0.88);
+    --text: #161B1E;
+    --muted: #4A545D;
+    --border: rgba(22, 27, 30, 0.12);
+    --border-strong: rgba(22, 27, 30, 0.24);
+    --primary: #161B1E;
+    --on-primary: #FFFFFF;
+    --accent: #B4532A;
+    --blue: #1558C0;
+    --blue-hover: #0F47A0;
+    --apple: #111315;
+    --danger: #C81E1E;
+    --danger-hover: #A31616;
+
+    --ok-bg: #DEF7EC;   --ok-fg: #03543F;   --ok-dot: #0E9F6E;
+    --no-bg: #FDE8E8;   --no-fg: #9B1C1C;   --no-dot: #E02424;
+    --warn-bg: #FEF3C7; --warn-fg: #78350F; --warn-dot: #D97706;
+
+    --taxi: #FACC15; --taxi-hover: #EAB308; --taxi-ink: #111827;
+    --taxi-soft: rgba(250, 204, 21, 0.25); --taxi-edge: rgba(161, 98, 7, 0.45); --taxi-fg: #8A5200;
+
+    --shadow-sm: 0 2px 10px rgba(22, 27, 30, 0.06);
+    --shadow-md: 0 14px 30px rgba(22, 27, 30, 0.12);
+  }
+
+  html[data-theme="dark"] {
+    --bg: #0F1316;
+    --surface: #171D22;
+    --surface-2: #202830;
+    --glass: rgba(23, 29, 34, 0.9);
+    --text: #F4F7FA;
+    --muted: #B4BEC8;
+    --border: rgba(244, 247, 250, 0.12);
+    --border-strong: rgba(244, 247, 250, 0.26);
+    --primary: #F4F7FA;
+    --on-primary: #0F1316;
+    --accent: #F0955F;
+    --blue: #3B7DEB;
+    --blue-hover: #5A92F0;
+    --apple: #0B0E11;
+    --danger: #E04848;
+    --danger-hover: #EC6464;
+
+    --ok-bg: #0F3D2E;   --ok-fg: #9BE8C4;   --ok-dot: #34D399;
+    --no-bg: #4A1D1D;   --no-fg: #FBB4B4;   --no-dot: #F87171;
+    --warn-bg: #4A3A0A; --warn-fg: #FDE68A; --warn-dot: #FBBF24;
+
+    --taxi-soft: rgba(250, 204, 21, 0.16); --taxi-edge: rgba(250, 204, 21, 0.4); --taxi-fg: #FACC15;
+    --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 14px 32px rgba(0, 0, 0, 0.5);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 100%; -webkit-text-size-adjust: 100%; }
+  html[data-size="1"] { font-size: 115%; }
+  html[data-size="2"] { font-size: 130%; }
+  html.lock, html.lock body { overflow: hidden; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; touch-action: manipulation; }
+  a { color: inherit; touch-action: manipulation; }
+
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 10px; }
+
+  .icon {
+    width: 1.25em; height: 1.25em;
+    fill: none; stroke: currentColor; stroke-width: 1.9;
+    stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .app {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: calc(16px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) calc(36px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  }
+
+  /* Animazione di ingresso morbida */
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  [data-rise] { animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
+
+  /* ---------- Barra superiore ---------- */
+  .top-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+
+  .lang-bar {
+    display: flex; gap: 2px; padding: 4px;
+    background: var(--glass); border: 1px solid var(--border); border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  }
+  .lang-btn {
+    min-width: 48px; min-height: 44px; padding: 0 10px; border-radius: 999px;
+    font-size: 0.9rem; font-weight: 800; letter-spacing: 0.05em; color: var(--muted);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .lang-btn[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); }
+
+  .tools { display: flex; gap: 8px; }
+  .round-btn {
+    width: 52px; height: 52px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--glass); border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+    color: var(--primary);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    transition: transform 0.18s ease, background 0.2s ease;
+  }
+  .round-btn:active { transform: scale(0.94); }
+  .round-btn .icon { width: 1.4rem; height: 1.4rem; }
+  .aa { font-weight: 800; font-size: 1rem; letter-spacing: -0.02em; }
+  .aa b { font-size: 1.35em; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative; overflow: hidden; text-align: center; color: #fff;
+    border-radius: 28px; padding: 34px 22px 30px; margin-bottom: 20px;
+    background:
+      linear-gradient(165deg, rgba(14, 18, 20, 0.5) 0%, rgba(14, 18, 20, 0.82) 100%),
+      url('sfondo.jpg') center / cover no-repeat,
+      linear-gradient(135deg, #1B2328 0%, #34424C 100%);
+    box-shadow: var(--shadow-md);
+  }
+  .hero-loc { display: block; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); margin-bottom: 8px; }
+  .hero h1 { font-family: Georgia, "Times New Roman", serif; font-size: 1.85rem; font-weight: 600; line-height: 1.2; letter-spacing: 0.03em; margin-bottom: 8px; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35); }
+  .hero-sub { font-size: 1rem; font-weight: 600; color: rgba(255, 255, 255, 0.92); }
+  .hero-welcome { margin-top: 14px; font-size: 1.05rem; color: rgba(255, 255, 255, 0.95); }
+
+  /* ---------- Griglia e card categoria ---------- */
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .grid + .cat-wide { margin-top: 14px; }
+
+  .cat {
+    width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 22px;
+    padding: 22px 12px 18px; display: flex; flex-direction: column; align-items: center; text-align: center;
+    box-shadow: var(--shadow-sm); color: var(--text);
+    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+  .cat:active { transform: scale(0.97); }
+  @media (hover: hover) {
+    .cat:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+    .cat:hover .cat-icon { background: var(--primary); color: var(--on-primary); }
+  }
+  .cat-icon {
+    width: 60px; height: 60px; border-radius: 18px; margin-bottom: 12px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--surface-2); border: 1px solid var(--border); color: var(--primary);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .cat-icon .icon { width: 1.7rem; height: 1.7rem; }
+  .cat-title { font-size: 1.1875rem; font-weight: 800; letter-spacing: -0.01em; line-height: 1.25; }
+  .cat-sub { font-size: 0.95rem; color: var(--muted); font-weight: 500; margin-top: 2px; }
+  .cat-count { display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; font-size: 0.9rem; font-weight: 700; color: var(--muted); }
+  .cat-count::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--no-dot); }
+  .cat-count.on::before { background: var(--ok-dot); }
+  .cat-count:empty { display: none; }
+
+  .cat-wide { flex-direction: row; text-align: left; gap: 14px; padding: 16px 18px; }
+  .cat-wide .cat-icon { margin-bottom: 0; }
+  .cat-wide .cat-text { flex: 1; min-width: 0; }
+  .cat-wide .chev { color: var(--muted); }
+
+  /* ---------- Banner taxi ---------- */
+  .taxi {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    margin-top: 18px; padding: 16px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 22px; box-shadow: var(--shadow-sm);
+  }
+  .taxi-info { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .taxi-icon { width: 48px; height: 48px; border-radius: 15px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--taxi-soft); border: 1px solid var(--taxi-edge); color: var(--taxi-fg); }
+  .taxi-title { font-size: 1.05rem; font-weight: 800; line-height: 1.25; }
+  .taxi-sub { font-size: 0.95rem; color: var(--muted); }
+  .taxi-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 52px; padding: 0 22px; border-radius: 14px; text-decoration: none;
+    background: var(--taxi); color: var(--taxi-ink); font-weight: 800; font-size: 1.05rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); transition: transform 0.16s ease, background 0.2s ease;
+  }
+  .taxi-btn:hover { background: var(--taxi-hover); }
+  .taxi-btn:active { transform: scale(0.97); }
+
+  /* ---------- Recensioni ---------- */
+  .review { text-align: center; margin-top: 22px; padding: 26px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-sm); }
+  .review h2 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.015em; margin-bottom: 6px; }
+  .review p { font-size: 1rem; color: var(--muted); margin-bottom: 18px; }
+  .review-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .review-btn {
+    flex: 1 1 160px; min-height: 54px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 0 18px; border-radius: 15px; text-decoration: none; font-weight: 800; font-size: 1rem;
+    transition: transform 0.16s ease, background 0.2s ease, color 0.2s ease;
+  }
+  .review-btn:active { transform: scale(0.97); }
+  .review-google { background: var(--surface); color: var(--text); border: 1px solid var(--border-strong); }
+  .review-trip { background: #34E0A1; color: #0B1310; }
+  .review-trip:hover { background: #00AF87; color: #fff; }
+  .review-trip:hover svg { fill: #fff; }
+
+  .footer { text-align: center; font-size: 0.9rem; color: var(--muted); margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .footer p + p { margin-top: 6px; }
+
+  /* ---------- Schermate a tutto schermo (layer) ---------- */
+  .layer, .lightbox {
+    position: fixed; inset: 0; display: flex; flex-direction: column;
+    opacity: 0; visibility: hidden; transform: translateY(28px);
+    transition: opacity 0.28s ease, transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.34s;
+  }
+  .layer { background: var(--bg); }
+  .layer.active, .lightbox.active { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+
+  .layer-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0;
+    padding: calc(12px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left));
+    background: var(--glass); border-bottom: 1px solid var(--border-strong);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  }
+  .layer-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .layer-title .icon { width: 1.5rem; height: 1.5rem; }
+  .layer-title h2 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.01em; line-height: 1.25; }
+
+  .btn-close {
+    width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--primary); color: var(--on-primary); box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+    transition: transform 0.18s ease;
+  }
+  .btn-close:active { transform: scale(0.92); }
+  .btn-close .icon { width: 1.4rem; height: 1.4rem; }
+
+  .layer-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .layer-body {
+    max-width: 640px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 16px;
+    padding: 18px max(16px, env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  }
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+
+  .layer.active .stack > *, .layer.active .back-btn {
+    animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i, 0) * 50ms + 100ms);
+  }
+
+  /* ---------- Card standard ---------- */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px; box-shadow: var(--shadow-sm); }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .card-title { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.01em; line-height: 1.3; display: flex; align-items: center; gap: 8px; }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .chip { display: inline-flex; align-items: center; font-size: 0.95rem; font-weight: 700; padding: 5px 12px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); }
+  .card-top .chip { white-space: nowrap; }
+  .card-desc { font-size: 1.02rem; color: var(--muted); white-space: pre-line; margin-bottom: 16px; }
+  .card > .card-desc:last-child { margin-bottom: 0; }
+
+  .status { display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; font-weight: 700; padding: 5px 12px; border-radius: 999px; line-height: 1.3; }
+  .status .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .status.open { background: var(--ok-bg); color: var(--ok-fg); }
+  .status.open .dot { background: var(--ok-dot); }
+  .status.closed { background: var(--no-bg); color: var(--no-fg); }
+  .status.closed .dot { background: var(--no-dot); }
+  .status.warning { background: var(--warn-bg); color: var(--warn-fg); }
+  .status.warning .dot { background: var(--warn-dot); }
+
+  .section-title { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text); padding-bottom: 8px; border-bottom: 2px solid var(--border-strong); margin-top: 6px; }
+
+  /* ---------- Pulsanti ---------- */
+  .btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn {
+    flex: 1 1 140px; min-height: 54px; padding: 0 14px; border-radius: 14px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px; text-align: center; text-decoration: none;
+    font-size: 1rem; font-weight: 800; letter-spacing: 0.01em;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); transition: transform 0.16s ease, background 0.2s ease;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-gmaps { background: var(--blue); color: #fff; }
+  .btn-gmaps:hover { background: var(--blue-hover); }
+  .btn-apple { background: var(--apple); color: #fff; border: 1px solid var(--border-strong); }
+  .btn-call { background: var(--primary); color: var(--on-primary); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-danger:hover { background: var(--danger-hover); }
+  .btn-soft { background: var(--surface-2); color: var(--text); border: 1px solid var(--border-strong); box-shadow: none; }
+  .btn-map { background: #fff; color: #161B1E; }
+  .btn-sm { flex: 0 0 auto; min-height: 46px; padding: 0 14px; }
+  .apple-only { display: none; }
+  html.is-apple .apple-only { display: inline-flex; }
+
+  .back-btn {
+    width: 100%; min-height: 58px; border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: var(--primary); color: var(--on-primary); font-size: 1.05rem; font-weight: 800;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16); margin-top: 4px; transition: transform 0.16s ease;
+  }
+  .back-btn:active { transform: scale(0.98); }
+
+  /* ---------- Mappa trasporti ---------- */
+  .map-card { background: linear-gradient(135deg, #14181B 0%, #26323A 100%); color: #fff; border-radius: 22px; padding: 20px 18px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25); }
+  .map-card .card-title { color: #fff; margin-bottom: 6px; }
+  .map-card .card-desc { color: #CBD5E1; margin-bottom: 14px; }
+
+  /* ---------- Info utili ---------- */
+  .kv { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--border); }
+  .kv:first-of-type { border-top: none; padding-top: 4px; }
+  .kv-text { min-width: 0; }
+  .kv-label { font-size: 0.9rem; font-weight: 700; color: var(--muted); }
+  .kv-value { font-size: 1.15rem; font-weight: 800; word-break: break-word; }
+
+  /* ---------- Lightbox mappa ---------- */
+  .lightbox { z-index: 3000; background: rgba(0, 0, 0, 0.94); align-items: center; justify-content: center; padding: 16px; gap: 14px; }
+  .lb-close { position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 14px; background: #fff; color: #161B1E; }
+  .lb-img { max-width: 100%; max-height: 72vh; object-fit: contain; border-radius: 10px; touch-action: pinch-zoom; background: #fff; }
+  .lb-hint { color: #E2E8F0; font-size: 0.95rem; text-align: center; }
+  .lb-open { flex: 0 0 auto; width: min(100%, 360px); }
+
+  noscript p { padding: 20px; text-align: center; }
+
+  @media (max-width: 380px) {
+    .grid { gap: 10px; }
+    .cat { padding: 18px 8px 14px; }
+    .hero h1 { font-size: 1.55rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; transition-duration: 0.01ms !important; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- Sprite icone Lucide (outline) -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol>
-    <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></symbol>
-    <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></symbol>
-    <symbol id="i-train" viewBox="0 0 24 24"><path d="M8 3.1V7a4 4 0 0 0 8 0V3.1"/><path d="m9 15-1-1"/><path d="m15 15 1-1"/><path d="M9 19c-2.8 0-5-2.2-5-5v-4a8 8 0 0 1 16 0v4c0 2.8-2.2 5-5 5Z"/><path d="m8 19-2 3"/><path d="m16 19 2 3"/></symbol>
-    <symbol id="i-taxi" viewBox="0 0 24 24">
-      <path d="M9 3h6l1 3H8l1-3Z"/>
-      <path d="M5 11 6.5 6.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11"/>
-      <rect x="3" y="11" width="18" height="6" rx="2"/>
-      <path d="M5 17v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/>
-      <path d="M16 17v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/>
-      <circle cx="7" cy="14" r="1"/>
-      <circle cx="17" cy="14" r="1"/>
-    </symbol>
-    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
-    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
-    <symbol id="i-map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></symbol>
-    <symbol id="i-image" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></symbol>
-    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
-    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
-    <symbol id="i-landmark" viewBox="0 0 24 24"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></symbol>
-    <symbol id="i-building" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></symbol>
-    <symbol id="i-plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
-    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
-    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
-    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
-  </svg>
+<!-- Sprite icone (stile outline) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol>
+  <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></symbol>
+  <symbol id="i-train" viewBox="0 0 24 24"><path d="M8 3.1V7a4 4 0 0 0 8 0V3.1"/><path d="m9 15-1-1"/><path d="m15 15 1-1"/><path d="M9 19c-2.8 0-5-2.2-5-5v-4a8 8 0 0 1 16 0v4c0 2.8-2.2 5-5 5Z"/><path d="m8 19-2 3"/><path d="m16 19 2 3"/></symbol>
+  <symbol id="i-taxi" viewBox="0 0 24 24"><path d="M9 3h6l1 3H8l1-3Z"/><path d="M5 11 6.5 6.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11"/><rect x="3" y="11" width="18" height="6" rx="2"/><path d="M5 17v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M16 17v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><circle cx="7" cy="14" r="1"/><circle cx="17" cy="14" r="1"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-landmark" viewBox="0 0 24 24"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+</svg>
 
-  <!-- BARRA SUPERIORE: SELETTORE LINGUA + TOGGLE SOLE/LUNA IN ALTO A DESTRA -->
-  <div class="top-bar">
-    <div class="lang-bar" role="group" aria-label="Language selector">
-      <button type="button" class="lang-btn active" data-lang="it" onclick="setLanguage('it')">IT</button>
-      <button type="button" class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
-      <button type="button" class="lang-btn" data-lang="fr" onclick="setLanguage('fr')">FR</button>
-      <button type="button" class="lang-btn" data-lang="es" onclick="setLanguage('es')">ES</button>
+<noscript><p>Per usare questa guida attiva JavaScript nel browser. / Please enable JavaScript to use this guide.</p></noscript>
+
+<div id="app" class="app">
+
+  <!-- BARRA SUPERIORE: lingua, dimensione testo, tema -->
+  <div class="top-bar" data-rise>
+    <div class="lang-bar" role="group" data-i18n-aria="lang_group" aria-label="Lingua">
+      <button type="button" class="lang-btn" data-lang="it" aria-pressed="true" onclick="setLanguage('it')">IT</button>
+      <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" onclick="setLanguage('en')">EN</button>
+      <button type="button" class="lang-btn" data-lang="fr" aria-pressed="false" onclick="setLanguage('fr')">FR</button>
+      <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" onclick="setLanguage('es')">ES</button>
     </div>
-
-    <button type="button" id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Cambia tema chiaro o scuro" title="Cambia tema">
-      <svg id="themeIcon" class="icon"><use href="#i-moon"/></svg>
-    </button>
+    <div class="tools">
+      <button type="button" class="round-btn" onclick="cycleSize()" data-i18n-aria="text_size" aria-label="Dimensione del testo"><span class="aa" aria-hidden="true">A<b>A</b></span></button>
+      <button type="button" id="themeToggleBtn" class="round-btn" onclick="toggleTheme()" data-i18n-aria="theme_toggle" aria-label="Cambia tema chiaro o scuro"><svg id="themeIcon" class="icon" aria-hidden="true"><use href="#i-moon"/></svg></button>
+    </div>
   </div>
 
-  <div class="header">
-    <span class="header-location">Novate Milanese</span>
+  <!-- HERO -->
+  <header class="hero" data-rise>
+    <span class="hero-loc">Novate Milanese</span>
     <h1>ANTICA CORTE MILANESE</h1>
-    <p data-i18n="header_sub">Local Guide & Navigazione</p>
-  </div>
+    <p class="hero-sub" data-i18n="header_sub">Local Guide &amp; Navigazione</p>
+    <p class="hero-welcome" data-i18n="hero_welcome">Benvenuto! Qui trovi tutto ciò che ti serve, vicino a te.</p>
+  </header>
 
-  <!-- GRIGLIA 2x2 -->
-  <div class="grid-container">
+  <main>
+    <div class="grid">
+      <button type="button" class="cat" data-rise onclick="openLayer('modal-ristoranti')">
+        <span class="cat-icon"><svg class="icon" aria-hidden="true"><use href="#i-utensils"/></svg></span>
+        <span class="cat-title" data-i18n="cat_restaurants">Ristoranti</span>
+        <span class="cat-sub" data-i18n="cat_restaurants_sub">Dining &amp; Pizza</span>
+        <span class="cat-count" data-count="ristoranti"></span>
+      </button>
 
-    <div class="category-card" onclick="openModal('modal-ristoranti')">
-      <span class="category-icon"><svg class="icon"><use href="#i-utensils"/></svg></span>
-      <span class="category-title" data-i18n="cat_restaurants">Ristoranti</span>
-      <span class="category-subtitle" data-i18n="cat_restaurants_sub">Dining & Pizza</span>
+      <button type="button" class="cat" data-rise onclick="openLayer('modal-bar')">
+        <span class="cat-icon"><svg class="icon" aria-hidden="true"><use href="#i-coffee"/></svg></span>
+        <span class="cat-title" data-i18n="cat_bars">Bar &amp; Caffè</span>
+        <span class="cat-sub" data-i18n="cat_bars_sub">Colazioni &amp; Gelati</span>
+        <span class="cat-count" data-count="bar"></span>
+      </button>
+
+      <button type="button" class="cat" data-rise onclick="openLayer('modal-supermercati')">
+        <span class="cat-icon"><svg class="icon" aria-hidden="true"><use href="#i-cart"/></svg></span>
+        <span class="cat-title" data-i18n="cat_markets">Supermercati</span>
+        <span class="cat-sub" data-i18n="cat_markets_sub">Spesa &amp; Negozi</span>
+        <span class="cat-count" data-count="supermercati"></span>
+      </button>
+
+      <button type="button" class="cat" data-rise onclick="openLayer('modal-trasporti')">
+        <span class="cat-icon"><svg class="icon" aria-hidden="true"><use href="#i-train"/></svg></span>
+        <span class="cat-title" data-i18n="cat_transport">Trasporti</span>
+        <span class="cat-sub" data-i18n="cat_transport_sub">Stazione &amp; Metro</span>
+      </button>
     </div>
 
-    <div class="category-card" onclick="openModal('modal-bar')">
-      <span class="category-icon"><svg class="icon"><use href="#i-coffee"/></svg></span>
-      <span class="category-title" data-i18n="cat_bars">Bar & Caffè</span>
-      <span class="category-subtitle" data-i18n="cat_bars_sub">Colazioni & Gelati</span>
-    </div>
+    <button type="button" class="cat cat-wide" data-rise onclick="openLayer('modal-info')">
+      <span class="cat-icon"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg></span>
+      <span class="cat-text">
+        <span class="cat-title" data-i18n="info_title" style="display:block">Info utili</span>
+        <span class="cat-sub" id="info-sub" data-i18n="info_sub" style="display:block">Wi-Fi, emergenze e contatti</span>
+      </span>
+      <svg class="icon chev" aria-hidden="true"><use href="#i-chevron"/></svg>
+    </button>
+  </main>
 
-    <div class="category-card" onclick="openModal('modal-supermercati')">
-      <span class="category-icon"><svg class="icon"><use href="#i-cart"/></svg></span>
-      <span class="category-title" data-i18n="cat_markets">Supermercati</span>
-      <span class="category-subtitle" data-i18n="cat_markets_sub">Spesa & Negozi</span>
-    </div>
-
-    <div class="category-card" onclick="openModal('modal-trasporti')">
-      <span class="category-icon"><svg class="icon"><use href="#i-train"/></svg></span>
-      <span class="category-title" data-i18n="cat_transport">Trasporti</span>
-      <span class="category-subtitle" data-i18n="cat_transport_sub">Stazione & Metro</span>
-    </div>
-
-  </div>
-
-
-  <!-- MODAL RISTORANTI -->
-  <div id="modal-ristoranti" class="fullscreen-modal">
-    <div class="modal-header">
-      <div class="modal-header-title">
-        <svg class="icon"><use href="#i-utensils"/></svg>
-        <h2 data-i18n="modal_restaurants_title">Ristoranti & Pizzerie</h2>
-      </div>
-      <button type="button" class="btn-close" onclick="closeModal('modal-ristoranti')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
-    </div>
-    <div class="modal-scroll-area">
-      <div class="modal-content">
-
-        <div class="place-card-full" data-schedule='{"0":[[660,1500]],"1":[[660,1500]],"2":[[660,1500]],"3":[[660,1500]],"4":[[660,1500]],"5":[[660,1500]],"6":[[660,1500]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">Novate Kebap House</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="walk_4m">4 min a piedi</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_kebap">€ • Kebab e panini veloci da asporto.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Novate+Kebap+House+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full" data-schedule='{"0":[[1110,1380]],"1":[],"2":[[1110,1380]],"3":[[660,870],[1110,1380]],"4":[[1110,1380]],"5":[[660,870],[1110,1380]],"6":[[1110,1380]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">Pizzeria e friggitoria esposito...</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="walk_5m">5 min a piedi</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_esposito">€ • Specialità napoletane e fritti caldi.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Pizzeria+e+friggitoria+esposito+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Pizzeria+e+friggitoria+esposito+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full" data-schedule='{"0":[[720,900],[1140,1440]],"1":[[720,900],[1140,1440]],"2":[[720,900],[1140,1440]],"3":[[720,900],[1140,1440]],"4":[[720,900],[1140,1500]],"5":[[720,900],[1140,1560]],"6":[[720,900],[1140,1560]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">Leone Carne e Cucina</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="walk_7m">7 min a piedi</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_leone">€€ • Ristorante elegante con tagli di carne scelti.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Leone+Carne+e+Cucina+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Leone+Carne+e+Cucina+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full" data-schedule='{"0":[[1140,1380]],"1":[],"2":[[1140,1350]],"3":[[1140,1350]],"4":[[1140,1350]],"5":[[1140,1380]],"6":[[1140,1380]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">Pizzeria dell'Oca</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="walk_8m">8 min a piedi</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_oca">€€ • Pizza al trancio e d'asporto.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Pizzeria+dell'Oca+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Pizzeria+dell'Oca+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full" data-schedule='{"0":[[720,885],[1155,1380]],"1":[[720,870],[1155,1380]],"2":[[720,870],[1155,1380]],"3":[[720,870],[1155,1380]],"4":[[720,870],[1155,1380]],"5":[[720,870],[1155,1380]],"6":[[1155,1380]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">Locanda Conte Ghiotto</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="walk_10m">10 min a piedi</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_locanda">€€ • Piatti tipici e ambiente accogliente.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Locanda+Conte+Ghiotto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Locanda+Conte+Ghiotto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full" data-schedule='{"0":[[690,900],[1110,1380]],"1":[[690,900],[1110,1380]],"2":[[690,900],[1110,1380]],"3":[[690,900],[1110,1380]],"4":[[690,900],[1110,1380]],"5":[[690,900],[1110,1380]],"6":[[690,900],[1110,1380]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">Risto-Grill</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="car_5m">5 min in macchina</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_grill">€€ • Cucina alla griglia e piatti della tradizione.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Risto-Grill+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Risto-Grill+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full" data-schedule='{"0":[[720,900],[1080,1440]],"1":[],"2":[[720,870],[1080,1380]],"3":[[720,870],[1080,1380]],"4":[[720,870],[1080,1380]],"5":[[720,840],[1080,1440]],"6":[[720,900],[1080,1440]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">A TUTTA CICCIA</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="walk_18m_car_5m">18 min a piedi / 5 min auto</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_ciccia">€€€ • Specialità carne alla brace e piatti sfiziosi.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=A+TUTTA+CICCIA+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=A+TUTTA+CICCIA+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="back-bottom-btn" onclick="closeModal('modal-ristoranti')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
+  <!-- TAXI -->
+  <section class="taxi" data-rise>
+    <div class="taxi-info">
+      <span class="taxi-icon"><svg class="icon" aria-hidden="true"><use href="#i-taxi"/></svg></span>
+      <div>
+        <h2 class="taxi-title" data-i18n="taxi_title">Ti serve un taxi?</h2>
+        <p class="taxi-sub" data-i18n="taxi_sub">Chiamata diretta Milano</p>
       </div>
     </div>
-  </div>
-
-
-  <!-- MODAL BAR -->
-  <div id="modal-bar" class="fullscreen-modal">
-    <div class="modal-header">
-      <div class="modal-header-title">
-        <svg class="icon"><use href="#i-coffee"/></svg>
-        <h2 data-i18n="modal_bars_title">Bar, Caffè & Gelaterie</h2>
-      </div>
-      <button type="button" class="btn-close" onclick="closeModal('modal-bar')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
-    </div>
-    <div class="modal-scroll-area">
-      <div class="modal-content">
-
-        <div class="place-card-full" data-schedule='{"0":[],"1":[[360,1200]],"2":[[360,1200]],"3":[[360,1200]],"4":[[360,1200]],"5":[[360,1200]],"6":[[360,1200]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">Mamo's cafe</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="in_front">Di fronte all'edificio</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_mamo">Caffetteria per colazioni e pause caffè proprio fuori dalla porta.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Mamo's+cafe+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full" data-schedule='{"0":[[1020,1440]],"1":[[480,1560]],"2":[[480,1560]],"3":[[480,1560]],"4":[[480,1560]],"5":[[480,1560]],"6":[[480,1560]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">La Campana di Vetro</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="min_1">1 minuto</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_campana">Caffetteria vicinissima, bar e drink serali.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=La+Campana+di+Vetro+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=La+Campana+di+Vetro+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full" data-schedule='{"0":[[660,1350]],"1":[[660,1350]],"2":[[660,1350]],"3":[[660,1350]],"4":[[660,1350]],"5":[[660,1380]],"6":[[660,1380]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">Purogelato</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="min_3">3 minuti</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_purogelato">Bar, aperitivi e gelateria artigianale.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Purogelato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Purogelato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full" data-schedule='{"0":[[630,750],[870,1290]],"1":[],"2":[[840,1290]],"3":[[840,1290]],"4":[[840,1290]],"5":[[840,1320]],"6":[[870,1320]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">Sir Oliver</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="min_4">4 minuti</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_oliver">Gelateria artigianale con gusti e prodotti naturali.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Sir+Oliver+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Sir+Oliver+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="back-bottom-btn" onclick="closeModal('modal-bar')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- MODAL SUPERMERCATI -->
-  <div id="modal-supermercati" class="fullscreen-modal">
-    <div class="modal-header">
-      <div class="modal-header-title">
-        <svg class="icon"><use href="#i-cart"/></svg>
-        <h2 data-i18n="modal_markets_title">Supermercati & Spesa</h2>
-      </div>
-      <button type="button" class="btn-close" onclick="closeModal('modal-supermercati')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
-    </div>
-    <div class="modal-scroll-area">
-      <div class="modal-content">
-
-        <div class="place-card-full" data-schedule='{"0":[[540,750]],"1":[[510,750],[930,1170]],"2":[[510,750],[930,1170]],"3":[[510,750],[930,1170]],"4":[[510,750],[930,1170]],"5":[[510,750],[930,1170]],"6":[[510,750],[930,1170]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">CRAI</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="min_1">1 minuto</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_crai">Piccolo supermercato di quartiere ideale per la spesa rapida.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=CRAI+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=CRAI+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full" data-schedule='{"0":[[540,780],[930,1170]],"1":[[480,1200]],"2":[[480,1200]],"3":[[480,1200]],"4":[[480,1200]],"5":[[480,1200]],"6":[[480,1200]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">iN's Mercato</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="walk_15m_car_4m">15 min a piedi / 4 min in macchina</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_ins">Discount alimentare con ottima selezione di prodotti convenienti.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=iN's+Mercato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=iN's+Mercato+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full" data-schedule='{"0":[[540,1170]],"1":[[480,1230]],"2":[[480,1230]],"3":[[480,1230]],"4":[[480,1230]],"5":[[480,1230]],"6":[[480,1230]]}'>
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">Famila Superstore Novate M...</span>
-              <span class="status-badge"><span class="status-dot"></span><span class="status-text"></span></span>
-            </div>
-            <span class="place-badge" data-i18n="walk_10m_car_5m">10 min a piedi / 5 min in macchina</span>
-          </div>
-          <div class="place-desc" data-i18n="desc_famila">Superstore grande per una spesa completa.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Famila+Superstore+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Famila+Superstore+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="back-bottom-btn" onclick="closeModal('modal-supermercati')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- MODAL TRASPORTI -->
-  <div id="modal-trasporti" class="fullscreen-modal">
-    <div class="modal-header">
-      <div class="modal-header-title">
-        <svg class="icon"><use href="#i-train"/></svg>
-        <h2 data-i18n="modal_transport_title">Trasporti & Mobilità</h2>
-      </div>
-      <button type="button" class="btn-close" onclick="closeModal('modal-trasporti')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
-    </div>
-    <div class="modal-scroll-area">
-      <div class="modal-content">
-
-        <div class="map-card-special">
-          <div class="place-header">
-            <span class="place-name" data-i18n="transport_map_title">Mappa dei trasporti</span>
-          </div>
-          <div class="place-desc" data-i18n="transport_map_desc">Schema con linee e collegamenti di treni e metropolitana.</div>
-          <div class="btn-group" style="margin-top: 12px;">
-            <button type="button" class="btn btn-map" onclick="openImageModal('mappa-trasporti.jpg')"><svg class="icon"><use href="#i-image"/></svg><span data-i18n="open_map">Apri la mappa</span></button>
-          </div>
-        </div>
-
-        <div class="transport-section-title" data-i18n="how_to_reach">Come Raggiungere</div>
-
-        <div class="grid-container">
-
-          <div class="category-card" onclick="openSubModal('modal-dest-stazioni')">
-            <span class="category-icon"><svg class="icon"><use href="#i-train"/></svg></span>
-            <span class="category-title" data-i18n="dest_stations">Stazioni</span>
-            <span class="category-subtitle">Centrale & Cadorna</span>
-          </div>
-
-          <div class="category-card" onclick="openSubModal('modal-dest-luoghi')">
-            <span class="category-icon"><svg class="icon"><use href="#i-landmark"/></svg></span>
-            <span class="category-title" data-i18n="dest_places">Luoghi</span>
-            <span class="category-subtitle">Duomo, Castello & Arco</span>
-          </div>
-
-          <div class="category-card" onclick="openSubModal('modal-dest-fiere')">
-            <span class="category-icon"><svg class="icon"><use href="#i-building"/></svg></span>
-            <span class="category-title" data-i18n="dest_fairs">Fiere</span>
-            <span class="category-subtitle">Rho & MiCo</span>
-          </div>
-
-          <div class="category-card" onclick="openSubModal('modal-dest-aeroporti')">
-            <span class="category-icon"><svg class="icon"><use href="#i-plane"/></svg></span>
-            <span class="category-title" data-i18n="dest_airports">Aeroporti</span>
-            <span class="category-subtitle">Linate, Malpensa & BGY</span>
-          </div>
-
-        </div>
-
-        <div class="transport-section-title" data-i18n="local_departures">Punti di Partenza Locali</div>
-
-        <div class="place-card-full">
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name" data-i18n="bus_89">Fermata Bus n.89</span>
-            </div>
-            <span class="place-badge" data-i18n="min_2">2 minuti</span>
-          </div>
-          <div class="place-desc" data-i18n="bus_89_desc">Autobus per raggiungere la linea metropolitana gialla M3</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Via+Vittorio+Veneto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Via+Vittorio+Veneto+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full">
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name" data-i18n="novate_station">Stazione di Novate Milanese</span>
-            </div>
-            <span class="place-badge" data-i18n="min_6">6 minuti</span>
-          </div>
-          <div class="place-desc" data-i18n="novate_station_desc">Treni FN Passante (S1 / S3) diretti a Milano.</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Stazione+di+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Stazione+di+Novate+Milanese" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="place-card-full">
-          <div class="place-header">
-            <div class="place-name-wrapper">
-              <span class="place-name">Metro Comasina M3</span>
-            </div>
-            <span class="place-badge" data-i18n="comasina_time">8 min in auto / 15 min in bus</span>
-          </div>
-          <div class="place-desc" data-i18n="comasina_desc">Capolinea Metropolitana Linea Gialla M3 (Duomo / Stazione Centrale).</div>
-          <div class="btn-group">
-            <a class="btn btn-gmaps" href="https://maps.google.com/?q=Metro+Comasina+M3" target="_blank"><svg class="icon"><use href="#i-pin"/></svg>Google Maps</a>
-            <a class="btn btn-apple" href="https://maps.apple.com/?q=Metro+Comasina+M3" target="_blank"><svg class="icon"><use href="#i-map"/></svg>Apple Maps</a>
-          </div>
-        </div>
-
-        <div class="back-bottom-btn" onclick="closeModal('modal-trasporti')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_categories">Torna alle Categorie</span></div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- SUB-MODAL STAZIONI -->
-  <div id="modal-dest-stazioni" class="fullscreen-modal sub-modal">
-    <div class="modal-header">
-      <div class="modal-header-title">
-        <svg class="icon"><use href="#i-train"/></svg>
-        <h2 data-i18n="dest_stations">Stazioni</h2>
-      </div>
-      <button type="button" class="btn-close" onclick="closeSubModal('modal-dest-stazioni')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
-    </div>
-    <div class="modal-scroll-area">
-      <div class="modal-content">
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name">Stazione Centrale</span>
-            <span class="place-badge">~30 min - €2,20</span>
-          </div>
-          <div class="place-desc" data-i18n="route_centrale">• A piedi da Antica Corte Milanese a Novate FS (~6 min), poi treno S1/S3 fino a Repubblica,
-• poi Metro M3 una fermata fino a Centrale FS (oppure 10 minuti a piedi).
-In alternativa: bus 89 fino a Comasina e M3 diretta.</div>
-        </div>
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name">Milano Cadorna</span>
-            <span class="place-badge">~20 min - €2,20</span>
-          </div>
-          <div class="place-desc" data-i18n="route_cadorna">• A piedi da Antica Corte Milanese a Novate FS (~6 min), poi treno S3 diretto fino a Milano Cadorna (~15 min).</div>
-        </div>
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name">Fiera Milano (Rho)</span>
-            <span class="place-badge">~45 min - €2,20</span>
-          </div>
-          <div class="place-desc" data-i18n="route_rho">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1 fino a Lancetti,
-• cambio con S5/S6 direzione Rho fino a Rho Fiera.</div>
-        </div>
-        <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-stazioni')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- SUB-MODAL LUOGHI -->
-  <div id="modal-dest-luoghi" class="fullscreen-modal sub-modal">
-    <div class="modal-header">
-      <div class="modal-header-title">
-        <svg class="icon"><use href="#i-landmark"/></svg>
-        <h2 data-i18n="dest_places">Luoghi</h2>
-      </div>
-      <button type="button" class="btn-close" onclick="closeSubModal('modal-dest-luoghi')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
-    </div>
-    <div class="modal-scroll-area">
-      <div class="modal-content">
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name" data-i18n="place_duomo">Duomo / Centro Milano</span>
-            <span class="place-badge">~35 min - €2,20</span>
-          </div>
-          <div class="place-desc" data-i18n="route_duomo">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 fino a Cadorna,
-• poi Metro M1 (rossa) direzione Sesto 1° Maggio fino a Duomo.
-Oppure:
-• Treno S1 fino a Repubblica, poi Metro M3 (gialla) direzione San Donato.
-Oppure:
-• Bus 89 fino a Comasina, poi Metro M3 (gialla) diretta.</div>
-        </div>
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name">Castello Sforzesco</span>
-            <span class="place-badge">~25 min - €2,20</span>
-          </div>
-          <div class="place-desc" data-i18n="route_castello">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
-• poi 5 minuti a piedi fino al Castello.</div>
-        </div>
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name">Arco della Pace</span>
-            <span class="place-badge">~30 min - €2,20</span>
-          </div>
-          <div class="place-desc" data-i18n="route_arco">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),
-• poi ~10 minuti a piedi attraverso Parco Sempione.</div>
-        </div>
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name">Stadio San Siro</span>
-            <span class="place-badge">~40 min - €2,20</span>
-          </div>
-          <div class="place-desc" data-i18n="route_sansiro">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Milano Garibaldi,
-• poi Metro M5 (lilla) direzione San Siro Stadio fino al capolinea.</div>
-        </div>
-
-        <div class="transport-section-title" data-i18n="excursions">Escursioni</div>
-
-        <div class="grid-container">
-          <div class="category-card" onclick="openSubModal('modal-dest-gite')">
-            <span class="category-icon"><svg class="icon"><use href="#i-compass"/></svg></span>
-            <span class="category-title" data-i18n="day_trips">Gite fuori Milano</span>
-            <span class="category-subtitle">Como, Monza & Arese</span>
-          </div>
-        </div>
-
-        <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-luoghi')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- SUB-MODAL GITE FUORI MILANO -->
-  <div id="modal-dest-gite" class="fullscreen-modal sub-modal-level-2">
-    <div class="modal-header">
-      <div class="modal-header-title">
-        <svg class="icon"><use href="#i-compass"/></svg>
-        <h2 data-i18n="day_trips">Gite fuori Milano</h2>
-      </div>
-      <button type="button" class="btn-close" onclick="closeSubModal('modal-dest-gite')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
-    </div>
-    <div class="modal-scroll-area">
-      <div class="modal-content">
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name" data-i18n="lake_como">Lago di Como</span>
-            <span class="place-badge">~1h 05m - €5,00</span>
-          </div>
-          <div class="place-desc" data-i18n="route_como">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno con coincidenza fino a Como Nord Lago.</div>
-        </div>
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name">Autodromo di Monza</span>
-            <span class="place-badge">~50 min - ~€4,00</span>
-          </div>
-          <div class="place-desc" data-i18n="route_monza">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno via Milano Porta Garibaldi per Monza,
-• poi bus locale o navetta per il Parco/Autodromo.</div>
-        </div>
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name">Il Centro (Arese)</span>
-            <span class="place-badge">~30 min - ~€2,50</span>
-          </div>
-          <div class="place-desc" data-i18n="route_arese">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno fino a Bollate Centro (~2 min),
-• poi bus Z121 fino ad Arese.</div>
-        </div>
-        <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-gite')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_places">Torna ai Luoghi</span></div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- SUB-MODAL FIERE -->
-  <div id="modal-dest-fiere" class="fullscreen-modal sub-modal">
-    <div class="modal-header">
-      <div class="modal-header-title">
-        <svg class="icon"><use href="#i-building"/></svg>
-        <h2 data-i18n="dest_fairs">Fiere</h2>
-      </div>
-      <button type="button" class="btn-close" onclick="closeSubModal('modal-dest-fiere')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
-    </div>
-    <div class="modal-scroll-area">
-      <div class="modal-content">
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name">Fiera Milano (Rho)</span>
-            <span class="place-badge">~45 min - €2,20</span>
-          </div>
-          <div class="place-desc" data-i18n="route_rho">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1 fino a Lancetti,
-• cambio con S5/S6 direzione Rho fino a Rho Fiera.</div>
-        </div>
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name">Fiera Milano City (MiCo)</span>
-            <span class="place-badge">~25 min - €2,20</span>
-          </div>
-          <div class="place-desc" data-i18n="route_mico">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,
-• poi 5 minuti a piedi, oppure una fermata di metro.
-Oppure:
-• Treno S1 fino a Garibaldi, poi Metro M5 (lilla) direzione San Siro fino a Tre Torri/Portello.</div>
-        </div>
-        <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-fiere')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- SUB-MODAL AEROPORTI -->
-  <div id="modal-dest-aeroporti" class="fullscreen-modal sub-modal">
-    <div class="modal-header">
-      <div class="modal-header-title">
-        <svg class="icon"><use href="#i-plane"/></svg>
-        <h2 data-i18n="dest_airports">Aeroporti</h2>
-      </div>
-      <button type="button" class="btn-close" onclick="closeSubModal('modal-dest-aeroporti')" aria-label="Chiudi"><svg class="icon"><use href="#i-x"/></svg></button>
-    </div>
-    <div class="modal-scroll-area">
-      <div class="modal-content">
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name" data-i18n="airport_linate">Aeroporto Linate</span>
-            <span class="place-badge">~45 min - €2,20</span>
-          </div>
-          <div class="place-desc" data-i18n="route_linate">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Dateo,
-• poi Metro M4 (blu) direzione Linate Aeroporto, capolinea.</div>
-        </div>
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name" data-i18n="airport_bergamo">Bergamo Aeroporto (Orio al Serio)</span>
-            <span class="place-badge" data-i18n="bergamo_badge">~1 ora e 20 min - ~€10,00</span>
-          </div>
-          <div class="place-desc" data-i18n="route_bergamo">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Milano Centrale,
-• poi autobus navetta aeroportuale fino all'aeroporto di Bergamo.</div>
-        </div>
-        <div class="place-card-full">
-          <div class="place-header">
-            <span class="place-name" data-i18n="airport_malpensa">Aeroporto Malpensa</span>
-            <span class="place-badge" data-i18n="malpensa_badge">~1 ora e 5 min - ~€13,00</span>
-          </div>
-          <div class="place-desc" data-i18n="route_malpensa">• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Bovisa,
-• poi Malpensa Express (Terminal 1 o 2). Biglietto dedicato da acquistare prima di salire.</div>
-        </div>
-        <div class="back-bottom-btn" onclick="closeSubModal('modal-dest-aeroporti')"><svg class="icon"><use href="#i-arrow-left"/></svg><span data-i18n="back_transport">Torna ai Trasporti</span></div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- MODALE LIGHTBOX IMMAGINE -->
-  <div id="image-modal" class="image-modal-overlay" onclick="closeImageModal()">
-    <div class="image-modal-container" onclick="event.stopPropagation()">
-      <button type="button" class="btn-close-image" onclick="closeImageModal()" aria-label="Chiudi Immagine"><svg class="icon"><use href="#i-x"/></svg></button>
-      <img id="image-modal-img" src="" alt="Mappa Trasporti">
-    </div>
-  </div>
-
-
-  <!-- BANNER TAXI ALLINEATO ALLE ALTRE CARD -->
-  <section class="taxi-cta-section">
-    <div class="taxi-cta-info">
-      <span class="taxi-cta-icon"><svg class="icon"><use href="#i-taxi"/></svg></span>
-      <div class="taxi-cta-text">
-        <h2 class="taxi-cta-title" data-i18n="taxi_title">Ti serve un taxi?</h2>
-        <p class="taxi-cta-subtitle" data-i18n="taxi_sub">Chiamata diretta Milano</p>
-      </div>
-    </div>
-    <a href="tel:+39026969" class="taxi-call-btn">
-      <svg class="icon"><use href="#i-phone"/></svg>
-      02 6969
-    </a>
+    <a href="tel:+39026969" class="taxi-btn"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>02 6969</a>
   </section>
 
-
-  <!-- LINEA DIVISORIA -->
-  <hr class="section-divider">
-
-
-  <!-- SEZIONE RECENSIONI FINE PAGINA -->
-  <section class="review-cta-section">
-    <h2 class="review-cta-title" data-i18n="review_title">La tua opinione conta per noi</h2>
-    <p class="review-cta-subtitle" data-i18n="review_sub">Lascia una recensione e condividi la tua esperienza!</p>
-
-    <div class="review-cta-buttons">
-      <a href="https://search.google.com/local/writereview?placeid=ChIJ91MWJHPAhkcRhtTso4F8tfQ" 
-         target="_blank" 
-         rel="noopener noreferrer" 
-         class="review-btn btn-review-google">
-        <svg width="18" height="18" viewBox="0 0 24 24">
+  <!-- RECENSIONI -->
+  <section class="review" data-rise>
+    <h2 data-i18n="review_title">La tua opinione conta per noi</h2>
+    <p data-i18n="review_sub">Lascia una recensione e condividi la tua esperienza!</p>
+    <div class="review-btns">
+      <a href="https://search.google.com/local/writereview?placeid=ChIJ91MWJHPAhkcRhtTso4F8tfQ" target="_blank" rel="noopener noreferrer" class="review-btn review-google">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
           <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
           <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
           <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
         </svg>
-        Google Maps
+        Google
       </a>
-
-      <a href="https://www.tripadvisor.it/ClientLink?value=RDRsXy9Vc2VyUmV2aWV3RWRpdC1nMTExODk4My1kMTExODk1OS1BbnRpY2FfQ29ydGVfTWlsYW5lc2UtTm92YXRlX01pbGFuZXNlX1Byb3ZpbmNlX29mX01pbGFuX0xvbWJhcmR5Lmh0bWxfRmds" 
-         target="_blank" 
-         rel="noopener noreferrer" 
-         class="review-btn btn-review-tripadvisor">
-        <svg width="20" height="14" viewBox="0 0 541 346" fill="#000000">
+      <a href="https://www.tripadvisor.it/ClientLink?value=RDRsXy9Vc2VyUmV2aWV3RWRpdC1nMTExODk4My1kMTExODk1OS1BbnRpY2FfQ29ydGVfTWlsYW5lc2UtTm92YXRlX01pbGFuZXNlX1Byb3ZpbmNlX29mX01pbGFuX0xvbWJhcmR5Lmh0bWxfRmds" target="_blank" rel="noopener noreferrer" class="review-btn review-trip">
+        <svg width="22" height="15" viewBox="0 0 541 346" fill="#000000" aria-hidden="true">
           <path d="M428.7 101.4c-28.7 0-53.7 15.3-67.4 38.3-15.6-13-35.4-20.9-57-20.9s-41.4 7.9-57 20.9c-13.7-23-38.7-38.3-67.4-38.3-43.4 0-78.6 35.2-78.6 78.6s35.2 78.6 78.6 78.6c31.1 0 58-18.1 70.8-44.2 13 10.9 29.6 17.4 47.7 17.4s34.7-6.5 47.7-17.4c12.8 26.1 39.7 44.2 70.8 44.2 43.4 0 78.6-35.2 78.6-78.6s-35.2-78.6-78.6-78.6zm-288.8 116.7c-21 0-38.1-17.1-38.1-38.1s17.1-38.1 38.1-38.1 38.1 17.1 38.1 38.1-17.1 38.1-38.1 38.1zm288.8 0c-21 0-38.1-17.1-38.1-38.1s17.1-38.1 38.1-38.1 38.1 17.1 38.1 38.1-17.1 38.1-38.1 38.1z"/>
           <circle cx="139.9" cy="180" r="19"/>
           <circle cx="428.7" cy="180" r="19"/>
@@ -1645,582 +488,901 @@ Oppure:
     </div>
   </section>
 
+  <footer class="footer" data-rise>
+    <p data-i18n="hours_note">Gli orari sono indicativi e possono variare nei festivi o per ferie. Nel dubbio, chiama il locale.</p>
+    <p data-i18n="footer">Antica Corte Milanese — Have a nice stay!</p>
+  </footer>
+</div>
 
-  <div class="footer" data-i18n="footer">
-    Antica Corte Milanese — Have a nice stay!
-  </div>
+<!-- LIGHTBOX MAPPA -->
+<div id="image-modal" class="lightbox" role="dialog" aria-modal="true" onclick="if(event.target===this)goBack()">
+  <button type="button" class="btn-close lb-close" onclick="goBack()" data-i18n-aria="close" aria-label="Chiudi"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+  <img id="lb-img" class="lb-img" src="" alt="">
+  <p id="lb-missing" class="lb-hint" style="display:none" data-i18n="map_missing">Mappa non disponibile</p>
+  <p class="lb-hint" data-i18n="pinch">Pizzica con due dita per ingrandire</p>
+  <a id="lb-open" class="btn btn-map lb-open" href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg><span data-i18n="open_full">Apri a schermo intero</span></a>
+</div>
 
+<script>
+/* =====================================================================
+   CONFIGURAZIONE — compila qui le info per gli ospiti.
+   I campi lasciati vuoti ("") NON vengono mostrati nella pagina.
+   ===================================================================== */
+const CONFIG = {
+  wifiName: "",        // es. "AnticaCorte-Guest"
+  wifiPassword: "",    // es. "benvenuto2026"
+  checkIn: "",         // es. "15:00"
+  checkOut: "",        // es. "10:30"
+  address: "",         // es. "Via Esempio 1, Novate Milanese"
+  hostPhone: "",       // es. "+393331234567"
+  hostWhatsapp: false  // true = mostra anche il pulsante WhatsApp (usa hostPhone)
+};
 
-  <script>
-    // Ordine lingue: IT -> EN -> FR -> ES
-    const TRANSLATIONS = {
-      it: {
-        header_sub: "Local Guide & Navigazione",
-        cat_restaurants: "Ristoranti",
-        cat_restaurants_sub: "Dining & Pizza",
-        cat_bars: "Bar & Caffè",
-        cat_bars_sub: "Colazioni & Gelati",
-        cat_markets: "Supermercati",
-        cat_markets_sub: "Spesa & Negozi",
-        cat_transport: "Trasporti",
-        cat_transport_sub: "Stazione & Metro",
-        modal_restaurants_title: "Ristoranti & Pizzerie",
-        modal_bars_title: "Bar, Caffè & Gelaterie",
-        modal_markets_title: "Supermercati & Spesa",
-        modal_transport_title: "Trasporti & Mobilità",
-        walk_4m: "4 min a piedi",
-        walk_5m: "5 min a piedi",
-        walk_7m: "7 min a piedi",
-        walk_8m: "8 min a piedi",
-        walk_10m: "10 min a piedi",
-        car_5m: "5 min in macchina",
-        walk_18m_car_5m: "18 min a piedi / 5 min auto",
-        in_front: "Di fronte all'edificio",
-        min_1: "1 minuto",
-        min_2: "2 minuti",
-        min_3: "3 minuti",
-        min_4: "4 minuti",
-        min_6: "6 minuti",
-        walk_15m_car_4m: "15 min a piedi / 4 min in macchina",
-        walk_10m_car_5m: "10 min a piedi / 5 min in macchina",
-        comasina_time: "8 min in auto / 15 min in bus",
-        desc_kebap: "€ • Kebab e panini veloci da asporto.",
-        desc_esposito: "€ • Specialità napoletane e fritti caldi.",
-        desc_leone: "€€ • Ristorante elegante con tagli di carne scelti.",
-        desc_oca: "€€ • Pizza al trancio e d'asporto.",
-        desc_locanda: "€€ • Piatti tipici e ambiente accogliente.",
-        desc_grill: "€€ • Cucina alla griglia e piatti della tradizione.",
-        desc_ciccia: "€€€ • Specialità carne alla brace e piatti sfiziosi.",
-        desc_mamo: "Caffetteria per colazioni e pause caffè proprio fuori dalla porta.",
-        desc_campana: "Caffetteria vicinissima, bar e drink serali.",
-        desc_purogelato: "Bar, aperitivi e gelateria artigianale.",
-        desc_oliver: "Gelateria artigianale con gusti e prodotti naturali.",
-        desc_crai: "Piccolo supermercato di quartiere ideale per la spesa rapida.",
-        desc_ins: "Discount alimentare con ottima selezione di prodotti convenienti.",
-        desc_famila: "Superstore grande per una spesa completa.",
-        transport_map_title: "Mappa dei trasporti",
-        transport_map_desc: "Schema con linee e collegamenti di treni e metropolitana.",
-        open_map: "Apri la mappa",
-        how_to_reach: "Come Raggiungere",
-        dest_stations: "Stazioni",
-        dest_places: "Luoghi",
-        dest_fairs: "Fiere",
-        dest_airports: "Aeroporti",
-        local_departures: "Punti di Partenza Locali",
-        bus_89: "Fermata Bus n.89",
-        bus_89_desc: "Autobus per raggiungere la linea metropolitana gialla M3",
-        novate_station: "Stazione di Novate Milanese",
-        novate_station_desc: "Treni FN Passante (S1 / S3) diretti a Milano.",
-        comasina_desc: "Capolinea Metropolitana Linea Gialla M3 (Duomo / Stazione Centrale).",
-        place_duomo: "Duomo / Centro Milano",
-        excursions: "Escursioni",
-        day_trips: "Gite fuori Milano",
-        lake_como: "Lago di Como",
-        airport_linate: "Aeroporto Linate",
-        airport_bergamo: "Bergamo Aeroporto (Orio al Serio)",
-        airport_malpensa: "Aeroporto Malpensa",
-        bergamo_badge: "~1 ora e 20 min - ~€10,00",
-        malpensa_badge: "~1 ora e 5 min - ~€13,00",
-        route_centrale: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), poi treno S1/S3 fino a Repubblica,\n• poi Metro M3 una fermata fino a Centrale FS (oppure 10 minuti a piedi).\nIn alternativa: bus 89 fino a Comasina e M3 diretta.",
-        route_cadorna: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), poi treno S3 diretto fino a Milano Cadorna (~15 min).",
-        route_rho: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1 fino a Lancetti,\n• cambio con S5/S6 direzione Rho fino a Rho Fiera.",
-        route_duomo: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 fino a Cadorna,\n• poi Metro M1 (rossa) direzione Sesto 1° Maggio fino a Duomo.\nOppure:\n• Treno S1 fino a Repubblica, poi Metro M3 (gialla) direzione San Donato.\nOppure:\n• Bus 89 fino a Comasina, poi Metro M3 (gialla) diretta.",
-        route_castello: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),\n• poi 5 minuti a piedi fino al Castello.",
-        route_arco: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),\n• poi ~10 minuti a piedi attraverso Parco Sempione.",
-        route_sansiro: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Milano Garibaldi,\n• poi Metro M5 (lilla) direzione San Siro Stadio fino al capolinea.",
-        route_como: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno con coincidenza fino a Como Nord Lago.",
-        route_monza: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno via Milano Porta Garibaldi per Monza,\n• poi bus locale o navetta per il Parco/Autodromo.",
-        route_arese: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno fino a Bollate Centro (~2 min),\n• poi bus Z121 fino ad Arese.",
-        route_mico: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,\n• poi 5 minuti a piedi, oppure una fermata di metro.\nOppure:\n• Treno S1 fino a Garibaldi, poi Metro M5 (lilla) direzione San Siro fino a Tre Torri/Portello.",
-        route_linate: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Dateo,\n• poi Metro M4 (blu) direzione Linate Aeroporto, capolinea.",
-        route_bergamo: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Milano Centrale,\n• poi autobus navetta aeroportuale fino all'aeroporto di Bergamo.",
-        route_malpensa: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Bovisa,\n• poi Malpensa Express (Terminal 1 o 2). Biglietto dedicato da acquistare prima di salire.",
-        status_open: "Aperto",
-        status_closed: "Chiuso",
-        status_closing_soon: "Chiude tra poco",
-        status_opening_soon: "Apre tra poco",
-        taxi_title: "Ti serve un taxi?",
-        taxi_sub: "Chiamata diretta Milano",
-        review_title: "La tua opinione conta per noi",
-        review_sub: "Lascia una recensione e condividi la tua esperienza!",
-        back_categories: "Torna alle Categorie",
-        back_transport: "Torna ai Trasporti",
-        back_places: "Torna ai Luoghi",
-        footer: "Antica Corte Milanese — Have a nice stay!"
-      },
-      en: {
-        header_sub: "Local Guide & Navigation",
-        cat_restaurants: "Restaurants",
-        cat_restaurants_sub: "Dining & Pizza",
-        cat_bars: "Bars & Cafés",
-        cat_bars_sub: "Breakfast & Gelato",
-        cat_markets: "Supermarkets",
-        cat_markets_sub: "Groceries & Shops",
-        cat_transport: "Transport",
-        cat_transport_sub: "Train & Metro",
-        modal_restaurants_title: "Restaurants & Pizzerias",
-        modal_bars_title: "Bars, Cafés & Gelato",
-        modal_markets_title: "Supermarkets & Groceries",
-        modal_transport_title: "Transport & Mobility",
-        walk_4m: "4 min walk",
-        walk_5m: "5 min walk",
-        walk_7m: "7 min walk",
-        walk_8m: "8 min walk",
-        walk_10m: "10 min walk",
-        car_5m: "5 min drive",
-        walk_18m_car_5m: "18 min walk / 5 min drive",
-        in_front: "Across the street",
-        min_1: "1 minute",
-        min_2: "2 minutes",
-        min_3: "3 minutes",
-        min_4: "4 minutes",
-        min_6: "6 minutes",
-        walk_15m_car_4m: "15 min walk / 4 min drive",
-        walk_10m_car_5m: "10 min walk / 5 min drive",
-        comasina_time: "8 min drive / 15 min bus",
-        desc_kebap: "€ • Quick kebabs and sandwiches to go.",
-        desc_esposito: "€ • Neapolitan specialties and hot fried snacks.",
-        desc_leone: "€€ • Elegant restaurant with selected meat cuts.",
-        desc_oca: "€€ • Pizza by the slice and takeaway.",
-        desc_locanda: "€€ • Traditional dishes and cozy atmosphere.",
-        desc_grill: "€€ • Grilled dishes and local classics.",
-        desc_ciccia: "€€€ • Charcoal-grilled meat specialties and hearty dishes.",
-        desc_mamo: "Café for breakfast and coffee breaks right outside the door.",
-        desc_campana: "Very close café, bar and evening drinks.",
-        desc_purogelato: "Bar, aperitifs and artisanal gelato.",
-        desc_oliver: "Artisanal gelato with natural flavors and ingredients.",
-        desc_crai: "Small neighborhood supermarket ideal for quick shopping.",
-        desc_ins: "Food discount store with a great selection of budget items.",
-        desc_famila: "Large superstore for full grocery shopping.",
-        transport_map_title: "Transport Map",
-        transport_map_desc: "Diagram of train and metro lines and connections.",
-        open_map: "Open map",
-        how_to_reach: "How to Get There",
-        dest_stations: "Stations",
-        dest_places: "Places",
-        dest_fairs: "Trade Fairs",
-        dest_airports: "Airports",
-        local_departures: "Local Departure Points",
-        bus_89: "Bus Stop n.89",
-        bus_89_desc: "Bus to reach Yellow Metro Line M3",
-        novate_station: "Novate Milanese Station",
-        novate_station_desc: "FN Passante trains (S1 / S3) direct to Milan.",
-        comasina_desc: "Terminus of Yellow Metro Line M3 (Duomo / Central Station).",
-        place_duomo: "Duomo / Milan City Center",
-        excursions: "Excursions",
-        day_trips: "Day Trips from Milan",
-        lake_como: "Lake Como",
-        airport_linate: "Linate Airport",
-        airport_bergamo: "Bergamo Airport (Orio al Serio)",
-        airport_malpensa: "Malpensa Airport",
-        bergamo_badge: "~1h 20m - ~€10.00",
-        malpensa_badge: "~1h 05m - ~€13.00",
-        route_centrale: "• Walk from Antica Corte Milanese to Novate FS (~6 min), then train S1/S3 to Repubblica,\n• then Metro M3 one stop to Centrale FS (or 10 min walk).\nAlternative: bus 89 to Comasina and direct M3.",
-        route_cadorna: "• Walk from Antica Corte Milanese to Novate FS (~6 min), then direct train S3 to Milano Cadorna (~15 min).",
-        route_rho: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1 to Lancetti,\n• transfer to S5/S6 towards Rho to Rho Fiera.",
-        route_duomo: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S3 to Cadorna,\n• then Metro M1 (red) towards Sesto 1° Maggio to Duomo.\nOr:\n• Train S1 to Repubblica, then Metro M3 (yellow) towards San Donato.\nOr:\n• Bus 89 to Comasina, then direct Metro M3 (yellow).",
-        route_castello: "• Walk from Antica Corte Milanese to Novate FS (~6 min), direct train S3 to Milano Cadorna (~15 min),\n• then 5 min walk to the Castle.",
-        route_arco: "• Walk from Antica Corte Milanese to Novate FS (~6 min), direct train S3 to Milano Cadorna (~15 min),\n• then ~10 min walk through Parco Sempione.",
-        route_sansiro: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Milano Garibaldi,\n• then Metro M5 (lilac) towards San Siro Stadio to terminus.",
-        route_como: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train with connection to Como Nord Lago.",
-        route_monza: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train via Milano Porta Garibaldi to Monza,\n• then local bus or shuttle to the Park/Circuit.",
-        route_arese: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train to Bollate Centro (~2 min),\n• then bus Z121 to Arese.",
-        route_mico: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S3 to Domodossola Fiera,\n• then 5 min walk or one metro stop.\nOr:\n• Train S1 to Garibaldi, then Metro M5 (lilac) towards San Siro to Tre Torri/Portello.",
-        route_linate: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Dateo,\n• then Metro M4 (blue) towards Linate Aeroporto, terminus.",
-        route_bergamo: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Milano Centrale,\n• then airport shuttle bus to Bergamo Airport.",
-        route_malpensa: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Bovisa,\n• then Malpensa Express (Terminal 1 or 2). Buy dedicated ticket before boarding.",
-        status_open: "Open",
-        status_closed: "Closed",
-        status_closing_soon: "Closing soon",
-        status_opening_soon: "Opening soon",
-        taxi_title: "Need a taxi?",
-        taxi_sub: "Direct call Milan",
-        review_title: "Your opinion matters to us",
-        review_sub: "Leave a review and share your experience!",
-        back_categories: "Back to Categories",
-        back_transport: "Back to Transport",
-        back_places: "Back to Places",
-        footer: "Antica Corte Milanese — Have a nice stay!"
-      },
-      fr: {
-        header_sub: "Guide Local & Navigation",
-        cat_restaurants: "Restaurants",
-        cat_restaurants_sub: "Repas & Pizza",
-        cat_bars: "Bars & Cafés",
-        cat_bars_sub: "Petit-déj & Glaces",
-        cat_markets: "Supermarchés",
-        cat_markets_sub: "Courses & Boutiques",
-        cat_transport: "Transports",
-        cat_transport_sub: "Gare & Métro",
-        modal_restaurants_title: "Restaurants & Pizzerias",
-        modal_bars_title: "Bars, Cafés & Glaciers",
-        modal_markets_title: "Supermarchés & Courses",
-        modal_transport_title: "Transports & Mobilité",
-        walk_4m: "4 min à pied",
-        walk_5m: "5 min à pied",
-        walk_7m: "7 min à pied",
-        walk_8m: "8 min à pied",
-        walk_10m: "10 min à pied",
-        car_5m: "5 min en voiture",
-        walk_18m_car_5m: "18 min à pied / 5 min voiture",
-        in_front: "En face du bâtiment",
-        min_1: "1 minute",
-        min_2: "2 minutes",
-        min_3: "3 minutes",
-        min_4: "4 minutes",
-        min_6: "6 minutes",
-        walk_15m_car_4m: "15 min à pied / 4 min voiture",
-        walk_10m_car_5m: "10 min à pied / 5 min voiture",
-        comasina_time: "8 min voiture / 15 min bus",
-        desc_kebap: "€ • Kebabs et sandwichs rapides à emporter.",
-        desc_esposito: "€ • Spécialités napolitaines et fritures chaudes.",
-        desc_leone: "€€ • Restaurant élégant avec belles pièces de viande.",
-        desc_oca: "€€ • Pizza à la part et à emporter.",
-        desc_locanda: "€€ • Plats typiques et ambiance chaleureuse.",
-        desc_grill: "€€ • Cuisine grillée et plats traditionnels.",
-        desc_ciccia: "€€€ • Spécialités de viande à la braise et plats gourmands.",
-        desc_mamo: "Café pour petit-déjeuner et pauses café juste devant la porte.",
-        desc_campana: "Café tout proche, bar et verres en soirée.",
-        desc_purogelato: "Bar, apéritifs et glacier artisanal.",
-        desc_oliver: "Glacier artisanal aux parfums et ingrédients naturels.",
-        desc_crai: "Petit supermarché de quartier idéal pour des courses rapides.",
-        desc_ins: "Discounter alimentaire avec un bon choix à petits prix.",
-        desc_famila: "Grand supermarché pour faire le plein de courses.",
-        transport_map_title: "Plan des transports",
-        transport_map_desc: "Schéma des lignes et correspondances de train et métro.",
-        open_map: "Ouvrir le plan",
-        how_to_reach: "Comment s'y rendre",
-        dest_stations: "Gares",
-        dest_places: "Lieux",
-        dest_fairs: "Salons & Foires",
-        dest_airports: "Aéroports",
-        local_departures: "Points de Départ Locaux",
-        bus_89: "Arrêt Bus n.89",
-        bus_89_desc: "Bus vers la ligne de métro jaune M3",
-        novate_station: "Gare de Novate Milanese",
-        novate_station_desc: "Trains FN Passante (S1 / S3) directs vers Milan.",
-        comasina_desc: "Terminus de la ligne de métro jaune M3 (Duomo / Gare Centrale).",
-        place_duomo: "Duomo / Centre de Milan",
-        excursions: "Excursions",
-        day_trips: "Excursions hors de Milan",
-        lake_como: "Lac de Côme",
-        airport_linate: "Aéroport de Linate",
-        airport_bergamo: "Aéroport de Bergame (Orio al Serio)",
-        airport_malpensa: "Aéroport de Malpensa",
-        bergamo_badge: "~1h 20m - ~€10,00",
-        malpensa_badge: "~1h 05m - ~€13,00",
-        route_centrale: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), puis train S1/S3 jusqu'à Repubblica,\n• puis Métro M3 un arrêt jusqu'à Centrale FS (ou 10 min à pied).\nAlternative : bus 89 jusqu'à Comasina et M3 directe.",
-        route_cadorna: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), puis train S3 direct jusqu'à Milano Cadorna (~15 min).",
-        route_rho: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1 jusqu'à Lancetti,\n• correspondance S5/S6 direction Rho jusqu'à Rho Fiera.",
-        route_duomo: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 jusqu'à Cadorna,\n• puis Métro M1 (rouge) direction Sesto 1° Maggio jusqu'à Duomo.\nOu :\n• Train S1 jusqu'à Repubblica, puis Métro M3 (jaune) direction San Donato.\nOu :\n• Bus 89 jusqu'à Comasina, puis Métro M3 (jaune) directe.",
-        route_castello: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 direct jusqu'à Milano Cadorna (~15 min),\n• puis 5 min à pied jusqu'au Château.",
-        route_arco: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 direct jusqu'à Milano Cadorna (~15 min),\n• puis ~10 min à pied à travers le Parco Sempione.",
-        route_sansiro: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Milano Garibaldi,\n• puis Métro M5 (lilas) direction San Siro Stadio jusqu'au terminus.",
-        route_como: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train avec correspondance jusqu'à Como Nord Lago.",
-        route_monza: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train via Milano Porta Garibaldi pour Monza,\n• puis bus local ou navette vers le Parc/Circuit.",
-        route_arese: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train jusqu'à Bollate Centro (~2 min),\n• puis bus Z121 jusqu'à Arese.",
-        route_mico: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 jusqu'à Domodossola Fiera,\n• puis 5 min à pied ou un arrêt de métro.\nOu :\n• Train S1 jusqu'à Garibaldi, puis Métro M5 (lilas) direction San Siro jusqu'à Tre Torri/Portello.",
-        route_linate: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Dateo,\n• puis Métro M4 (bleue) direction Linate Aeroporto, terminus.",
-        route_bergamo: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Milano Centrale,\n• puis navette bus aéroportuaire jusqu'à l'aéroport de Bergame.",
-        route_malpensa: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Bovisa,\n• puis Malpensa Express (Terminal 1 ou 2). Billet dédié à acheter avant de monter.",
-        status_open: "Ouvert",
-        status_closed: "Fermé",
-        status_closing_soon: "Ferme bientôt",
-        status_opening_soon: "Ouvre bientôt",
-        taxi_title: "Besoin d'un taxi ?",
-        taxi_sub: "Appel direct Milan",
-        review_title: "Votre avis compte pour nous",
-        review_sub: "Laissez un avis et partagez votre expérience !",
-        back_categories: "Retour aux Catégories",
-        back_transport: "Retour aux Transports",
-        back_places: "Retour aux Lieux",
-        footer: "Antica Corte Milanese — Have a nice stay!"
-      },
-      es: {
-        header_sub: "Guía Local & Navegación",
-        cat_restaurants: "Restaurantes",
-        cat_restaurants_sub: "Comidas & Pizza",
-        cat_bars: "Bares & Cafés",
-        cat_bars_sub: "Desayunos & Helados",
-        cat_markets: "Supermercados",
-        cat_markets_sub: "Compra & Tiendas",
-        cat_transport: "Transporte",
-        cat_transport_sub: "Estación & Metro",
-        modal_restaurants_title: "Restaurantes & Pizzerías",
-        modal_bars_title: "Bares, Cafés & Heladerías",
-        modal_markets_title: "Supermercados & Compras",
-        modal_transport_title: "Transporte & Movilidad",
-        walk_4m: "4 min a pie",
-        walk_5m: "5 min a pie",
-        walk_7m: "7 min a pie",
-        walk_8m: "8 min a pie",
-        walk_10m: "10 min a pie",
-        car_5m: "5 min en coche",
-        walk_18m_car_5m: "18 min a pie / 5 min coche",
-        in_front: "Frente al edificio",
-        min_1: "1 minuto",
-        min_2: "2 minutos",
-        min_3: "3 minutos",
-        min_4: "4 minutos",
-        min_6: "6 minutos",
-        walk_15m_car_4m: "15 min a pie / 4 min coche",
-        walk_10m_car_5m: "10 min a pie / 5 min coche",
-        comasina_time: "8 min coche / 15 min bus",
-        desc_kebap: "€ • Kebabs y bocadillos rápidos para llevar.",
-        desc_esposito: "€ • Especialidades napolitanas y frituras calientes.",
-        desc_leone: "€€ • Restaurante elegante con cortes de carne selectos.",
-        desc_oca: "€€ • Pizza al corte y para llevar.",
-        desc_locanda: "€€ • Platos típicos y ambiente acogedor.",
-        desc_grill: "€€ • Cocina a la brasa y platos tradicionales.",
-        desc_ciccia: "€€€ • Especialidades de carne a la brasa y platos variados.",
-        desc_mamo: "Cafetería para desayunos y pausas de café justo en la puerta.",
-        desc_campana: "Cafetería muy cerca, bar y copas por la noche.",
-        desc_purogelato: "Bar, aperitivos y heladería artesanal.",
-        desc_oliver: "Heladería artesanal con sabores e ingredientes naturales.",
-        desc_crai: "Pequeño supermercado de barrio ideal para compras rápidas.",
-        desc_ins: "Supermercado de descuento con buena selección económica.",
-        desc_famila: "Gran supermercado para una compra completa.",
-        transport_map_title: "Mapa de transporte",
-        transport_map_desc: "Esquema con líneas y conexiones de tren y metro.",
-        open_map: "Abrir mapa",
-        how_to_reach: "Cómo Llegar",
-        dest_stations: "Estaciones",
-        dest_places: "Lugares",
-        dest_fairs: "Ferias",
-        dest_airports: "Aeropuertos",
-        local_departures: "Puntos de Salida Locales",
-        bus_89: "Parada Bus n.89",
-        bus_89_desc: "Autobús para llegar a la línea amarilla de metro M3",
-        novate_station: "Estación de Novate Milanese",
-        novate_station_desc: "Trenes FN Passante (S1 / S3) directos a Milán.",
-        comasina_desc: "Terminal de la línea amarilla de metro M3 (Duomo / Estación Central).",
-        place_duomo: "Duomo / Centro de Milán",
-        excursions: "Excursiones",
-        day_trips: "Escapadas desde Milán",
-        lake_como: "Lago de Como",
-        airport_linate: "Aeropuerto de Linate",
-        airport_bergamo: "Aeropuerto de Bérgamo (Orio al Serio)",
-        airport_malpensa: "Aeropuerto de Malpensa",
-        bergamo_badge: "~1h 20m - ~€10,00",
-        malpensa_badge: "~1h 05m - ~€13,00",
-        route_centrale: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), luego tren S1/S3 hasta Repubblica,\n• luego Metro M3 una parada hasta Centrale FS (o 10 min a pie).\nAlternativa: bus 89 hasta Comasina y M3 directa.",
-        route_cadorna: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), luego tren S3 directo hasta Milano Cadorna (~15 min).",
-        route_rho: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1 hasta Lancetti,\n• transbordo a S5/S6 dirección Rho hasta Rho Fiera.",
-        route_duomo: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 hasta Cadorna,\n• luego Metro M1 (roja) dirección Sesto 1° Maggio hasta Duomo.\nO bien:\n• Tren S1 hasta Repubblica, luego Metro M3 (amarilla) dirección San Donato.\nO bien:\n• Bus 89 hasta Comasina, luego Metro M3 (amarilla) directa.",
-        route_castello: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 directo hasta Milano Cadorna (~15 min),\n• luego 5 min a pie hasta el Castillo.",
-        route_arco: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 directo hasta Milano Cadorna (~15 min),\n• luego ~10 min a pie por el Parco Sempione.",
-        route_sansiro: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Milano Garibaldi,\n• luego Metro M5 (lila) dirección San Siro Stadio hasta el final.",
-        route_como: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren con enlace hasta Como Nord Lago.",
-        route_monza: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren vía Milano Porta Garibaldi a Monza,\n• luego bus local o lanzadera hasta el Parque/Autódromo.",
-        route_arese: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren hasta Bollate Centro (~2 min),\n• luego bus Z121 hasta Arese.",
-        route_mico: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 hasta Domodossola Fiera,\n• luego 5 min a pie o una parada de metro.\nO bien:\n• Tren S1 hasta Garibaldi, luego Metro M5 (lila) dirección San Siro hasta Tre Torri/Portello.",
-        route_linate: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Dateo,\n• luego Metro M4 (azul) dirección Linate Aeroporto, terminal.",
-        route_bergamo: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Milano Centrale,\n• luego autobús lanzadera al aeropuerto de Bérgamo.",
-        route_malpensa: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Bovisa,\n• luego Malpensa Express (Terminal 1 o 2). Comprar billete antes de subir.",
-        status_open: "Abierto",
-        status_closed: "Cerrado",
-        status_closing_soon: "Cierra pronto",
-        status_opening_soon: "Abre pronto",
-        taxi_title: "¿Necesitas un taxi?",
-        taxi_sub: "Llamada directa Milán",
-        review_title: "Tu opinión nos importa",
-        review_sub: "¡Deja una reseña y comparte tu experiencia!",
-        back_categories: "Volver a Categorías",
-        back_transport: "Volver a Transporte",
-        back_places: "Volver a Lugares",
-        footer: "Antica Corte Milanese — Have a nice stay!"
+/* =====================================================================
+   TESTI (IT -> EN -> FR -> ES)
+   ===================================================================== */
+const TRANSLATIONS = {
+  it: {
+    header_sub: "Local Guide & Navigazione",
+    hero_welcome: "Benvenuto! Qui trovi tutto ciò che ti serve, vicino a te.",
+    cat_restaurants: "Ristoranti", cat_restaurants_sub: "Dining & Pizza",
+    cat_bars: "Bar & Caffè", cat_bars_sub: "Colazioni & Gelati",
+    cat_markets: "Supermercati", cat_markets_sub: "Spesa & Negozi",
+    cat_transport: "Trasporti", cat_transport_sub: "Stazione & Metro",
+    info_title: "Info utili", info_sub: "Wi-Fi, emergenze e contatti", info_sub_min: "Numeri utili ed emergenze",
+    modal_restaurants_title: "Ristoranti & Pizzerie",
+    modal_bars_title: "Bar, Caffè & Gelaterie",
+    modal_markets_title: "Supermercati & Spesa",
+    modal_transport_title: "Trasporti & Mobilità",
+    modal_info_title: "Info utili",
+    walk_4m: "4 min a piedi", walk_5m: "5 min a piedi", walk_7m: "7 min a piedi", walk_8m: "8 min a piedi", walk_10m: "10 min a piedi",
+    car_5m: "5 min in macchina",
+    walk_18m_car_5m: "18 min a piedi / 5 min auto",
+    in_front: "Di fronte all'edificio",
+    min_1: "1 minuto", min_2: "2 minuti", min_3: "3 minuti", min_4: "4 minuti", min_6: "6 minuti",
+    walk_15m_car_4m: "15 min a piedi / 4 min in macchina",
+    walk_10m_car_5m: "10 min a piedi / 5 min in macchina",
+    comasina_time: "8 min in auto / 15 min in bus",
+    desc_kebap: "€ • Kebab e panini veloci da asporto.",
+    desc_esposito: "€ • Specialità napoletane e fritti caldi.",
+    desc_leone: "€€ • Ristorante elegante con tagli di carne scelti.",
+    desc_oca: "€€ • Pizza al trancio e d'asporto.",
+    desc_locanda: "€€ • Piatti tipici e ambiente accogliente.",
+    desc_grill: "€€ • Cucina alla griglia e piatti della tradizione.",
+    desc_ciccia: "€€€ • Specialità carne alla brace e piatti sfiziosi.",
+    desc_mamo: "Caffetteria per colazioni e pause caffè proprio fuori dalla porta.",
+    desc_campana: "Caffetteria vicinissima, bar e drink serali.",
+    desc_purogelato: "Bar, aperitivi e gelateria artigianale.",
+    desc_oliver: "Gelateria artigianale con gusti e prodotti naturali.",
+    desc_crai: "Piccolo supermercato di quartiere ideale per la spesa rapida.",
+    desc_ins: "Discount alimentare con ottima selezione di prodotti convenienti.",
+    desc_famila: "Superstore grande per una spesa completa.",
+    transport_map_title: "Mappa dei trasporti",
+    transport_map_desc: "Schema con linee e collegamenti di treni e metropolitana.",
+    open_map: "Apri la mappa",
+    how_to_reach: "Come Raggiungere",
+    dest_stations: "Stazioni", dest_places: "Luoghi", dest_fairs: "Fiere", dest_airports: "Aeroporti",
+    local_departures: "Punti di Partenza Locali",
+    bus_89: "Fermata Bus n.89",
+    bus_89_desc: "Autobus per raggiungere la linea metropolitana gialla M3",
+    novate_station: "Stazione di Novate Milanese",
+    novate_station_desc: "Treni FN Passante (S1 / S3) diretti a Milano.",
+    comasina_desc: "Capolinea Metropolitana Linea Gialla M3 (Duomo / Stazione Centrale).",
+    place_duomo: "Duomo / Centro Milano",
+    excursions: "Escursioni", day_trips: "Gite fuori Milano", lake_como: "Lago di Como",
+    airport_linate: "Aeroporto Linate", airport_bergamo: "Bergamo Aeroporto (Orio al Serio)", airport_malpensa: "Aeroporto Malpensa",
+    bergamo_badge: "~1 ora e 20 min - ~€10,00", malpensa_badge: "~1 ora e 5 min - ~€13,00",
+    route_centrale: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), poi treno S1/S3 fino a Repubblica,\n• poi Metro M3 una fermata fino a Centrale FS (oppure 10 minuti a piedi).\nIn alternativa: bus 89 fino a Comasina e M3 diretta.",
+    route_cadorna: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), poi treno S3 diretto fino a Milano Cadorna (~15 min).",
+    route_rho: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1 fino a Lancetti,\n• cambio con S5/S6 direzione Rho fino a Rho Fiera.",
+    route_duomo: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 fino a Cadorna,\n• poi Metro M1 (rossa) direzione Sesto 1° Maggio fino a Duomo.\nOppure:\n• Treno S1 fino a Repubblica, poi Metro M3 (gialla) direzione San Donato.\nOppure:\n• Bus 89 fino a Comasina, poi Metro M3 (gialla) diretta.",
+    route_castello: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),\n• poi 5 minuti a piedi fino al Castello.",
+    route_arco: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 diretto fino a Milano Cadorna (~15 min),\n• poi ~10 minuti a piedi attraverso Parco Sempione.",
+    route_sansiro: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Milano Garibaldi,\n• poi Metro M5 (lilla) direzione San Siro Stadio fino al capolinea.",
+    route_como: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno con coincidenza fino a Como Nord Lago.",
+    route_monza: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno via Milano Porta Garibaldi per Monza,\n• poi bus locale o navetta per il Parco/Autodromo.",
+    route_arese: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno fino a Bollate Centro (~2 min),\n• poi bus Z121 fino ad Arese.",
+    route_mico: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S3 fino a Domodossola Fiera,\n• poi 5 minuti a piedi, oppure una fermata di metro.\nOppure:\n• Treno S1 fino a Garibaldi, poi Metro M5 (lilla) direzione San Siro fino a Tre Torri/Portello.",
+    route_linate: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Dateo,\n• poi Metro M4 (blu) direzione Linate Aeroporto, capolinea.",
+    route_bergamo: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Milano Centrale,\n• poi autobus navetta aeroportuale fino all'aeroporto di Bergamo.",
+    route_malpensa: "• A piedi da Antica Corte Milanese a Novate FS (~6 min), treno S1/S3 fino a Bovisa,\n• poi Malpensa Express (Terminal 1 o 2). Biglietto dedicato da acquistare prima di salire.",
+    emergency_title: "Emergenze",
+    emergency_desc: "Numero unico europeo: polizia, ambulanza e vigili del fuoco. Chiamata gratuita.",
+    call_112: "Chiama il 112",
+    wifi_title: "Wi-Fi", wifi_name: "Rete", wifi_pass: "Password",
+    stay_title: "Il tuo soggiorno", checkin: "Check-in dalle", checkout: "Check-out entro le", address: "Indirizzo",
+    host_title: "Contatti", call_host: "Chiama l'host", whatsapp: "WhatsApp",
+    copy: "Copia", copied: "Copiato!", call: "Chiama",
+    close: "Chiudi", text_size: "Dimensione del testo", theme_toggle: "Cambia tema chiaro o scuro", lang_group: "Lingua",
+    hours_note: "Gli orari sono indicativi e possono variare nei festivi o per ferie. Nel dubbio, chiama il locale.",
+    open_full: "Apri a schermo intero", map_missing: "Mappa non disponibile", pinch: "Pizzica con due dita per ingrandire",
+    taxi_title: "Ti serve un taxi?", taxi_sub: "Chiamata diretta Milano",
+    review_title: "La tua opinione conta per noi",
+    review_sub: "Lascia una recensione e condividi la tua esperienza!",
+    back_categories: "Torna alle Categorie", back_transport: "Torna ai Trasporti", back_places: "Torna ai Luoghi",
+    footer: "Antica Corte Milanese — Have a nice stay!"
+  },
+  en: {
+    header_sub: "Local Guide & Navigation",
+    hero_welcome: "Welcome! Everything you need, close by.",
+    cat_restaurants: "Restaurants", cat_restaurants_sub: "Dining & Pizza",
+    cat_bars: "Bars & Cafés", cat_bars_sub: "Breakfast & Gelato",
+    cat_markets: "Supermarkets", cat_markets_sub: "Groceries & Shops",
+    cat_transport: "Transport", cat_transport_sub: "Train & Metro",
+    info_title: "Useful info", info_sub: "Wi-Fi, emergencies & contacts", info_sub_min: "Useful numbers & emergencies",
+    modal_restaurants_title: "Restaurants & Pizzerias",
+    modal_bars_title: "Bars, Cafés & Gelato",
+    modal_markets_title: "Supermarkets & Groceries",
+    modal_transport_title: "Transport & Mobility",
+    modal_info_title: "Useful info",
+    walk_4m: "4 min walk", walk_5m: "5 min walk", walk_7m: "7 min walk", walk_8m: "8 min walk", walk_10m: "10 min walk",
+    car_5m: "5 min drive",
+    walk_18m_car_5m: "18 min walk / 5 min drive",
+    in_front: "Across the street",
+    min_1: "1 minute", min_2: "2 minutes", min_3: "3 minutes", min_4: "4 minutes", min_6: "6 minutes",
+    walk_15m_car_4m: "15 min walk / 4 min drive",
+    walk_10m_car_5m: "10 min walk / 5 min drive",
+    comasina_time: "8 min drive / 15 min bus",
+    desc_kebap: "€ • Quick kebabs and sandwiches to go.",
+    desc_esposito: "€ • Neapolitan specialties and hot fried snacks.",
+    desc_leone: "€€ • Elegant restaurant with selected meat cuts.",
+    desc_oca: "€€ • Pizza by the slice and takeaway.",
+    desc_locanda: "€€ • Traditional dishes and cozy atmosphere.",
+    desc_grill: "€€ • Grilled dishes and local classics.",
+    desc_ciccia: "€€€ • Charcoal-grilled meat specialties and hearty dishes.",
+    desc_mamo: "Café for breakfast and coffee breaks right outside the door.",
+    desc_campana: "Very close café, bar and evening drinks.",
+    desc_purogelato: "Bar, aperitifs and artisanal gelato.",
+    desc_oliver: "Artisanal gelato with natural flavors and ingredients.",
+    desc_crai: "Small neighborhood supermarket ideal for quick shopping.",
+    desc_ins: "Food discount store with a great selection of budget items.",
+    desc_famila: "Large superstore for full grocery shopping.",
+    transport_map_title: "Transport Map",
+    transport_map_desc: "Diagram of train and metro lines and connections.",
+    open_map: "Open map",
+    how_to_reach: "How to Get There",
+    dest_stations: "Stations", dest_places: "Places", dest_fairs: "Trade Fairs", dest_airports: "Airports",
+    local_departures: "Local Departure Points",
+    bus_89: "Bus Stop n.89",
+    bus_89_desc: "Bus to reach Yellow Metro Line M3",
+    novate_station: "Novate Milanese Station",
+    novate_station_desc: "FN Passante trains (S1 / S3) direct to Milan.",
+    comasina_desc: "Terminus of Yellow Metro Line M3 (Duomo / Central Station).",
+    place_duomo: "Duomo / Milan City Center",
+    excursions: "Excursions", day_trips: "Day Trips from Milan", lake_como: "Lake Como",
+    airport_linate: "Linate Airport", airport_bergamo: "Bergamo Airport (Orio al Serio)", airport_malpensa: "Malpensa Airport",
+    bergamo_badge: "~1h 20m - ~€10.00", malpensa_badge: "~1h 05m - ~€13.00",
+    route_centrale: "• Walk from Antica Corte Milanese to Novate FS (~6 min), then train S1/S3 to Repubblica,\n• then Metro M3 one stop to Centrale FS (or 10 min walk).\nAlternative: bus 89 to Comasina and direct M3.",
+    route_cadorna: "• Walk from Antica Corte Milanese to Novate FS (~6 min), then direct train S3 to Milano Cadorna (~15 min).",
+    route_rho: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1 to Lancetti,\n• transfer to S5/S6 towards Rho to Rho Fiera.",
+    route_duomo: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S3 to Cadorna,\n• then Metro M1 (red) towards Sesto 1° Maggio to Duomo.\nOr:\n• Train S1 to Repubblica, then Metro M3 (yellow) towards San Donato.\nOr:\n• Bus 89 to Comasina, then direct Metro M3 (yellow).",
+    route_castello: "• Walk from Antica Corte Milanese to Novate FS (~6 min), direct train S3 to Milano Cadorna (~15 min),\n• then 5 min walk to the Castle.",
+    route_arco: "• Walk from Antica Corte Milanese to Novate FS (~6 min), direct train S3 to Milano Cadorna (~15 min),\n• then ~10 min walk through Parco Sempione.",
+    route_sansiro: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Milano Garibaldi,\n• then Metro M5 (lilac) towards San Siro Stadio to terminus.",
+    route_como: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train with connection to Como Nord Lago.",
+    route_monza: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train via Milano Porta Garibaldi to Monza,\n• then local bus or shuttle to the Park/Circuit.",
+    route_arese: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train to Bollate Centro (~2 min),\n• then bus Z121 to Arese.",
+    route_mico: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S3 to Domodossola Fiera,\n• then 5 min walk or one metro stop.\nOr:\n• Train S1 to Garibaldi, then Metro M5 (lilac) towards San Siro to Tre Torri/Portello.",
+    route_linate: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Dateo,\n• then Metro M4 (blue) towards Linate Aeroporto, terminus.",
+    route_bergamo: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Milano Centrale,\n• then airport shuttle bus to Bergamo Airport.",
+    route_malpensa: "• Walk from Antica Corte Milanese to Novate FS (~6 min), train S1/S3 to Bovisa,\n• then Malpensa Express (Terminal 1 or 2). Buy dedicated ticket before boarding.",
+    emergency_title: "Emergencies",
+    emergency_desc: "European emergency number: police, ambulance and fire brigade. Free call.",
+    call_112: "Call 112",
+    wifi_title: "Wi-Fi", wifi_name: "Network", wifi_pass: "Password",
+    stay_title: "Your stay", checkin: "Check-in from", checkout: "Check-out by", address: "Address",
+    host_title: "Contacts", call_host: "Call the host", whatsapp: "WhatsApp",
+    copy: "Copy", copied: "Copied!", call: "Call",
+    close: "Close", text_size: "Text size", theme_toggle: "Switch light or dark theme", lang_group: "Language",
+    hours_note: "Opening hours are indicative and may change on holidays. If in doubt, call the venue.",
+    open_full: "Open full screen", map_missing: "Map not available", pinch: "Pinch with two fingers to zoom",
+    taxi_title: "Need a taxi?", taxi_sub: "Direct call Milan",
+    review_title: "Your opinion matters to us",
+    review_sub: "Leave a review and share your experience!",
+    back_categories: "Back to Categories", back_transport: "Back to Transport", back_places: "Back to Places",
+    footer: "Antica Corte Milanese — Have a nice stay!"
+  },
+  fr: {
+    header_sub: "Guide Local & Navigation",
+    hero_welcome: "Bienvenue ! Tout ce dont vous avez besoin, tout près.",
+    cat_restaurants: "Restaurants", cat_restaurants_sub: "Repas & Pizza",
+    cat_bars: "Bars & Cafés", cat_bars_sub: "Petit-déj & Glaces",
+    cat_markets: "Supermarchés", cat_markets_sub: "Courses & Boutiques",
+    cat_transport: "Transports", cat_transport_sub: "Gare & Métro",
+    info_title: "Infos utiles", info_sub: "Wi-Fi, urgences & contacts", info_sub_min: "Numéros utiles & urgences",
+    modal_restaurants_title: "Restaurants & Pizzerias",
+    modal_bars_title: "Bars, Cafés & Glaciers",
+    modal_markets_title: "Supermarchés & Courses",
+    modal_transport_title: "Transports & Mobilité",
+    modal_info_title: "Infos utiles",
+    walk_4m: "4 min à pied", walk_5m: "5 min à pied", walk_7m: "7 min à pied", walk_8m: "8 min à pied", walk_10m: "10 min à pied",
+    car_5m: "5 min en voiture",
+    walk_18m_car_5m: "18 min à pied / 5 min voiture",
+    in_front: "En face du bâtiment",
+    min_1: "1 minute", min_2: "2 minutes", min_3: "3 minutes", min_4: "4 minutes", min_6: "6 minutes",
+    walk_15m_car_4m: "15 min à pied / 4 min voiture",
+    walk_10m_car_5m: "10 min à pied / 5 min voiture",
+    comasina_time: "8 min voiture / 15 min bus",
+    desc_kebap: "€ • Kebabs et sandwichs rapides à emporter.",
+    desc_esposito: "€ • Spécialités napolitaines et fritures chaudes.",
+    desc_leone: "€€ • Restaurant élégant avec belles pièces de viande.",
+    desc_oca: "€€ • Pizza à la part et à emporter.",
+    desc_locanda: "€€ • Plats typiques et ambiance chaleureuse.",
+    desc_grill: "€€ • Cuisine grillée et plats traditionnels.",
+    desc_ciccia: "€€€ • Spécialités de viande à la braise et plats gourmands.",
+    desc_mamo: "Café pour petit-déjeuner et pauses café juste devant la porte.",
+    desc_campana: "Café tout proche, bar et verres en soirée.",
+    desc_purogelato: "Bar, apéritifs et glacier artisanal.",
+    desc_oliver: "Glacier artisanal aux parfums et ingrédients naturels.",
+    desc_crai: "Petit supermarché de quartier idéal pour des courses rapides.",
+    desc_ins: "Discounter alimentaire avec un bon choix à petits prix.",
+    desc_famila: "Grand supermarché pour faire le plein de courses.",
+    transport_map_title: "Plan des transports",
+    transport_map_desc: "Schéma des lignes et correspondances de train et métro.",
+    open_map: "Ouvrir le plan",
+    how_to_reach: "Comment s'y rendre",
+    dest_stations: "Gares", dest_places: "Lieux", dest_fairs: "Salons & Foires", dest_airports: "Aéroports",
+    local_departures: "Points de Départ Locaux",
+    bus_89: "Arrêt Bus n.89",
+    bus_89_desc: "Bus vers la ligne de métro jaune M3",
+    novate_station: "Gare de Novate Milanese",
+    novate_station_desc: "Trains FN Passante (S1 / S3) directs vers Milan.",
+    comasina_desc: "Terminus de la ligne de métro jaune M3 (Duomo / Gare Centrale).",
+    place_duomo: "Duomo / Centre de Milan",
+    excursions: "Excursions", day_trips: "Excursions hors de Milan", lake_como: "Lac de Côme",
+    airport_linate: "Aéroport de Linate", airport_bergamo: "Aéroport de Bergame (Orio al Serio)", airport_malpensa: "Aéroport de Malpensa",
+    bergamo_badge: "~1h 20m - ~€10,00", malpensa_badge: "~1h 05m - ~€13,00",
+    route_centrale: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), puis train S1/S3 jusqu'à Repubblica,\n• puis Métro M3 un arrêt jusqu'à Centrale FS (ou 10 min à pied).\nAlternative : bus 89 jusqu'à Comasina et M3 directe.",
+    route_cadorna: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), puis train S3 direct jusqu'à Milano Cadorna (~15 min).",
+    route_rho: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1 jusqu'à Lancetti,\n• correspondance S5/S6 direction Rho jusqu'à Rho Fiera.",
+    route_duomo: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 jusqu'à Cadorna,\n• puis Métro M1 (rouge) direction Sesto 1° Maggio jusqu'à Duomo.\nOu :\n• Train S1 jusqu'à Repubblica, puis Métro M3 (jaune) direction San Donato.\nOu :\n• Bus 89 jusqu'à Comasina, puis Métro M3 (jaune) directe.",
+    route_castello: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 direct jusqu'à Milano Cadorna (~15 min),\n• puis 5 min à pied jusqu'au Château.",
+    route_arco: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 direct jusqu'à Milano Cadorna (~15 min),\n• puis ~10 min à pied à travers le Parco Sempione.",
+    route_sansiro: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Milano Garibaldi,\n• puis Métro M5 (lilas) direction San Siro Stadio jusqu'au terminus.",
+    route_como: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train avec correspondance jusqu'à Como Nord Lago.",
+    route_monza: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train via Milano Porta Garibaldi pour Monza,\n• puis bus local ou navette vers le Parc/Circuit.",
+    route_arese: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train jusqu'à Bollate Centro (~2 min),\n• puis bus Z121 jusqu'à Arese.",
+    route_mico: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S3 jusqu'à Domodossola Fiera,\n• puis 5 min à pied ou un arrêt de métro.\nOu :\n• Train S1 jusqu'à Garibaldi, puis Métro M5 (lilas) direction San Siro jusqu'à Tre Torri/Portello.",
+    route_linate: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Dateo,\n• puis Métro M4 (bleue) direction Linate Aeroporto, terminus.",
+    route_bergamo: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Milano Centrale,\n• puis navette bus aéroportuaire jusqu'à l'aéroport de Bergame.",
+    route_malpensa: "• À pied d'Antica Corte Milanese à Novate FS (~6 min), train S1/S3 jusqu'à Bovisa,\n• puis Malpensa Express (Terminal 1 ou 2). Billet dédié à acheter avant de monter.",
+    emergency_title: "Urgences",
+    emergency_desc: "Numéro d'urgence européen : police, ambulance et pompiers. Appel gratuit.",
+    call_112: "Appeler le 112",
+    wifi_title: "Wi-Fi", wifi_name: "Réseau", wifi_pass: "Mot de passe",
+    stay_title: "Votre séjour", checkin: "Arrivée à partir de", checkout: "Départ avant", address: "Adresse",
+    host_title: "Contacts", call_host: "Appeler l'hôte", whatsapp: "WhatsApp",
+    copy: "Copier", copied: "Copié !", call: "Appeler",
+    close: "Fermer", text_size: "Taille du texte", theme_toggle: "Changer de thème clair ou sombre", lang_group: "Langue",
+    hours_note: "Les horaires sont indicatifs et peuvent varier les jours fériés. En cas de doute, appelez l'établissement.",
+    open_full: "Ouvrir en plein écran", map_missing: "Plan non disponible", pinch: "Pincez avec deux doigts pour zoomer",
+    taxi_title: "Besoin d'un taxi ?", taxi_sub: "Appel direct Milan",
+    review_title: "Votre avis compte pour nous",
+    review_sub: "Laissez un avis et partagez votre expérience !",
+    back_categories: "Retour aux Catégories", back_transport: "Retour aux Transports", back_places: "Retour aux Lieux",
+    footer: "Antica Corte Milanese — Have a nice stay!"
+  },
+  es: {
+    header_sub: "Guía Local & Navegación",
+    hero_welcome: "¡Bienvenido! Todo lo que necesitas, cerca de ti.",
+    cat_restaurants: "Restaurantes", cat_restaurants_sub: "Comidas & Pizza",
+    cat_bars: "Bares & Cafés", cat_bars_sub: "Desayunos & Helados",
+    cat_markets: "Supermercados", cat_markets_sub: "Compra & Tiendas",
+    cat_transport: "Transporte", cat_transport_sub: "Estación & Metro",
+    info_title: "Info útil", info_sub: "Wi-Fi, emergencias y contactos", info_sub_min: "Números útiles y emergencias",
+    modal_restaurants_title: "Restaurantes & Pizzerías",
+    modal_bars_title: "Bares, Cafés & Heladerías",
+    modal_markets_title: "Supermercados & Compras",
+    modal_transport_title: "Transporte & Movilidad",
+    modal_info_title: "Info útil",
+    walk_4m: "4 min a pie", walk_5m: "5 min a pie", walk_7m: "7 min a pie", walk_8m: "8 min a pie", walk_10m: "10 min a pie",
+    car_5m: "5 min en coche",
+    walk_18m_car_5m: "18 min a pie / 5 min coche",
+    in_front: "Frente al edificio",
+    min_1: "1 minuto", min_2: "2 minutos", min_3: "3 minutos", min_4: "4 minutos", min_6: "6 minutos",
+    walk_15m_car_4m: "15 min a pie / 4 min coche",
+    walk_10m_car_5m: "10 min a pie / 5 min coche",
+    comasina_time: "8 min coche / 15 min bus",
+    desc_kebap: "€ • Kebabs y bocadillos rápidos para llevar.",
+    desc_esposito: "€ • Especialidades napolitanas y frituras calientes.",
+    desc_leone: "€€ • Restaurante elegante con cortes de carne selectos.",
+    desc_oca: "€€ • Pizza al corte y para llevar.",
+    desc_locanda: "€€ • Platos típicos y ambiente acogedor.",
+    desc_grill: "€€ • Cocina a la brasa y platos tradicionales.",
+    desc_ciccia: "€€€ • Especialidades de carne a la brasa y platos variados.",
+    desc_mamo: "Cafetería para desayunos y pausas de café justo en la puerta.",
+    desc_campana: "Cafetería muy cerca, bar y copas por la noche.",
+    desc_purogelato: "Bar, aperitivos y heladería artesanal.",
+    desc_oliver: "Heladería artesanal con sabores e ingredientes naturales.",
+    desc_crai: "Pequeño supermercado de barrio ideal para compras rápidas.",
+    desc_ins: "Supermercado de descuento con buena selección económica.",
+    desc_famila: "Gran supermercado para una compra completa.",
+    transport_map_title: "Mapa de transporte",
+    transport_map_desc: "Esquema con líneas y conexiones de tren y metro.",
+    open_map: "Abrir mapa",
+    how_to_reach: "Cómo Llegar",
+    dest_stations: "Estaciones", dest_places: "Lugares", dest_fairs: "Ferias", dest_airports: "Aeropuertos",
+    local_departures: "Puntos de Salida Locales",
+    bus_89: "Parada Bus n.89",
+    bus_89_desc: "Autobús para llegar a la línea amarilla de metro M3",
+    novate_station: "Estación de Novate Milanese",
+    novate_station_desc: "Trenes FN Passante (S1 / S3) directos a Milán.",
+    comasina_desc: "Terminal de la línea amarilla de metro M3 (Duomo / Estación Central).",
+    place_duomo: "Duomo / Centro de Milán",
+    excursions: "Excursiones", day_trips: "Escapadas desde Milán", lake_como: "Lago de Como",
+    airport_linate: "Aeropuerto de Linate", airport_bergamo: "Aeropuerto de Bérgamo (Orio al Serio)", airport_malpensa: "Aeropuerto de Malpensa",
+    bergamo_badge: "~1h 20m - ~€10,00", malpensa_badge: "~1h 05m - ~€13,00",
+    route_centrale: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), luego tren S1/S3 hasta Repubblica,\n• luego Metro M3 una parada hasta Centrale FS (o 10 min a pie).\nAlternativa: bus 89 hasta Comasina y M3 directa.",
+    route_cadorna: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), luego tren S3 directo hasta Milano Cadorna (~15 min).",
+    route_rho: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1 hasta Lancetti,\n• transbordo a S5/S6 dirección Rho hasta Rho Fiera.",
+    route_duomo: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 hasta Cadorna,\n• luego Metro M1 (roja) dirección Sesto 1° Maggio hasta Duomo.\nO bien:\n• Tren S1 hasta Repubblica, luego Metro M3 (amarilla) dirección San Donato.\nO bien:\n• Bus 89 hasta Comasina, luego Metro M3 (amarilla) directa.",
+    route_castello: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 directo hasta Milano Cadorna (~15 min),\n• luego 5 min a pie hasta el Castillo.",
+    route_arco: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 directo hasta Milano Cadorna (~15 min),\n• luego ~10 min a pie por el Parco Sempione.",
+    route_sansiro: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Milano Garibaldi,\n• luego Metro M5 (lila) dirección San Siro Stadio hasta el final.",
+    route_como: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren con enlace hasta Como Nord Lago.",
+    route_monza: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren vía Milano Porta Garibaldi a Monza,\n• luego bus local o lanzadera hasta el Parque/Autódromo.",
+    route_arese: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren hasta Bollate Centro (~2 min),\n• luego bus Z121 hasta Arese.",
+    route_mico: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S3 hasta Domodossola Fiera,\n• luego 5 min a pie o una parada de metro.\nO bien:\n• Tren S1 hasta Garibaldi, luego Metro M5 (lila) dirección San Siro hasta Tre Torri/Portello.",
+    route_linate: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Dateo,\n• luego Metro M4 (azul) dirección Linate Aeroporto, terminal.",
+    route_bergamo: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Milano Centrale,\n• luego autobús lanzadera al aeropuerto de Bérgamo.",
+    route_malpensa: "• A pie desde Antica Corte Milanese hasta Novate FS (~6 min), tren S1/S3 hasta Bovisa,\n• luego Malpensa Express (Terminal 1 o 2). Comprar billete antes de subir.",
+    emergency_title: "Emergencias",
+    emergency_desc: "Número europeo de emergencias: policía, ambulancia y bomberos. Llamada gratuita.",
+    call_112: "Llamar al 112",
+    wifi_title: "Wi-Fi", wifi_name: "Red", wifi_pass: "Contraseña",
+    stay_title: "Tu estancia", checkin: "Check-in desde las", checkout: "Check-out antes de las", address: "Dirección",
+    host_title: "Contactos", call_host: "Llamar al anfitrión", whatsapp: "WhatsApp",
+    copy: "Copiar", copied: "¡Copiado!", call: "Llamar",
+    close: "Cerrar", text_size: "Tamaño del texto", theme_toggle: "Cambiar tema claro u oscuro", lang_group: "Idioma",
+    hours_note: "Los horarios son orientativos y pueden variar en festivos. En caso de duda, llama al local.",
+    open_full: "Abrir a pantalla completa", map_missing: "Mapa no disponible", pinch: "Pellizca con dos dedos para ampliar",
+    taxi_title: "¿Necesitas un taxi?", taxi_sub: "Llamada directa Milán",
+    review_title: "Tu opinión nos importa",
+    review_sub: "¡Deja una reseña y comparte tu experiencia!",
+    back_categories: "Volver a Categorías", back_transport: "Volver a Transporte", back_places: "Volver a Lugares",
+    footer: "Antica Corte Milanese — Have a nice stay!"
+  }
+};
+
+/* Testi dello stato aperto/chiuso (funzioni, perché contengono orari) */
+const STATUS_TXT = {
+  it: {
+    open: t => `Aperto fino alle ${t}`, closing: t => `Chiude tra poco (${t})`, opening: t => `Apre tra poco (${t})`,
+    closed: "Chiuso", opensToday: t => `Chiuso · apre alle ${t}`, opensTomorrow: t => `Chiuso · apre domani alle ${t}`,
+    opensDay: (d, t) => `Chiuso · apre ${d} alle ${t}`,
+    count: n => n === 1 ? "1 aperto ora" : `${n} aperti ora`, none: "Chiusi ora"
+  },
+  en: {
+    open: t => `Open until ${t}`, closing: t => `Closing soon (${t})`, opening: t => `Opening soon (${t})`,
+    closed: "Closed", opensToday: t => `Closed · opens at ${t}`, opensTomorrow: t => `Closed · opens tomorrow at ${t}`,
+    opensDay: (d, t) => `Closed · opens ${d} at ${t}`,
+    count: n => `${n} open now`, none: "Closed now"
+  },
+  fr: {
+    open: t => `Ouvert jusqu'à ${t}`, closing: t => `Ferme bientôt (${t})`, opening: t => `Ouvre bientôt (${t})`,
+    closed: "Fermé", opensToday: t => `Fermé · ouvre à ${t}`, opensTomorrow: t => `Fermé · ouvre demain à ${t}`,
+    opensDay: (d, t) => `Fermé · ouvre ${d} à ${t}`,
+    count: n => n === 1 ? "1 ouvert maintenant" : `${n} ouverts maintenant`, none: "Fermés"
+  },
+  es: {
+    open: t => `Abierto hasta las ${t}`, closing: t => `Cierra pronto (${t})`, opening: t => `Abre pronto (${t})`,
+    closed: "Cerrado", opensToday: t => `Cerrado · abre a las ${t}`, opensTomorrow: t => `Cerrado · abre mañana a las ${t}`,
+    opensDay: (d, t) => `Cerrado · abre el ${d} a las ${t}`,
+    count: n => n === 1 ? "1 abierto ahora" : `${n} abiertos ahora`, none: "Cerrados ahora"
+  }
+};
+
+/* =====================================================================
+   DATI — orari in minuti dalla mezzanotte, giorni: [dom, lun, mar, mer, gio, ven, sab].
+   Un valore oltre 1440 significa che il locale chiude dopo mezzanotte.
+   Per aggiungere un locale basta copiare una riga.
+   ===================================================================== */
+const every = x => [x, x, x, x, x, x, x];
+
+const LN = [[720, 900], [1140, 1440]];
+const CG = [[720, 870], [1155, 1380]];
+const B1 = [[360, 1200]];
+const C1 = [[480, 1560]];
+const P1 = [[660, 1350]], P2 = [[660, 1380]];
+const K1 = [[510, 750], [930, 1170]];
+const M1 = [[480, 1200]];
+const F1 = [[480, 1230]];
+
+const PLACES = {
+  ristoranti: [
+    { n: "Novate Kebap House", d: "desc_kebap", w: "walk_4m", h: every([[660, 1500]]) },
+    { n: "Pizzeria Friggitoria Esposito", q: "Pizzeria e friggitoria esposito Novate Milanese", d: "desc_esposito", w: "walk_5m",
+      h: [[[1110, 1380]], [], [[1110, 1380]], [[660, 870], [1110, 1380]], [[1110, 1380]], [[660, 870], [1110, 1380]], [[1110, 1380]]] },
+    { n: "Leone Carne e Cucina", d: "desc_leone", w: "walk_7m",
+      h: [LN, LN, LN, LN, [[720, 900], [1140, 1500]], [[720, 900], [1140, 1560]], [[720, 900], [1140, 1560]]] },
+    { n: "Pizzeria dell'Oca", d: "desc_oca", w: "walk_8m",
+      h: [[[1140, 1380]], [], [[1140, 1350]], [[1140, 1350]], [[1140, 1350]], [[1140, 1380]], [[1140, 1380]]] },
+    { n: "Locanda Conte Ghiotto", d: "desc_locanda", w: "walk_10m",
+      h: [[[720, 885], [1155, 1380]], CG, CG, CG, CG, CG, [[1155, 1380]]] },
+    { n: "Risto-Grill", d: "desc_grill", w: "car_5m", h: every([[690, 900], [1110, 1380]]) },
+    { n: "A TUTTA CICCIA", d: "desc_ciccia", w: "walk_18m_car_5m",
+      h: [[[720, 900], [1080, 1440]], [], [[720, 870], [1080, 1380]], [[720, 870], [1080, 1380]], [[720, 870], [1080, 1380]], [[720, 840], [1080, 1440]], [[720, 900], [1080, 1440]]] }
+  ],
+  bar: [
+    { n: "Mamo's cafe", d: "desc_mamo", w: "in_front", h: [[], B1, B1, B1, B1, B1, B1] },
+    { n: "La Campana di Vetro", d: "desc_campana", w: "min_1", h: [[[1020, 1440]], C1, C1, C1, C1, C1, C1] },
+    { n: "Purogelato", d: "desc_purogelato", w: "min_3", h: [P1, P1, P1, P1, P1, P2, P2] },
+    { n: "Sir Oliver", d: "desc_oliver", w: "min_4",
+      h: [[[630, 750], [870, 1290]], [], [[840, 1290]], [[840, 1290]], [[840, 1290]], [[840, 1320]], [[870, 1320]]] }
+  ],
+  supermercati: [
+    { n: "CRAI", d: "desc_crai", w: "min_1", h: [[[540, 750]], K1, K1, K1, K1, K1, K1] },
+    { n: "iN's Mercato", d: "desc_ins", w: "walk_15m_car_4m", h: [[[540, 780], [930, 1170]], M1, M1, M1, M1, M1, M1] },
+    { n: "Famila Superstore Novate Milanese", d: "desc_famila", w: "walk_10m_car_5m", h: [[[540, 1170]], F1, F1, F1, F1, F1, F1] }
+  ]
+};
+
+/* Percorsi: nk = chiave del nome tradotto, n = nome fisso; bk = chiave del badge tradotto, b = badge fisso */
+const ROUTES = {
+  stazioni: [
+    { n: "Stazione Centrale", b: "~30 min - €2,20", r: "route_centrale" },
+    { n: "Milano Cadorna", b: "~20 min - €2,20", r: "route_cadorna" },
+    { n: "Fiera Milano (Rho)", b: "~45 min - €2,20", r: "route_rho" }
+  ],
+  luoghi: [
+    { nk: "place_duomo", b: "~35 min - €2,20", r: "route_duomo" },
+    { n: "Castello Sforzesco", b: "~25 min - €2,20", r: "route_castello" },
+    { n: "Arco della Pace", b: "~30 min - €2,20", r: "route_arco" },
+    { n: "Stadio San Siro", b: "~40 min - €2,20", r: "route_sansiro" }
+  ],
+  gite: [
+    { nk: "lake_como", b: "~1h 05m - €5,00", r: "route_como" },
+    { n: "Autodromo di Monza", b: "~50 min - ~€4,00", r: "route_monza" },
+    { n: "Il Centro (Arese)", b: "~30 min - ~€2,50", r: "route_arese" }
+  ],
+  fiere: [
+    { n: "Fiera Milano (Rho)", b: "~45 min - €2,20", r: "route_rho" },
+    { n: "Fiera Milano City (MiCo)", b: "~25 min - €2,20", r: "route_mico" }
+  ],
+  aeroporti: [
+    { nk: "airport_linate", b: "~45 min - €2,20", r: "route_linate" },
+    { nk: "airport_bergamo", bk: "bergamo_badge", r: "route_bergamo" },
+    { nk: "airport_malpensa", bk: "malpensa_badge", r: "route_malpensa" }
+  ]
+};
+
+const LOCAL = [
+  { nk: "bus_89", w: "min_2", d: "bus_89_desc", q: "Via Vittorio Veneto Novate Milanese" },
+  { nk: "novate_station", w: "min_6", d: "novate_station_desc", q: "Stazione di Novate Milanese" },
+  { n: "Metro Comasina M3", w: "comasina_time", d: "comasina_desc", q: "Metro Comasina M3 Milano" }
+];
+
+/* =====================================================================
+   LOGICA ORARI (testata separatamente)
+   ===================================================================== */
+// <PURE>
+function fmt(min) {
+  const m = ((min % 1440) + 1440) % 1440;
+  return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+}
+
+/* Ora attuale a Milano (non quella del telefono dell'ospite, che potrebbe essere in un altro fuso) */
+function romeNow() {
+  try {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Rome', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+    }).formatToParts(new Date());
+    const get = t => parts.find(p => p.type === t).value;
+    const map = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    return { day: map[get('weekday')], min: (+get('hour')) * 60 + (+get('minute')) };
+  } catch (e) {
+    const n = new Date();
+    return { day: n.getDay(), min: n.getHours() * 60 + n.getMinutes() };
+  }
+}
+
+/* Stato di un locale. Considera anche le aperture "a cavallo" della mezzanotte del giorno prima. */
+function computeStatus(h, day, now) {
+  let curEnd = null, nextStart = null;
+  for (let d = -1; d <= 7; d++) {
+    const intervals = h[(((day + d) % 7) + 7) % 7] || [];
+    for (const [a, b] of intervals) {
+      const s = d * 1440 + a, e = d * 1440 + b;
+      if (s <= now && now < e) {
+        if (curEnd === null || e > curEnd) curEnd = e;
+      } else if (s > now) {
+        if (nextStart === null || s < nextStart) nextStart = s;
       }
-    };
-
-    let currentLang = 'it';
-    let isDarkTheme = false;
-
-    function applyTheme(dark) {
-      isDarkTheme = Boolean(dark);
-      document.body.classList.toggle('dark-theme', isDarkTheme);
-      const iconUse = document.querySelector('#themeIcon use');
-      if (iconUse) {
-        iconUse.setAttribute('href', isDarkTheme ? '#i-sun' : '#i-moon');
-      }
-      try {
-        localStorage.setItem('acm_theme', isDarkTheme ? 'dark' : 'light');
-      } catch (e) {}
     }
+  }
+  if (curEnd !== null) {
+    return { state: (curEnd - now) <= 30 ? 'closing' : 'open', time: fmt(curEnd) };
+  }
+  if (nextStart === null) return { state: 'closed', time: null };
+  const dayOffset = Math.floor(nextStart / 1440);
+  return {
+    state: (nextStart - now) <= 30 ? 'opening' : 'closed',
+    time: fmt(nextStart),
+    dayOffset: dayOffset,
+    dow: (day + dayOffset) % 7
+  };
+}
+// </PURE>
 
-    function toggleTheme() {
-      applyTheme(!isDarkTheme);
+/* =====================================================================
+   APP
+   ===================================================================== */
+let currentLang = 'it';
+let isDark = false;
+const T = () => TRANSLATIONS[currentLang] || TRANSLATIONS.it;
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ic = (id) => `<svg class="icon" aria-hidden="true"><use href="#${id}"/></svg>`;
+
+function dayName(dow) {
+  try {
+    return new Intl.DateTimeFormat(currentLang, { weekday: 'long', timeZone: 'UTC' }).format(new Date(Date.UTC(2023, 0, 1 + dow)));
+  } catch (e) { return ''; }
+}
+
+/* ---------- Costruzione card ---------- */
+function mapButtons(q) {
+  const enc = encodeURIComponent(q);
+  return `<a class="btn btn-gmaps" href="https://www.google.com/maps/search/?api=1&query=${enc}" target="_blank" rel="noopener">${ic('i-pin')}Google Maps</a>` +
+         `<a class="btn btn-apple apple-only" href="https://maps.apple.com/?q=${enc}" target="_blank" rel="noopener">${ic('i-map')}Apple Maps</a>`;
+}
+
+function placeCard(p, cat) {
+  const q = p.q || (p.n + ' Novate Milanese');
+  const tel = p.tel ? `<a class="btn btn-call" href="tel:${esc(p.tel.replace(/\s+/g, ''))}">${ic('i-phone')}<span data-i18n="call"></span></a>` : '';
+  return `<article class="card" data-cat="${cat}" data-h="${esc(JSON.stringify(p.h))}">
+    <div class="card-top"><h3 class="card-title">${esc(p.n)}</h3></div>
+    <div class="meta">
+      <span class="chip" data-i18n="${p.w}"></span>
+      <span class="status"><span class="dot"></span><span class="status-text"></span></span>
+    </div>
+    <p class="card-desc" data-i18n="${p.d}"></p>
+    <div class="btn-row">${mapButtons(q)}${tel}</div>
+  </article>`;
+}
+
+function routeCard(r) {
+  const title = r.nk ? `<h3 class="card-title" data-i18n="${r.nk}"></h3>` : `<h3 class="card-title">${esc(r.n)}</h3>`;
+  const badge = r.bk ? `<span class="chip" data-i18n="${r.bk}"></span>` : `<span class="chip">${esc(r.b)}</span>`;
+  return `<article class="card"><div class="card-top">${title}${badge}</div><p class="card-desc" data-i18n="${r.r}"></p></article>`;
+}
+
+function localCard(l) {
+  const title = l.nk ? `<h3 class="card-title" data-i18n="${l.nk}"></h3>` : `<h3 class="card-title">${esc(l.n)}</h3>`;
+  return `<article class="card">
+    <div class="card-top">${title}</div>
+    <div class="meta"><span class="chip" data-i18n="${l.w}"></span></div>
+    <p class="card-desc" data-i18n="${l.d}"></p>
+    <div class="btn-row">${mapButtons(l.q)}</div>
+  </article>`;
+}
+
+function destCard(layerId, icon, titleKey, subtitle) {
+  return `<button type="button" class="cat" onclick="openLayer('${layerId}')">
+    <span class="cat-icon">${ic(icon)}</span>
+    <span class="cat-title" data-i18n="${titleKey}"></span>
+    <span class="cat-sub">${esc(subtitle)}</span>
+  </button>`;
+}
+
+function kv(labelKey, value, copy) {
+  return `<div class="kv"><div class="kv-text"><div class="kv-label" data-i18n="${labelKey}"></div><div class="kv-value">${esc(value)}</div></div>` +
+         (copy ? `<button type="button" class="btn btn-soft btn-sm" data-copy="${esc(value)}">${ic('i-copy')}<span data-i18n="copy"></span></button>` : '') + `</div>`;
+}
+
+/* ---------- Costruzione schermate ---------- */
+function makeLayer(id, icon, titleKey, backKey, builder) {
+  const el = document.createElement('div');
+  el.id = id;
+  el.className = 'layer';
+  el.setAttribute('role', 'dialog');
+  el.setAttribute('aria-modal', 'true');
+  el.setAttribute('aria-labelledby', id + '-t');
+  el.innerHTML =
+    `<div class="layer-head">
+       <div class="layer-title">${ic(icon)}<h2 id="${id}-t" data-i18n="${titleKey}"></h2></div>
+       <button type="button" class="btn-close" data-i18n-aria="close" aria-label="Chiudi" onclick="goBack()">${ic('i-x')}</button>
+     </div>
+     <div class="layer-scroll"><div class="layer-body">
+       <div class="stack"></div>
+       <button type="button" class="back-btn" onclick="goBack()">${ic('i-arrow-left')}<span data-i18n="${backKey}"></span></button>
+     </div></div>`;
+  builder(el.querySelector('.stack'));
+  document.body.appendChild(el);
+}
+
+function buildLayers() {
+  const placeBuilder = key => stack => { stack.innerHTML = PLACES[key].map(p => placeCard(p, key)).join(''); };
+  const routeBuilder = key => stack => { stack.innerHTML = ROUTES[key].map(routeCard).join(''); };
+
+  makeLayer('modal-ristoranti', 'i-utensils', 'modal_restaurants_title', 'back_categories', placeBuilder('ristoranti'));
+  makeLayer('modal-bar', 'i-coffee', 'modal_bars_title', 'back_categories', placeBuilder('bar'));
+  makeLayer('modal-supermercati', 'i-cart', 'modal_markets_title', 'back_categories', placeBuilder('supermercati'));
+
+  makeLayer('modal-trasporti', 'i-train', 'modal_transport_title', 'back_categories', stack => {
+    stack.innerHTML =
+      `<section class="map-card">
+         <h3 class="card-title" data-i18n="transport_map_title"></h3>
+         <p class="card-desc" data-i18n="transport_map_desc"></p>
+         <div class="btn-row"><button type="button" class="btn btn-map" onclick="openImage('mappa-trasporti.jpg')">${ic('i-image')}<span data-i18n="open_map"></span></button></div>
+       </section>
+       <h3 class="section-title" data-i18n="how_to_reach"></h3>
+       <div class="grid">
+         ${destCard('modal-dest-stazioni', 'i-train', 'dest_stations', 'Centrale & Cadorna')}
+         ${destCard('modal-dest-luoghi', 'i-landmark', 'dest_places', 'Duomo, Castello & Arco')}
+         ${destCard('modal-dest-fiere', 'i-building', 'dest_fairs', 'Rho & MiCo')}
+         ${destCard('modal-dest-aeroporti', 'i-plane', 'dest_airports', 'Linate, Malpensa & BGY')}
+       </div>
+       <h3 class="section-title" data-i18n="local_departures"></h3>
+       ${LOCAL.map(localCard).join('')}`;
+  });
+
+  makeLayer('modal-dest-stazioni', 'i-train', 'dest_stations', 'back_transport', routeBuilder('stazioni'));
+  makeLayer('modal-dest-luoghi', 'i-landmark', 'dest_places', 'back_transport', stack => {
+    stack.innerHTML = ROUTES.luoghi.map(routeCard).join('') +
+      `<h3 class="section-title" data-i18n="excursions"></h3>
+       <div class="grid">${destCard('modal-dest-gite', 'i-compass', 'day_trips', 'Como, Monza & Arese')}</div>`;
+  });
+  makeLayer('modal-dest-gite', 'i-compass', 'day_trips', 'back_places', routeBuilder('gite'));
+  makeLayer('modal-dest-fiere', 'i-building', 'dest_fairs', 'back_transport', routeBuilder('fiere'));
+  makeLayer('modal-dest-aeroporti', 'i-plane', 'dest_airports', 'back_transport', routeBuilder('aeroporti'));
+
+  makeLayer('modal-info', 'i-info', 'modal_info_title', 'back_categories', stack => {
+    let html = '';
+    if (CONFIG.wifiName || CONFIG.wifiPassword) {
+      html += `<article class="card"><div class="card-top"><h3 class="card-title">${ic('i-wifi')}<span data-i18n="wifi_title"></span></h3></div>` +
+              (CONFIG.wifiName ? kv('wifi_name', CONFIG.wifiName, true) : '') +
+              (CONFIG.wifiPassword ? kv('wifi_pass', CONFIG.wifiPassword, true) : '') + `</article>`;
     }
-
-    function syncBodyScrollLock() {
-      const anyModalOpen = document.querySelector('.fullscreen-modal.active, .image-modal-overlay.active');
-      document.body.classList.toggle('modal-open', Boolean(anyModalOpen));
+    if (CONFIG.checkIn || CONFIG.checkOut || CONFIG.address) {
+      html += `<article class="card"><div class="card-top"><h3 class="card-title">${ic('i-clock')}<span data-i18n="stay_title"></span></h3></div>` +
+              (CONFIG.checkIn ? kv('checkin', CONFIG.checkIn, false) : '') +
+              (CONFIG.checkOut ? kv('checkout', CONFIG.checkOut, false) : '') +
+              (CONFIG.address ? kv('address', CONFIG.address, true) : '') + `</article>`;
     }
-
-    function setLanguage(lang) {
-      if (!TRANSLATIONS[lang]) return;
-      currentLang = lang;
-      document.documentElement.lang = lang;
-
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-      });
-
-      const dict = TRANSLATIONS[lang];
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (dict[key] !== undefined) {
-          el.textContent = dict[key];
-        }
-      });
-
-      updateStatuses();
+    if (CONFIG.hostPhone) {
+      const num = CONFIG.hostPhone.replace(/\s+/g, '');
+      html += `<article class="card"><div class="card-top"><h3 class="card-title">${ic('i-phone')}<span data-i18n="host_title"></span></h3></div>
+        <div class="btn-row"><a class="btn btn-call" href="tel:${esc(num)}">${ic('i-phone')}<span data-i18n="call_host"></span></a>` +
+        (CONFIG.hostWhatsapp ? `<a class="btn btn-gmaps" href="https://wa.me/${esc(num.replace(/\D/g, ''))}" target="_blank" rel="noopener">${ic('i-message')}<span data-i18n="whatsapp"></span></a>` : '') +
+        `</div></article>`;
     }
+    html += `<article class="card"><div class="card-top"><h3 class="card-title" data-i18n="emergency_title"></h3><span class="chip">112</span></div>
+      <p class="card-desc" data-i18n="emergency_desc"></p>
+      <div class="btn-row"><a class="btn btn-danger" href="tel:112">${ic('i-phone')}<span data-i18n="call_112"></span></a></div></article>`;
+    stack.innerHTML = html;
+  });
+}
 
-    function openModal(id) {
-      const modal = document.getElementById(id);
-      if (!modal) return;
-      modal.classList.add('active');
-      const scrollArea = modal.querySelector('.modal-scroll-area');
-      if (scrollArea) scrollArea.scrollTop = 0;
-      syncBodyScrollLock();
+/* ---------- Pila delle schermate + tasto indietro del telefono ---------- */
+const stack = [];
+const lastFocus = [];
+let histOK = true;
+
+function syncLayers() {
+  const top = stack[stack.length - 1];
+  document.querySelectorAll('.layer, .lightbox').forEach(l => { l.inert = (l.id !== top); });
+  const app = document.getElementById('app');
+  if (app) app.inert = stack.length > 0;
+  document.documentElement.classList.toggle('lock', stack.length > 0);
+}
+
+function initHistory() {
+  try {
+    if (!history.state || !history.state.acmRoot) {
+      history.replaceState(
+        { acmRoot: true, acmLayer: null, acmDepth: 0 },
+        '',
+        location.href
+      );
     }
+  } catch (e) {
+    histOK = false;
+  }
+}
 
-    function closeModal(id) {
-      const modal = document.getElementById(id);
-      if (modal) modal.classList.remove('active');
-      syncBodyScrollLock();
+function openLayer(id) {
+  const el = document.getElementById(id);
+  if (!el || el.classList.contains('active')) return;
+
+  lastFocus.push(document.activeElement);
+
+  el.style.zIndex = (el.classList.contains('lightbox') ? 3000 : 1000) + stack.length;
+
+  const st = el.querySelector('.stack');
+  if (st) {
+    [...st.children].forEach((c, i) => c.style.setProperty('--i', Math.min(i, 8)));
+    const back = el.querySelector('.back-btn');
+    if (back) back.style.setProperty('--i', Math.min(st.children.length, 8));
+  }
+
+  const sc = el.querySelector('.layer-scroll');
+  if (sc) sc.scrollTop = 0;
+
+  el.classList.add('active');
+  stack.push(id);
+
+  try {
+    history.pushState(
+      { acmRoot: true, acmLayer: id, acmDepth: stack.length },
+      '',
+      location.href
+    );
+  } catch (e) {
+    histOK = false;
+  }
+
+  syncLayers();
+
+  const closeBtn = el.querySelector('.btn-close');
+  if (closeBtn) setTimeout(() => {
+    try { closeBtn.focus({ preventScroll: true }); } catch (e) {}
+  }, 60);
+}
+
+function hideTop() {
+  const id = stack.pop();
+  if (!id) return;
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('active');
+  const f = lastFocus.pop();
+  if (f && f.focus) { try { f.focus({ preventScroll: true }); } catch (e) {} }
+  syncLayers();
+}
+
+function goBack() {
+  if (!stack.length) return;
+  if (histOK) history.back(); else hideTop();
+}
+
+window.addEventListener('popstate', () => { if (stack.length) hideTop(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') goBack(); });
+
+function openImage(src) {
+  const img = document.getElementById('lb-img');
+  const miss = document.getElementById('lb-missing');
+  miss.style.display = 'none';
+  img.style.display = '';
+  img.onerror = () => { img.style.display = 'none'; miss.style.display = ''; };
+  img.src = src;
+  img.alt = T().transport_map_title;
+  document.getElementById('lb-open').href = src;
+  openLayer('image-modal');
+}
+
+/* ---------- Lingua, tema, dimensione testo ---------- */
+function setLanguage(lang) {
+  if (!TRANSLATIONS[lang]) return;
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+  const dict = TRANSLATIONS[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = dict[el.dataset.i18n];
+    if (v !== undefined) el.textContent = v;
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+    const v = dict[el.dataset.i18nAria];
+    if (v !== undefined) el.setAttribute('aria-label', v);
+  });
+  try { localStorage.setItem('acm_lang', lang); } catch (e) {}
+  updateStatuses();
+}
+
+function initialLang() {
+  try {
+    const s = localStorage.getItem('acm_lang');
+    if (s && TRANSLATIONS[s]) return s;
+  } catch (e) {}
+  const n = (navigator.language || 'it').slice(0, 2).toLowerCase();
+  return TRANSLATIONS[n] ? n : 'en';
+}
+
+function applyTheme(dark) {
+  isDark = !!dark;
+  if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+  else document.documentElement.removeAttribute('data-theme');
+  const use = document.querySelector('#themeIcon use');
+  if (use) use.setAttribute('href', isDark ? '#i-sun' : '#i-moon');
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', isDark ? '#0F1316' : '#F7F2EA');
+  try { localStorage.setItem('acm_theme', isDark ? 'dark' : 'light'); } catch (e) {}
+}
+function toggleTheme() { applyTheme(!isDark); }
+
+function cycleSize() {
+  const cur = parseInt(document.documentElement.getAttribute('data-size') || '0', 10);
+  const next = (cur + 1) % 3;
+  document.documentElement.setAttribute('data-size', String(next));
+  try { localStorage.setItem('acm_size', String(next)); } catch (e) {}
+}
+
+/* ---------- Stato aperto/chiuso ---------- */
+function updateStatuses() {
+  const { day, min } = romeNow();
+  const t = STATUS_TXT[currentLang] || STATUS_TXT.it;
+  const counts = {};
+  const totals = {};
+
+  document.querySelectorAll('[data-h]').forEach(card => {
+    if (!card._h) card._h = JSON.parse(card.dataset.h);
+    const s = computeStatus(card._h, day, min);
+    const cat = card.dataset.cat;
+    totals[cat] = (totals[cat] || 0) + 1;
+    if (s.state === 'open' || s.state === 'closing') counts[cat] = (counts[cat] || 0) + 1;
+
+    let txt, cls;
+    if (s.state === 'open') { cls = 'open'; txt = t.open(s.time); }
+    else if (s.state === 'closing') { cls = 'warning'; txt = t.closing(s.time); }
+    else if (s.state === 'opening') { cls = 'warning'; txt = t.opening(s.time); }
+    else {
+      cls = 'closed';
+      if (s.time === null) txt = t.closed;
+      else if (s.dayOffset === 0) txt = t.opensToday(s.time);
+      else if (s.dayOffset === 1) txt = t.opensTomorrow(s.time);
+      else txt = t.opensDay(dayName(s.dow), s.time);
     }
-
-    function openSubModal(id) {
-      const modal = document.getElementById(id);
-      if (!modal) return;
-      modal.classList.add('active');
-      const scrollArea = modal.querySelector('.modal-scroll-area');
-      if (scrollArea) scrollArea.scrollTop = 0;
-      syncBodyScrollLock();
+    const badge = card.querySelector('.status');
+    const span = card.querySelector('.status-text');
+    if (badge && span) {
+      badge.classList.remove('open', 'closed', 'warning');
+      badge.classList.add(cls);
+      span.textContent = txt;
     }
+  });
 
-    function closeSubModal(id) {
-      const modal = document.getElementById(id);
-      if (modal) modal.classList.remove('active');
-      syncBodyScrollLock();
-    }
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const n = counts[el.dataset.count] || 0;
+    el.textContent = n > 0 ? t.count(n) : t.none;
+    el.classList.toggle('on', n > 0);
+  });
+}
 
-    function openImageModal(imageSrc) {
-      const imgElem = document.getElementById('image-modal-img');
-      imgElem.src = imageSrc;
-      document.getElementById('image-modal').classList.add('active');
-      syncBodyScrollLock();
-    }
+/* ---------- Copia negli appunti (Wi-Fi, indirizzo) ---------- */
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-copy]');
+  if (!btn) return;
+  const text = btn.getAttribute('data-copy');
+  const label = btn.querySelector('span');
+  const done = () => {
+    if (!label) return;
+    label.textContent = T().copied;
+    setTimeout(() => { label.textContent = T().copy; }, 1600);
+  };
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (err) {}
+    document.body.removeChild(ta);
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(done).catch(fallback);
+  } else { fallback(); }
+});
 
-    function closeImageModal() {
-      document.getElementById('image-modal').classList.remove('active');
-      syncBodyScrollLock();
-    }
+/* ---------- Avvio ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  initHistory();
 
-    document.addEventListener('keydown', function(event) {
-      if (event.key !== 'Escape') return;
-      const imgModal = document.getElementById('image-modal');
-      if (imgModal && imgModal.classList.contains('active')) {
-        closeImageModal();
-        return;
-      }
-      const activeSub2 = document.querySelector('.sub-modal-level-2.active');
-      if (activeSub2) {
-        closeSubModal(activeSub2.id);
-        return;
-      }
-      const activeSub1 = document.querySelector('.sub-modal.active');
-      if (activeSub1) {
-        closeSubModal(activeSub1.id);
-        return;
-      }
-      const activeMain = document.querySelector('.fullscreen-modal.active');
-      if (activeMain) {
-        closeModal(activeMain.id);
-      }
-    });
+  // Apple Maps solo su iPhone / iPad / Mac
+  const ua = navigator.userAgent || '';
+  const isApple = /iPad|iPhone|iPod|Macintosh/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (isApple) document.documentElement.classList.add('is-apple');
 
-    function updateStatuses() {
-      const now = new Date();
-      const currentDay = now.getDay();
-      const currentTimeVal = now.getHours() * 60 + now.getMinutes();
-      const t = TRANSLATIONS[currentLang] || TRANSLATIONS.it;
+  buildLayers();
 
-      document.querySelectorAll('.place-card-full[data-schedule]').forEach(card => {
-        try {
-          const schedule = JSON.parse(card.getAttribute('data-schedule'));
-          const todayIntervals = schedule[currentDay] || [];
+  const hasCfg = CONFIG.wifiName || CONFIG.wifiPassword || CONFIG.checkIn || CONFIG.checkOut || CONFIG.address || CONFIG.hostPhone;
+  document.getElementById('info-sub').setAttribute('data-i18n', hasCfg ? 'info_sub' : 'info_sub_min');
 
-          let isOpen = false;
-          let minUntilClose = Infinity;
-          let minUntilOpen = Infinity;
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark');
+  document.querySelectorAll('[data-rise]').forEach((el, i) => el.style.setProperty('--i', Math.min(i, 9)));
 
-          for (let interval of todayIntervals) {
-            const [fromVal, toVal] = interval;
+  setLanguage(initialLang());
 
-            if (toVal > 1440) {
-              if (currentTimeVal >= fromVal || currentTimeVal <= (toVal - 1440)) {
-                isOpen = true;
-                let diff = (currentTimeVal >= fromVal) ? (toVal - currentTimeVal) : ((toVal - 1440) - currentTimeVal);
-                if (diff >= 0 && diff < minUntilClose) minUntilClose = diff;
-              } else if (currentTimeVal < fromVal) {
-                let diff = fromVal - currentTimeVal;
-                if (diff < minUntilOpen) minUntilOpen = diff;
-              }
-            } else {
-              if (currentTimeVal >= fromVal && currentTimeVal <= toVal) {
-                isOpen = true;
-                let diff = toVal - currentTimeVal;
-                if (diff < minUntilClose) minUntilClose = diff;
-              } else if (currentTimeVal < fromVal) {
-                let diff = fromVal - currentTimeVal;
-                if (diff < minUntilOpen) minUntilOpen = diff;
-              }
-            }
-          }
-
-          const badge = card.querySelector('.status-badge');
-          const textSpan = card.querySelector('.status-text');
-
-          if (badge && textSpan) {
-            badge.classList.remove('open', 'closed', 'warning');
-
-            if (isOpen) {
-              if (minUntilClose <= 30) {
-                badge.classList.add('warning');
-                textSpan.textContent = t.status_closing_soon;
-              } else {
-                badge.classList.add('open');
-                textSpan.textContent = t.status_open;
-              }
-            } else {
-              if (minUntilOpen <= 30) {
-                badge.classList.add('warning');
-                textSpan.textContent = t.status_opening_soon;
-              } else {
-                badge.classList.add('closed');
-                textSpan.textContent = t.status_closed;
-              }
-            }
-          }
-        } catch (e) {
-          console.error("Errore calcolo stato orario", e);
-        }
-      });
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-      try {
-        const savedTheme = localStorage.getItem('acm_theme');
-        if (savedTheme === 'dark') {
-          applyTheme(true);
-        }
-      } catch (e) {}
-      updateStatuses();
-      setInterval(updateStatuses, 60000);
-    });
-  </script>
-
+  setInterval(updateStatuses, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) updateStatuses(); });
+});
+</script>
 </body>
 </html>
